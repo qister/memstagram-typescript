@@ -15,7 +15,7 @@ export const useRoutes = (isAuthenticated: boolean) => {
           <MainPageContainer />
         </Route>
         <Route path="/add" exact>
-          <AddPageContainer />
+        < AddPage_ />
         </Route>
         <Route path="/show" exact>
           <ShowPage />

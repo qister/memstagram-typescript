@@ -51,8 +51,11 @@ export const initMemes = () => {
 
 export const upload = (meme: any) => {
   return async (dispatch: any) => {
-    await uploadMeme(meme)
-
+    try {
+      await uploadMeme(meme)
+    } catch (error) {
+      console.log('Upload error', error.message)
+    }
   }
 }
 
@@ -70,8 +73,8 @@ export const like = (id: number) => {
   }
 }
 
-export const getUser = () => {
-  const user = JSON.parse(localStorage.getItem('userData')!).email
+export const setUser = (user: string) => {
+  // const user = JSON.parse(localStorage.getItem('userData')!).email
   console.log(user)
   return {
     type: GET_USER,
@@ -85,10 +88,4 @@ export const getUserEmail = () => {
   }
 }
 
-export const setCurrentUser = (username: string) => {
-  localStorage.setItem('memeUserName', username)
-  return {
-    type: SET_CURRENT_USER,
-    payload: username,
-  }
-}
+

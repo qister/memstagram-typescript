@@ -60,9 +60,15 @@ type memeProps = {
 
 export const Main_ = (props: any) => {
   const classes = useStyles()
-  const { list, initMemes, like } = props
+  const { list, initMemes, like, setUser, currentUser, isLoading, isLoaded } = props
+
+  console.log('Main props', props);
+  
 
   useEffect(() => {
+    // if(!currentUser) {
+    //   setUser(JSON.parse(localStorage.getItem('userData')!).email)
+    // }
     initMemes()
   }, [])
 
@@ -72,7 +78,7 @@ export const Main_ = (props: any) => {
       <main className={classes.layout}>
         <Paper className={classes.paper}>
           <MenuAppBar />
-          <MemeMaterial_ list={list} like={like} />
+          <MemeMaterial_ list={list} like={like} loading={{isLoading, isLoaded}} />
         </Paper>
         <Copyright />
       </main>

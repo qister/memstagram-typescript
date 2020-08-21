@@ -4,19 +4,19 @@ import { useMessage } from '../hooks/message.hook'
 import { AuthContext } from '../context/AuthContext'
 
 export const AuthPage = (props: any) => {
-  const { setCurrentUser } = props
+  const { setUser } = props
 
   const auth = useContext(AuthContext)
 
   const message = useMessage()
   const { loading, request, error, clearError } = useHttp()
 
-  type formType = {
+  type Form = {
     email: string
     password: string
   }
 
-  const [form, setForm] = useState<any>({
+  const [form, setForm] = useState<Form>({
     email: '',
     password: '',
   })
@@ -27,20 +27,21 @@ export const AuthPage = (props: any) => {
 
   const registerHandler = async () => {
     try {
-      const data = await request('/api/auth/register', 'POST', { ...form })
+      const data = await request('/api/auth/register', 'POST', { ...form }, {'Content-Type': 'application/json'})
     } catch (e) {
-      console.log('Register error: ', e)
+      console.log('Register error: ', e.message)
       
     }
   }
 
   const loginHandler = async () => {
     try {
-      const data = await request('/api/auth/login', 'POST', { ...form })
+      const data = await request('/api/auth/login', 'POST', { ...form }, {'Content-Type': 'application/json'})
 
       if (data.token) {
         auth.login(data.token, data.userId, data.email)
-        setCurrentUser(data.email)
+        setUser(data.email)
+        // setCurrentUser(data.email)
 
         // props.authLoginAction({...form})
       }

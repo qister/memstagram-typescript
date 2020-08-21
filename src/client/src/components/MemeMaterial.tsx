@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
@@ -15,6 +15,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import Favorite from '@material-ui/icons/Favorite'
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,10 +48,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+const useStylesLoader = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      display: 'flex',
+      '& > * + *': {
+        marginLeft: theme.spacing(2),
+      },
+    },
+  }),
+);
+
 //
 
 export const MemeMaterial_ = (props: any) => {
+  console.log('meme props', props)
+
   const classes = useStyles()
+  const classesLoader = useStylesLoader()
 
   const [id, setId] = useState(0)
   const [author, setAuthor] = useState('')
@@ -60,12 +75,13 @@ export const MemeMaterial_ = (props: any) => {
   const [created, setCreated] = useState()
   const [loadedList, setLoadedList] = useState([])
 
-  const { list, like } = props
+  const { list, like, loading } = props
+
+  console.log('Loading: ', loading)
 
   useEffect(() => {
     const currentMeme = list.find((meme: any) => meme.id === id)
-    console.log('Current Meme', currentMeme)
-    
+
     if (currentMeme) {
       const email = JSON.parse(localStorage.getItem('userData')!).email
 
@@ -110,12 +126,19 @@ export const MemeMaterial_ = (props: any) => {
         />
         <CardMedia title="Meme">
           <div className="meme">
-            <img
-              className="big"
-              src={imgUrl}
-              alt={''}
-              onDoubleClick={() => tapLike(id)}
-            />
+            {loading.isLoading ? (
+              <div className={classesLoader.root}>
+                <CircularProgress />
+              </div>
+              
+            ) : (
+              <img
+                className="big"
+                src={imgUrl}
+                alt={''}
+                onDoubleClick={() => tapLike(id)}
+              />
+            )}
           </div>
         </CardMedia>
 

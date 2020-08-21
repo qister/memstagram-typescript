@@ -3,7 +3,7 @@ import { useHttp } from '../hooks/http.hook'
 import axios from 'axios'
 
 export const AddPage_ = () => {
-  // const {loading, request, error, clearError} = useHttp()
+  const {loading, request, error, clearError} = useHttp()
 
   const [author, setAuthor] = useState('')
 
@@ -28,19 +28,21 @@ export const AddPage_ = () => {
     data.append('description', description)
 
     try {
-      // const fetchResponse = await request("/api/meme/addpic", "POST", data, {
-      //   "Content-Type": "multipart/form-data",
+      const hookResponse = await request("/api/meme/addpic", "POST", data, {headers: {
+        "Content-Type": "multipart/form-data",
+      }})
+
+      console.log('fetchResponse', hookResponse)
+
+      // const response = await axios.post('/api/meme/addpic', data, {
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data',
+      //   },
       // })
 
-      const response = await axios.post('/api/meme/addpic', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
+      // console.log('axiosResponse', response)
 
-      console.log('axiosResponse', response)
-
-      // console.log('fetchResponse', fetchResponse)
+      
     } catch (error) {
       console.log('Upload error', error)
     }
