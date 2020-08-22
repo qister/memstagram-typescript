@@ -56,7 +56,7 @@ export const MenuAppBar = () => {
           <Typography variant="h6" className={classes.title}>
             Photos
           </Typography>
-          {auth && (
+          
             <div>
               <IconButton
                 aria-label="account of current user"
@@ -88,7 +88,7 @@ export const MenuAppBar = () => {
                 
               </Menu>
             </div>
-          )}
+          
         </Toolbar>
       </AppBar>
     </div>

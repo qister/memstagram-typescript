@@ -46,10 +46,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
-.meme .big {
+.big {
   width: 100%; /* Ширина изображений */
   height: 100%; /* Высота изображении */
   object-fit: scale-down; /* Вписываем фотографию в область */
+  display: flex;
+  align-items: center;
+  justify-content: center
 }

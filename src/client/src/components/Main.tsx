@@ -5,7 +5,7 @@ import Paper from '@material-ui/core/Paper'
 import Link from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
 import { MemeMaterial_ } from './MemeMaterial'
-import { MenuAppBar } from './Navigation'
+import { MenuAppBar } from './MenuAppBar'
 
 function Copyright() {
   return (
@@ -73,15 +73,15 @@ export const Main_ = (props: any) => {
   }, [])
 
   return (
-    <React.Fragment>
+    <>
       <CssBaseline />
       <main className={classes.layout}>
         <Paper className={classes.paper}>
           <MenuAppBar />
-          <MemeMaterial_ list={list} like={like} loading={{isLoading, isLoaded}} />
+          <MemeMaterial_ {...{list, like, isLoading, isLoaded}} />
         </Paper>
         <Copyright />
       </main>
-    </React.Fragment>
+    </>
   )
 }

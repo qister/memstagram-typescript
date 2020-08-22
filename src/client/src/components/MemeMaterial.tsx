@@ -16,6 +16,8 @@ import Checkbox from '@material-ui/core/Checkbox'
 import Favorite from '@material-ui/icons/Favorite'
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import Fab from '@material-ui/core/Fab'
+import AddIcon from '@material-ui/icons/Add'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,6 +48,18 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: red[500],
   },
+  cardActions: {
+    justifyContent: 'space-between'
+  },
+  fabButton: {
+    position: 'absolute',
+    zIndex: 1,
+    bottom: -30,
+    left: 0,
+    right: 0,
+    margin: '0 auto',
+    
+  },
 }))
 
 const useStylesLoader = makeStyles((theme: Theme) =>
@@ -56,8 +70,8 @@ const useStylesLoader = makeStyles((theme: Theme) =>
         marginLeft: theme.spacing(2),
       },
     },
-  }),
-);
+  })
+)
 
 //
 
@@ -75,9 +89,8 @@ export const MemeMaterial_ = (props: any) => {
   const [created, setCreated] = useState()
   const [loadedList, setLoadedList] = useState([])
 
-  const { list, like, loading } = props
+  const { list, like, isLoading, isLoaded } = props
 
-  console.log('Loading: ', loading)
 
   useEffect(() => {
     const currentMeme = list.find((meme: any) => meme.id === id)
@@ -126,25 +139,36 @@ export const MemeMaterial_ = (props: any) => {
         />
         <CardMedia title="Meme">
           <div className="meme">
-            {loading.isLoading ? (
+            {isLoading ? (
               <div className={classesLoader.root}>
                 <CircularProgress />
               </div>
-              
             ) : (
-              <img
-                className="big"
+              <div className='plus'>
+              <img className='big'
+                
                 src={imgUrl}
                 alt={''}
                 onDoubleClick={() => tapLike(id)}
               />
+              <Fab
+              color="secondary"
+              aria-label="add"
+              className={classes.fabButton}
+              href="/add"
+            >
+              <AddIcon />
+            </Fab>
+              </div>
             )}
+            
           </div>
         </CardMedia>
 
-        <CardActions disableSpacing>
+        <CardActions  className={classes.cardActions} disableSpacing={false}>
+          
           <FormControlLabel
-            label="MemeLabel"
+            label="Number of likes"
             checked={liked}
             onChange={() => tapLike(id)}
             control={
@@ -159,6 +183,7 @@ export const MemeMaterial_ = (props: any) => {
           <IconButton aria-label="share">
             <ShareIcon />
           </IconButton>
+          
         </CardActions>
       </Card>
     </React.Fragment>

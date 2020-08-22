@@ -6,6 +6,7 @@ import { ShowPage } from './pages/ShowPage'
 import { AuthPage } from './pages/AuthPage'
 import { AuthContainer } from './containers/AuthContainer'
 import { AddPageContainer } from './containers/AddPageContainer'
+import { BottomAppBar } from './components/PlusMeme'
 
 export const useRoutes = (isAuthenticated: boolean) => {
   if (isAuthenticated) {
@@ -19,6 +20,9 @@ export const useRoutes = (isAuthenticated: boolean) => {
         </Route>
         <Route path="/show" exact>
           <ShowPage />
+        </Route>
+        <Route path="/plus" exact>
+          <BottomAppBar />
         </Route>
         <Redirect to="/" />
       </Switch>
