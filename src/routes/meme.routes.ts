@@ -29,16 +29,29 @@ router.post('/likememe', async (req: Request, res: Response) => {
   try {
     console.log('meme to like: ', req.body)
     const { id, email } = req.body
-    const memeBefore = await Meme.findOne({ id })
-    if (memeBefore.likedBy.some((user: string) => user === email)) {
-      await Meme.updateOne(
-        { id },
-        { likedBy: memeBefore.likedBy.filter((user: string) => user !== email) }
-      )
-      res.status(201).json(`Meme with id ${id} was disliked`)
+    if ((id >= 0) && email) {
+
+      const memeBefore = await Meme.findOne({ id })
+      
+      if (memeBefore.likedBy.some((user: string) => user === email)) {
+        await Meme.updateOne(
+          { id },
+          {
+            likedBy: memeBefore.likedBy.filter(
+              (user: string) => user !== email
+            ),
+          }
+        )
+        res.status(201).json(`Meme with id ${id} was disliked`)
+      } else {
+        await Meme.updateOne(
+          { id },
+          { likedBy: [...memeBefore.likedBy, email] }
+        )
+        res.status(201).json(`Meme with id ${id} was liked`)
+      }
     } else {
-      await Meme.updateOne({ id }, { likedBy: [...memeBefore.likedBy, email] })
-      res.status(201).json(`Meme with id ${id} was liked`)
+      throw new Error('unable to like meme')
     }
   } catch (e) {
     console.log('Like error', e.message)

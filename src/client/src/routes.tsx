@@ -7,6 +7,7 @@ import { AuthPage } from './pages/AuthPage'
 import { AuthContainer } from './containers/AuthContainer'
 import { AddPageContainer } from './containers/AddPageContainer'
 import { BottomAppBar } from './components/PlusMeme'
+import { AddMeme } from './components/AddMeme'
 
 export const useRoutes = (isAuthenticated: boolean) => {
   if (isAuthenticated) {
@@ -16,7 +17,8 @@ export const useRoutes = (isAuthenticated: boolean) => {
           <MainPageContainer />
         </Route>
         <Route path="/add" exact>
-        < AddPage_ />
+        {/* < AddPage_ /> */}
+        < AddMeme />
         </Route>
         <Route path="/show" exact>
           <ShowPage />

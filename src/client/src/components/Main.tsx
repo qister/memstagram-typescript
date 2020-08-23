@@ -7,6 +7,9 @@ import Typography from '@material-ui/core/Typography'
 import { MemeMaterial_ } from './MemeMaterial'
 import { MenuAppBar } from './MenuAppBar'
 
+import { Switch, Route, Redirect } from 'react-router-dom'
+import { AddPageContainer } from '../containers/AddPageContainer'
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -54,16 +57,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-type memeProps = {
-  
-}
+type memeProps = {}
 
 export const Main_ = (props: any) => {
   const classes = useStyles()
-  const { list, initMemes, like, setUser, currentUser, isLoading, isLoaded } = props
+  const {
+    list,
+    initMemes,
+    like,
+    setUser,
+    currentUser,
+    isLoading,
+    isLoaded,
+  } = props
 
-  console.log('Main props', props);
-  
+  console.log('Main props', props)
 
   useEffect(() => {
     // if(!currentUser) {
@@ -77,8 +85,8 @@ export const Main_ = (props: any) => {
       <CssBaseline />
       <main className={classes.layout}>
         <Paper className={classes.paper}>
-          <MenuAppBar />
-          <MemeMaterial_ {...{list, like, isLoading, isLoaded}} />
+          <MemeMaterial_ {...{ list, like, isLoading, isLoaded }} />
+          {/* <MenuAppBar /> */}
         </Paper>
         <Copyright />
       </main>

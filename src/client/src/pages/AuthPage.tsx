@@ -37,7 +37,8 @@ export const AuthPage = (props: any) => {
   const loginHandler = async () => {
     try {
       const data = await request('/api/auth/login', 'POST', { ...form }, {'Content-Type': 'application/json'})
-
+      console.log('Auth Data', data);
+      
       if (data.token) {
         auth.login(data.token, data.userId, data.email)
         setUser(data.email)

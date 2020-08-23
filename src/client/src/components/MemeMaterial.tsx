@@ -18,6 +18,7 @@ import FavoriteBorder from '@material-ui/icons/FavoriteBorder'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
+import { NavLink } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -76,7 +77,6 @@ const useStylesLoader = makeStyles((theme: Theme) =>
 //
 
 export const MemeMaterial_ = (props: any) => {
-  console.log('meme props', props)
 
   const classes = useStyles()
   const classesLoader = useStylesLoader()
@@ -87,7 +87,7 @@ export const MemeMaterial_ = (props: any) => {
   const [imgUrl, setImgUrl] = useState('')
   const [liked, setLiked] = useState(false)
   const [created, setCreated] = useState()
-  const [loadedList, setLoadedList] = useState([])
+  const [likesNumber, setLikesNumber] = useState(0)
 
   const { list, like, isLoading, isLoaded } = props
 
@@ -103,6 +103,7 @@ export const MemeMaterial_ = (props: any) => {
       setImgUrl('http://localhost:5000/' + currentMeme.imgUrl.slice(7))
       setLiked(currentMeme.likedBy.some((user: string) => user === email))
       setCreated(currentMeme.created)
+      setLikesNumber(currentMeme.likedBy.length)
     }
   }, [id, list])
 
@@ -121,6 +122,7 @@ export const MemeMaterial_ = (props: any) => {
 
   return (
     <React.Fragment>
+      
       <Box display="flex" justifyContent="space-between">
         <span className="top-element">
           <ArrowBackIcon onClick={decrementIndex} />
@@ -144,22 +146,26 @@ export const MemeMaterial_ = (props: any) => {
                 <CircularProgress />
               </div>
             ) : (
-              <div className='plus'>
+              <>
               <img className='big'
                 
                 src={imgUrl}
                 alt={''}
                 onDoubleClick={() => tapLike(id)}
               />
+              <NavLink to='/add'>
               <Fab
               color="secondary"
               aria-label="add"
               className={classes.fabButton}
-              href="/add"
+              // href="/add"
             >
+              
               <AddIcon />
+              
             </Fab>
-              </div>
+            </NavLink>
+              </>
             )}
             
           </div>
@@ -168,7 +174,7 @@ export const MemeMaterial_ = (props: any) => {
         <CardActions  className={classes.cardActions} disableSpacing={false}>
           
           <FormControlLabel
-            label="Number of likes"
+            label={likesNumber}
             checked={liked}
             onChange={() => tapLike(id)}
             control={

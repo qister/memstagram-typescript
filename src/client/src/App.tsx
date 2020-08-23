@@ -4,6 +4,7 @@ import 'materialize-css'
 import { useRoutes } from './routes'
 import { useAuth } from './hooks/auth.hook'
 import { AuthContext } from './context/AuthContext'
+import { MenuAppBar } from './components/MenuAppBar'
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
       }}
     >
       <Router>
+        {isAuthenticated && <MenuAppBar/>}
         <div className="container">{routes}</div>
       </Router>
     </AuthContext.Provider>
