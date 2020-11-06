@@ -8,6 +8,9 @@ module.exports = (req: any, res: Response, next: NextFunction) => {
         return next()
     }
 
+    console.log(req.method);
+    
+
     try {
 
         const token = req.headers.authorization!.split(' ')[1] // "Bearer TOKEN"

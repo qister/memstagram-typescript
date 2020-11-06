@@ -1,4 +1,3 @@
-import { likeMeme } from './../client/src/API/memesAPI'
 import { Router, Application, Request, Response, NextFunction } from 'express'
 import multer, { ErrorCode } from 'multer'
 
