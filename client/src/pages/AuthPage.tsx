@@ -2,9 +2,13 @@ import React, { useState, useEffect, useContext } from 'react'
 import { useHttp } from '../hooks/http.hook'
 import { useMessage } from '../hooks/message.hook'
 import { AuthContext } from '../context/AuthContext'
+import { useDispatch } from 'react-redux'
+import { authLogin } from '../redux/authToolkitRedux/StoreSlices/authorization'
 
 export const AuthPage = (props: any) => {
   const { setUser } = props
+
+  const dispatch = useDispatch()
 
   const auth = useContext(AuthContext)
 
@@ -34,21 +38,8 @@ export const AuthPage = (props: any) => {
     }
   }
 
-  const loginHandler = async () => {
-    try {
-      const data = await request('/api/auth/login', 'POST', { ...form }, {'Content-Type': 'application/json'})
-      console.log('Auth Data', data);
-      
-      if (data.token) {
-        auth.login(data.token, data.userId, data.email)
-        setUser(data.email)
-        // setCurrentUser(data.email)
-
-        // props.authLoginAction({...form})
-      }
-    } catch (e) {
-      console.log('Error', e.message)
-    }
+  function loginHandler() {
+    dispatch(authLogin(form))
   }
 
   useEffect(() => {
