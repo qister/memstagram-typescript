@@ -11,7 +11,9 @@ body {
   font-weight: 600;
 }
 
-
+#root {
+  height: inherit;
+}
 
 .top-panel {
   margin: 0;

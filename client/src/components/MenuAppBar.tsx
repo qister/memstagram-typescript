@@ -10,8 +10,6 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
 
-import { AuthContext } from '../context/AuthContext'
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -27,8 +25,6 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export const MenuAppBar = () => {
-  const auth = useContext(AuthContext)
-
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -84,7 +80,7 @@ export const MenuAppBar = () => {
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
-                <MenuItem onClick={auth.logout}>Logout</MenuItem>
+                {/* <MenuItem onClick={auth.logout}>Logout</MenuItem> */}
                 
               </Menu>
             </div>
