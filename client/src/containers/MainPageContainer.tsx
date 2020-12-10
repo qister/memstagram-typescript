@@ -5,10 +5,10 @@ import { addMeme, like, initMemes, setUser } from '../redux/actions/appActions'
 
 function mapStateToProps(state: any) {
   return {
-    list: state.app.data,
-    currentUser: state.currentUser,
-    isLoading: state.app.isLoading,
-    isLoaded: state.app.isLoaded,
+    list: state?.app?.data,
+    currentUser: state?.currentUser,
+    isLoading: state?.app?.isLoading,
+    isLoaded: state?.app?.isLoaded,
   }
 }
 

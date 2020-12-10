@@ -30,7 +30,9 @@ export const likeMeme = (id: number) => {
       id: id,
       email: JSON.parse(localStorage.getItem('userData')!).email,
     })
-    .then((response) => console.log(response))
+    .then((response) => {
+      console.log('response: ', response)
+    })
     .catch((error) => {
       throw new Error(error)
     })
