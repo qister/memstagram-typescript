@@ -9,12 +9,14 @@ import { MenuAppBar } from './MenuAppBar'
 
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { AddPageContainer } from '../containers/AddPageContainer'
+import { useDispatch, useSelector, useStore } from 'react-redux'
+import { appInit } from '../redux/authToolkitRedux/StoreSlices/app'
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
+    <Typography variant='body2' color='textSecondary' align='center'>
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
+      <Link color='inherit' href='https://material-ui.com/'>
         Memstagram
       </Link>{' '}
       {new Date().getFullYear()}
@@ -71,13 +73,20 @@ export const Main_ = (props: any) => {
     isLoaded,
   } = props
 
-  console.log('Main props', props)
+  const dispatch = useDispatch()
+
+  const memes = useSelector((state: any) => state.app.data)
+
+  // console.log('Store: ', memes)
+
+  // console.log('Main props', props)
 
   useEffect(() => {
     // if(!currentUser) {
     //   setUser(JSON.parse(localStorage.getItem('userData')!).email)
     // }
-    initMemes()
+    // initMemes()
+    dispatch(appInit())
   }, [])
 
   return (
@@ -85,7 +94,7 @@ export const Main_ = (props: any) => {
       <CssBaseline />
       <main className={classes.layout}>
         <Paper className={classes.paper}>
-          <MemeMaterial_ {...{ list, like, isLoading, isLoaded }} />
+          <MemeMaterial_ {...{ list: memes, like, isLoading, isLoaded }} />
           {/* <MenuAppBar /> */}
         </Paper>
         <Copyright />

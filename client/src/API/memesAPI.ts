@@ -24,13 +24,16 @@ export const getMemes = () => {
     })
 }
 
-export const likeMeme = (id: number) => {
+export const likeMeme = (id: number, email: string) => {
   return axios
     .post('/api/meme/likememe', {
-      id: id,
-      email: JSON.parse(localStorage.getItem('userData')!).email,
+      id,
+      email,
+      // email: JSON.parse(localStorage.getItem('userData')!).email,
     })
-    .then((response) => console.log(response))
+    .then((response) => {
+      console.log('response: ', response)
+    })
     .catch((error) => {
       throw new Error(error)
     })

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { authLoginFetch } from '../../../API/authApi';
 
-export type credentials = {
+export type Credentials = {
     email: string
     password: string
 }
@@ -31,7 +31,7 @@ const initialState: AuthorizationState = {
 
 export const authLogin = createAsyncThunk(
     'authLogin',
-    (credentials: credentials) => {
+    (credentials: Credentials) => {
         return authLoginFetch(credentials)
     }
 )

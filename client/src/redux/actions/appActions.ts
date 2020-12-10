@@ -68,7 +68,7 @@ export const addLiked = (id: number) => {
 
 export const like = (id: number) => {
   return async (dispatch: any) => {
-    await likeMeme(id)
+    // await likeMeme(id)
     dispatch(addLiked(id))
   }
 }
