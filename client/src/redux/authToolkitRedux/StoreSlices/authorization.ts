@@ -6,7 +6,7 @@ export type Credentials = {
     password: string
 }
 
-export enum FetchingStatus {
+export enum IFetchingStatus {
     idle = 'idle',
     pending = 'pending',
     fulfilled = 'fulfilled',
@@ -18,7 +18,7 @@ export interface AuthorizationState {
     userId: string,
     email: string,
     isAuthenticated: boolean,
-    FetchingStatus: FetchingStatus
+    fetchingStatus: IFetchingStatus
 }
 
 const initialState: AuthorizationState = {
@@ -26,7 +26,7 @@ const initialState: AuthorizationState = {
     userId: '',
     email: '',
     isAuthenticated: false,
-    FetchingStatus: FetchingStatus.idle
+    fetchingStatus: IFetchingStatus.idle
 }
 
 export const authLogin = createAsyncThunk(
@@ -42,17 +42,17 @@ const authorization = createSlice({
     reducers: {},
     extraReducers: builder => {
         builder.addCase(authLogin.pending, state => {
-            state.FetchingStatus = FetchingStatus.pending
+            state.fetchingStatus = IFetchingStatus.pending
         })
         builder.addCase(authLogin.fulfilled, (state, action) => {
-            state.FetchingStatus = FetchingStatus.fulfilled
+            state.fetchingStatus = IFetchingStatus.fulfilled
             state.token = action.payload.token
             state.userId = action.payload.userId
             state.email = action.payload.email
             state.isAuthenticated = true
         })
         builder.addCase(authLogin.rejected, state => {
-            state.FetchingStatus = FetchingStatus.rejected
+            state.fetchingStatus = IFetchingStatus.rejected
         })
     }
 })

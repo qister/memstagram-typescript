@@ -21,6 +21,7 @@ import AddIcon from '@material-ui/icons/Add'
 import { NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { appInit, like } from '../redux/authToolkitRedux/StoreSlices/app'
+import { IFetchingStatus } from '../redux/authToolkitRedux/StoreSlices/authorization'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -94,7 +95,9 @@ export const MemeMaterial_ = (props: any) => {
   const dispatch = useDispatch()
 
   const list = useSelector((state: any) => state.app.memeList)
-  const email = useSelector((state: any) => state.authorization.email)
+  const { email, fetchingStatus } = useSelector(
+    (state: any) => state.authorization,
+  )
 
   useEffect(() => {
     dispatch(appInit())
@@ -145,7 +148,7 @@ export const MemeMaterial_ = (props: any) => {
         />
         <CardMedia title='Meme'>
           <div className='meme'>
-            {isLoading ? (
+            {fetchingStatus === IFetchingStatus.pending ? (
               <div className={classesLoader.root}>
                 <CircularProgress />
               </div>

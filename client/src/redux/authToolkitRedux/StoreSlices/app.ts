@@ -29,8 +29,6 @@ export const appInit = createAsyncThunk('appInit', () => {
 export const like = createAsyncThunk(
   'like',
   async ({ id, email }: any, { getState }) => {
- 
-
     //@ts-ignore
     // const { email } = getState().authorization
     return likeMeme(id, email)
@@ -68,7 +66,7 @@ const app = createSlice({
         ) => {
           state.FetchingStatus = FetchingStatus.fulfilled
           // TODO
-          // Вытаскивать текущего пользователя напрямую из другого стора 
+          // Вытаскивать текущего пользователя напрямую из другого стора
           // const { email } = getState().authorization
           state.memeList = state.memeList.map((meme: any) => {
             if (meme.id === id) {
@@ -89,8 +87,7 @@ const app = createSlice({
         },
       )
       .addCase(like.rejected, (state) => {
-        // state.FetchingStatus = FetchingStatus.rejected
-        state.FetchingStatus = FetchingStatus.fulfilled
+        state.FetchingStatus = FetchingStatus.rejected
       })
   },
 })
