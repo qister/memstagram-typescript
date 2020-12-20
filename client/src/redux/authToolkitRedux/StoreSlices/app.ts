@@ -1,3 +1,4 @@
+import { uploadMeme, uploadMeme2 } from './../../../API/memesAPI'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getMemes, likeMeme } from '../../../API/memesAPI'
 
@@ -32,6 +33,21 @@ export const like = createAsyncThunk(
     //@ts-ignore
     // const { email } = getState().authorization
     return likeMeme(id, email)
+  },
+)
+
+// export const upload = createAsyncThunk('upload', async (data) => {
+//   console.log('data: ', data);
+
+//   return uploadMeme(data)
+// })
+
+export const upload = createAsyncThunk(
+  'upload',
+  async (data: any, { getState }) => {
+    console.log('data: ', data);
+    
+    return uploadMeme(data)
   },
 )
 
@@ -88,6 +104,15 @@ const app = createSlice({
       )
       .addCase(like.rejected, (state) => {
         state.FetchingStatus = FetchingStatus.rejected
+      })
+      .addCase(upload.pending, (state) => {})
+      .addCase(upload.fulfilled, (state) => {
+        console.log('success')
+
+        state.FetchingStatus = FetchingStatus.fulfilled
+      })
+      .addCase(upload.rejected, (state) => {
+        console.log('rejected')
       })
   },
 })

@@ -2,17 +2,19 @@ import { CssBaseline, Link, Paper, Typography } from '@material-ui/core'
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import React, { useEffect, useState } from 'react'
 
-import { useHttp } from '../hooks/http.hook'
 import 'antd/dist/antd.css'
 import '../index.css'
 import { Upload, message } from 'antd'
 import { InboxOutlined } from '@ant-design/icons'
+import { useDispatch } from 'react-redux'
+import { upload } from '../redux/authToolkitRedux/StoreSlices/app'
+import axios from 'axios'
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
+    <Typography variant='body2' color='textSecondary' align='center'>
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
+      <Link color='inherit' href='https://material-ui.com/'>
         Memstagram
       </Link>{' '}
       {new Date().getFullYear()}
@@ -58,12 +60,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 const { Dragger } = Upload
 
 export const AddMeme = () => {
-  const { loading, request, error, clearError } = useHttp()
   const [author, setAuthor] = useState('')
   const [selectedFile, setSelectedFile] = useState<any>('')
   const [description, setDescription] = useState('')
-  
-  
 
   const propsDrag = {
     name: 'file',
@@ -82,11 +81,12 @@ export const AddMeme = () => {
     },
     beforeUpload: (file: any) => {
       setSelectedFile(file)
-      
-      return false;
-    },
 
+      return false
+    },
   }
+
+  const dispatch = useDispatch()
 
   const classes = useStyles()
 
@@ -97,13 +97,23 @@ export const AddMeme = () => {
     data.append('description', description)
 
     try {
-      const hookResponse = await request('/api/meme/addpic', 'POST', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
+      //TODO переписать на загрузку через аксиос
+      // const hookResponse = await request('/api/meme/addpic', 'POST', data, {
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data',
+      //   },
+      // })
 
-      console.log('fetchResponse', hookResponse)
+      // console.log('fetchResponse', hookResponse)
+
+      // const response = await axios.post('/api/meme/addpic', data, {
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data',
+      //   },
+      // })
+      // console.log('response: ', response)
+
+      dispatch(upload(data))
       setSelectedFile(null)
       setAuthor('')
       setDescription('')
@@ -127,36 +137,36 @@ export const AddMeme = () => {
       <main className={classes.layout}>
         <Paper className={classes.paper}>
           <input
-            id="author"
-            type="text"
-            className="validate"
-            placeholder="author"
+            id='author'
+            type='text'
+            className='validate'
+            placeholder='author'
             onChange={(e) => setAuthor(e.target.value)}
             value={author}
           />
           <input
-            id="description"
-            type="text"
-            className="validate"
-            placeholder="description"
+            id='description'
+            type='text'
+            className='validate'
+            placeholder='description'
             onChange={(e) => setDescription(e.target.value)}
             value={description}
           />
           <Dragger {...propsDrag}>
-            <p className="ant-upload-drag-icon">
+            <p className='ant-upload-drag-icon'>
               <InboxOutlined />
             </p>
-            <p className="ant-upload-text">
+            <p className='ant-upload-text'>
               Click or drag file to this area to upload
             </p>
-            <p className="ant-upload-hint">
+            <p className='ant-upload-hint'>
               Support for a single or bulk upload. Strictly prohibit from
               uploading company data or other band files
             </p>
           </Dragger>
           <button
-            type="button"
-            className="btn btn-success btn-block"
+            type='button'
+            className='btn btn-success btn-block'
             onClick={onClickHandler}
           >
             Upload
