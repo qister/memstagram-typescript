@@ -1,6 +1,6 @@
 import { CssBaseline, Link, Paper, Typography } from '@material-ui/core'
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 import 'antd/dist/antd.css'
 import '../index.css'
@@ -97,15 +97,6 @@ export const AddMeme = () => {
     data.append('description', description)
 
     try {
-      //TODO переписать на загрузку через аксиос
-      // const hookResponse = await request('/api/meme/addpic', 'POST', data, {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // })
-
-      // console.log('fetchResponse', hookResponse)
-
       // const response = await axios.post('/api/meme/addpic', data, {
       //   headers: {
       //     'Content-Type': 'multipart/form-data',
@@ -118,14 +109,6 @@ export const AddMeme = () => {
       setAuthor('')
       setDescription('')
       message.success(`File uploaded successfully.`)
-
-      // const response = await axios.post('/api/meme/addpic', data, {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // })
-
-      // console.log('axiosResponse', response)
     } catch (error) {
       console.log('Upload error', error)
     }

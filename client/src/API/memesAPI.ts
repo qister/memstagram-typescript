@@ -44,14 +44,3 @@ export const uploadMeme = (meme: any) => {
       throw new Error(error)
     })
 }
-
-export const uploadMeme2 = (meme: any) => {
-  return axios
-    .post('/api/meme/addpic', meme, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-    .then((res) => console.log(res))
-    .then((e) => console.log('Error: ', e))
-}

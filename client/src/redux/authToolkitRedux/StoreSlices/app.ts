@@ -1,4 +1,4 @@
-import { uploadMeme, uploadMeme2 } from './../../../API/memesAPI'
+import { uploadMeme } from './../../../API/memesAPI'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getMemes, likeMeme } from '../../../API/memesAPI'
 
@@ -45,8 +45,8 @@ export const like = createAsyncThunk(
 export const upload = createAsyncThunk(
   'upload',
   async (data: any, { getState }) => {
-    console.log('data: ', data);
-    
+    console.log('data: ', data)
+
     return uploadMeme(data)
   },
 )
