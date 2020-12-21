@@ -149,9 +149,9 @@ export const MemeMaterial_ = (props: any) => {
 
   const tapLike = (id: number) => {
 
-    setNewCurrentMeme((prev: any) => {
-      return { ...prev, liked: !prev.liked }
-    })
+    // setNewCurrentMeme((prev: any) => {
+    //   return { ...prev, liked: !prev.liked }
+    // })
 
     dispatch(like({ id, email }))
   }

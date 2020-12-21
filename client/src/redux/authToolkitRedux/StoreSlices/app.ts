@@ -100,6 +100,7 @@ const app = createSlice({
               return {
                 ...meme,
                 liked: !meme.liked,
+                //TODO поправить, чтобы пересчитывать просто количество лайков, а не весь массив пользователей
                 likedBy: meme.likedBy.some((user: string) => user === email)
                   ? meme.likedBy.filter((user: string) => user !== email)
                   : [
