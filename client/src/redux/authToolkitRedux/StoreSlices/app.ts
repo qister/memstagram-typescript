@@ -9,9 +9,20 @@ export enum FetchingStatus {
   rejected = 'rejected',
 }
 
+export interface IMeme {
+  id: number
+  author: string
+  description: string
+  imgUrl: string
+  likedBy: Array<string>,
+  //TODO сделать потом чтобы на сервере считалось лайкнул или нет
+  liked: boolean
+  created: string
+}
+
 export interface AppState {
   currentUser: string
-  memeList: Array<{}>
+  memeList: Array<IMeme>
   FetchingStatus: FetchingStatus
   error: any
 }
@@ -88,6 +99,7 @@ const app = createSlice({
             if (meme.id === id) {
               return {
                 ...meme,
+                liked: !meme.liked,
                 likedBy: meme.likedBy.some((user: string) => user === email)
                   ? meme.likedBy.filter((user: string) => user !== email)
                   : [

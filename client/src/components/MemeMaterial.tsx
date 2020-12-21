@@ -20,8 +20,9 @@ import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
 import { NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { appInit, like } from '../redux/authToolkitRedux/StoreSlices/app'
+import { appInit, IMeme, like } from '../redux/authToolkitRedux/StoreSlices/app'
 import { IFetchingStatus } from '../redux/authToolkitRedux/StoreSlices/authorization'
+import { RootState } from 'redux/authToolkitRedux/StoreSlices'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,20 +84,28 @@ export const MemeMaterial_ = (props: any) => {
   const classesLoader = useStylesLoader()
 
   const [id, setId] = useState(0)
-  const [author, setAuthor] = useState('')
-  const [description, setDescription] = useState('')
-  const [imgUrl, setImgUrl] = useState('')
-  const [liked, setLiked] = useState(false)
-  const [created, setCreated] = useState()
-  const [likesNumber, setLikesNumber] = useState(0)
 
-  const { isLoading } = props
+  interface IMemeToShow extends IMeme {
+    likesNumber: number
+  }
+
+  const [newCurrentMeme, setNewCurrentMeme] = useState<IMemeToShow>({
+    id: 0,
+    author: '',
+    description: '',
+    imgUrl: '',
+    likedBy: [],
+    //TODO сделать потом чтобы на сервере считалось лайкнул или нет
+    liked: false,
+    created: '',
+    likesNumber: 0,
+  })
 
   const dispatch = useDispatch()
 
-  const list = useSelector((state: any) => state.app.memeList)
+  const list = useSelector((state: RootState) => state.app.memeList)
   const { email, fetchingStatus } = useSelector(
-    (state: any) => state.authorization,
+    (state: RootState) => state.authorization,
   )
 
   useEffect(() => {
@@ -104,19 +113,46 @@ export const MemeMaterial_ = (props: any) => {
   }, [])
 
   useEffect(() => {
-    const currentMeme = list.find((meme: any) => meme.id === id)
+    const currentMeme = list.find((meme) => meme.id === id)
     if (currentMeme) {
-      setAuthor(currentMeme.author)
-      setDescription(currentMeme.description)
-      setImgUrl('http://localhost:4000/' + currentMeme.imgUrl.slice(7))
-      setLiked(currentMeme.likedBy.some((user: string) => user === email))
-      setCreated(currentMeme.created)
-      setLikesNumber(currentMeme.likedBy.length)
+
+      const {
+        author,
+        description,
+        created,
+        likedBy,
+        imgUrl,
+        id,
+        liked,
+      } = currentMeme
+
+      setNewCurrentMeme({
+        author,
+        description,
+        created,
+        likesNumber: likedBy.length,
+        imgUrl: 'http://localhost:4000/' + imgUrl.slice(7),
+        //TODO убрать, сделать чтобы брались только нужные значения
+        id,
+        likedBy,
+        liked,
+      })
     }
   }, [id, list])
 
+  const {
+    author,
+    likesNumber,
+    imgUrl,
+    liked
+  } = newCurrentMeme
+
   const tapLike = (id: number) => {
-    setLiked(!liked)
+
+    setNewCurrentMeme((prev: any) => {
+      return { ...prev, liked: !prev.liked }
+    })
+
     dispatch(like({ id, email }))
   }
 
