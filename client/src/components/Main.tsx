@@ -5,16 +5,14 @@ import Paper from '@material-ui/core/Paper'
 import Link from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
 import { MemeMaterial_ } from './MemeMaterial'
-import { MenuAppBar } from './MenuAppBar'
 
-import { Switch, Route, Redirect } from 'react-router-dom'
-import { AddPageContainer } from '../containers/AddPageContainer'
+
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
+    <Typography variant='body2' color='textSecondary' align='center'>
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
+      <Link color='inherit' href='https://material-ui.com/'>
         Memstagram
       </Link>{' '}
       {new Date().getFullYear()}
@@ -57,36 +55,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-type memeProps = {}
-
-export const Main_ = (props: any) => {
+export const Main_ = () => {
   const classes = useStyles()
-  const {
-    list,
-    initMemes,
-    like,
-    setUser,
-    currentUser,
-    isLoading,
-    isLoaded,
-  } = props
-
-  console.log('Main props', props)
-
-  useEffect(() => {
-    // if(!currentUser) {
-    //   setUser(JSON.parse(localStorage.getItem('userData')!).email)
-    // }
-    initMemes()
-  }, [])
 
   return (
     <>
       <CssBaseline />
       <main className={classes.layout}>
         <Paper className={classes.paper}>
-          <MemeMaterial_ {...{ list, like, isLoading, isLoaded }} />
-          {/* <MenuAppBar /> */}
+          <MemeMaterial_ />
         </Paper>
         <Copyright />
       </main>

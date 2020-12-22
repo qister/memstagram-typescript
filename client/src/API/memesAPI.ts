@@ -1,12 +1,5 @@
 import axios from 'axios'
 
-// export const getMemes = async function() {
-
-//   const allMemes = await axios.get('/api/meme/getlist')
-
-//   return allMemes
-// }
-
 const config = {
   headers: {
     'Content-Type': 'application/json',
@@ -24,13 +17,16 @@ export const getMemes = () => {
     })
 }
 
-export const likeMeme = (id: number) => {
+export const likeMeme = (id: number, email: string) => {
   return axios
     .post('/api/meme/likememe', {
-      id: id,
-      email: JSON.parse(localStorage.getItem('userData')!).email,
+      id,
+      email,
+      // email: JSON.parse(localStorage.getItem('userData')!).email,
     })
-    .then((response) => console.log(response))
+    .then((response) => {
+      console.log('response: ', response)
+    })
     .catch((error) => {
       throw new Error(error)
     })
@@ -43,22 +39,8 @@ export const uploadMeme = (meme: any) => {
         'Content-Type': 'multipart/form-data',
       },
     })
-    .then((response) => console.log(response))
+    .then((response) => console.log('upload: ', response))
     .catch((error) => {
       throw new Error(error)
     })
 }
-
-// export const authLoginAxios = (credentials) => {
-//   console.log('authLoginAxios credentials', credentials);
-//   const instance = axios.create(config)
-//   return instance
-//     .post('/api/auth/login', JSON.stringify(credentials))
-//       .then(response => {
-//         console.log('authLoginAxios response', response.data);
-//         return response.data
-//       })
-//       .catch(error => {
-//         throw error
-//       })
-// }

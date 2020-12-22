@@ -1,6 +1,6 @@
 {
-    "port": 5000,
+    "port": 4000,
     "mongoUri": "mongodb+srv://qister:1q2w3e4r@cluster0-zntym.mongodb.net/memes",
-    "baseUrl": "http://localhost:5000",
+    "baseUrl": "http://localhost:4000",
     "jwtSecret": "localocal"
 }

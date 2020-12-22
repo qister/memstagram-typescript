@@ -19,6 +19,10 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
 import { NavLink } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { appInit, IMeme, like } from '../redux/authToolkitRedux/StoreSlices/app'
+import { IFetchingStatus } from '../redux/authToolkitRedux/StoreSlices/authorization'
+import { RootState } from 'redux/authToolkitRedux/StoreSlices'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: red[500],
   },
   cardActions: {
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   fabButton: {
     position: 'absolute',
@@ -59,7 +63,6 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     right: 0,
     margin: '0 auto',
-    
   },
 }))
 
@@ -71,45 +74,86 @@ const useStylesLoader = makeStyles((theme: Theme) =>
         marginLeft: theme.spacing(2),
       },
     },
-  })
+  }),
 )
 
 //
 
 export const MemeMaterial_ = (props: any) => {
-
   const classes = useStyles()
   const classesLoader = useStylesLoader()
 
   const [id, setId] = useState(0)
-  const [author, setAuthor] = useState('')
-  const [description, setDescription] = useState('')
-  const [imgUrl, setImgUrl] = useState('')
-  const [liked, setLiked] = useState(false)
-  const [created, setCreated] = useState()
-  const [likesNumber, setLikesNumber] = useState(0)
 
-  const { list, like, isLoading, isLoaded } = props
+  interface IMemeToShow extends IMeme {
+    likesNumber: number
+  }
 
+  const [newCurrentMeme, setNewCurrentMeme] = useState<IMemeToShow>({
+    id: 0,
+    author: '',
+    description: '',
+    imgUrl: '',
+    likedBy: [],
+    //TODO сделать потом чтобы на сервере считалось лайкнул или нет
+    liked: false,
+    created: '',
+    likesNumber: 0,
+  })
+
+  const dispatch = useDispatch()
+
+  const list = useSelector((state: RootState) => state.app.memeList)
+  const { email, fetchingStatus } = useSelector(
+    (state: RootState) => state.authorization,
+  )
 
   useEffect(() => {
-    const currentMeme = list.find((meme: any) => meme.id === id)
+    dispatch(appInit())
+  }, [])
 
+  useEffect(() => {
+    const currentMeme = list.find((meme) => meme.id === id)
     if (currentMeme) {
-      const email = JSON.parse(localStorage.getItem('userData')!).email
 
-      setAuthor(currentMeme.author)
-      setDescription(currentMeme.description)
-      setImgUrl('http://localhost:5000/' + currentMeme.imgUrl.slice(7))
-      setLiked(currentMeme.likedBy.some((user: string) => user === email))
-      setCreated(currentMeme.created)
-      setLikesNumber(currentMeme.likedBy.length)
+      const {
+        author,
+        description,
+        created,
+        likedBy,
+        imgUrl,
+        id,
+        liked,
+      } = currentMeme
+
+      setNewCurrentMeme({
+        author,
+        description,
+        created,
+        likesNumber: likedBy.length,
+        imgUrl: 'http://localhost:4000/' + imgUrl.slice(7),
+        //TODO убрать, сделать чтобы брались только нужные значения
+        id,
+        likedBy,
+        liked,
+      })
     }
   }, [id, list])
 
+  const {
+    author,
+    likesNumber,
+    imgUrl,
+    liked
+  } = newCurrentMeme
+
   const tapLike = (id: number) => {
-    setLiked(!liked)
-    like(id)
+
+    // setNewCurrentMeme((prev: any) => {
+    //   return { ...prev, liked: !prev.liked }
+    // })
+
+    dispatch(like({ id, email }))
   }
 
   const incrementIndex = () => {
@@ -122,9 +166,8 @@ export const MemeMaterial_ = (props: any) => {
 
   return (
     <React.Fragment>
-      
-      <Box display="flex" justifyContent="space-between">
-        <span className="top-element">
+      <Box display='flex' justifyContent='space-between'>
+        <span className='top-element'>
           <ArrowBackIcon onClick={decrementIndex} />
           <ArrowForwardIcon onClick={incrementIndex} />
         </span>
@@ -133,46 +176,42 @@ export const MemeMaterial_ = (props: any) => {
       <Card className={classes.root}>
         <CardHeader
           avatar={
-            <Avatar aria-label="avatar test" className={classes.avatar}>
+            <Avatar aria-label='avatar test' className={classes.avatar}>
               {author}
             </Avatar>
           }
           title={author}
         />
-        <CardMedia title="Meme">
-          <div className="meme">
-            {isLoading ? (
+        <CardMedia title='Meme'>
+          <div className='meme'>
+            {fetchingStatus === IFetchingStatus.pending ? (
               <div className={classesLoader.root}>
                 <CircularProgress />
               </div>
             ) : (
               <>
-              <img className='big'
-                
-                src={imgUrl}
-                alt={''}
-                onDoubleClick={() => tapLike(id)}
-              />
-              <NavLink to='/add'>
-              <Fab
-              color="secondary"
-              aria-label="add"
-              className={classes.fabButton}
-              // href="/add"
-            >
-              
-              <AddIcon />
-              
-            </Fab>
-            </NavLink>
+                <img
+                  className='big'
+                  src={imgUrl}
+                  alt={''}
+                  onDoubleClick={() => tapLike(id)}
+                />
+                <NavLink to='/add'>
+                  <Fab
+                    color='secondary'
+                    aria-label='add'
+                    className={classes.fabButton}
+                    // href="/add"
+                  >
+                    <AddIcon />
+                  </Fab>
+                </NavLink>
               </>
             )}
-            
           </div>
         </CardMedia>
 
-        <CardActions  className={classes.cardActions} disableSpacing={false}>
-          
+        <CardActions className={classes.cardActions} disableSpacing={false}>
           <FormControlLabel
             label={likesNumber}
             checked={liked}
@@ -181,15 +220,14 @@ export const MemeMaterial_ = (props: any) => {
               <Checkbox
                 icon={<FavoriteBorder />}
                 checkedIcon={<Favorite />}
-                name="checkedH"
+                name='checkedH'
               />
             }
           />
 
-          <IconButton aria-label="share">
+          <IconButton aria-label='share'>
             <ShareIcon />
           </IconButton>
-          
         </CardActions>
       </Card>
     </React.Fragment>
