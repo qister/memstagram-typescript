@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export const Main_ = () => {
+export const Main = () => {
   const classes = useStyles()
 
   return (

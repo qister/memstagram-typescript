@@ -1,7 +1,7 @@
 import { Credentials } from '../redux/authToolkitRedux/StoreSlices/authorization'
 
 export function authLoginFetch(credentials: Credentials) {
-    const request = async (url: any, method = 'GET', body: any, headers: any) => {
+    const request = async (url: string, method = 'GET', body: any, headers: any) => {
         try {
           // console.log('Headers', headers.headers['Content-Type'])
           

@@ -14,7 +14,7 @@ export interface IMeme {
   author: string
   description: string
   imgUrl: string
-  likedBy: Array<string>,
+  likedBy: Array<string>
   //TODO сделать потом чтобы на сервере считалось лайкнул или нет
   liked: boolean
   created: string
@@ -47,20 +47,9 @@ export const like = createAsyncThunk(
   },
 )
 
-// export const upload = createAsyncThunk('upload', async (data) => {
-//   console.log('data: ', data);
-
-//   return uploadMeme(data)
-// })
-
-export const upload = createAsyncThunk(
-  'upload',
-  async (data: any, { getState }) => {
-    console.log('data: ', data)
-
-    return uploadMeme(data)
-  },
-)
+export const upload = createAsyncThunk('upload', async (data: any) => {
+  return uploadMeme(data)
+})
 
 const app = createSlice({
   name: 'app',
@@ -118,15 +107,13 @@ const app = createSlice({
       .addCase(like.rejected, (state) => {
         state.FetchingStatus = FetchingStatus.rejected
       })
-      .addCase(upload.pending, (state) => {})
+      .addCase(upload.pending, () => {})
       .addCase(upload.fulfilled, (state) => {
         console.log('success')
 
         state.FetchingStatus = FetchingStatus.fulfilled
       })
-      .addCase(upload.rejected, (state) => {
-        console.log('rejected')
-      })
+      .addCase(upload.rejected, () => {})
   },
 })
 

@@ -8,7 +8,6 @@ import { Upload, message } from 'antd'
 import { InboxOutlined } from '@ant-design/icons'
 import { useDispatch } from 'react-redux'
 import { upload } from '../redux/authToolkitRedux/StoreSlices/app'
-import axios from 'axios'
 
 function Copyright() {
   return (
