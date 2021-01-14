@@ -4,7 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import Paper from '@material-ui/core/Paper'
 import Link from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
-import { MemeMaterial_ } from './MemeMaterial'
+import { Meme } from '../../components/Meme'
 
 
 
@@ -63,7 +63,7 @@ export const Main = () => {
       <CssBaseline />
       <main className={classes.layout}>
         <Paper className={classes.paper}>
-          <MemeMaterial_ />
+          <Meme />
         </Paper>
         <Copyright />
       </main>

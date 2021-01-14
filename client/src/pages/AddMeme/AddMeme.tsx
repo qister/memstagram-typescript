@@ -1,13 +1,12 @@
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { CssBaseline, Link, Paper, Typography } from '@material-ui/core'
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import React, { useState } from 'react'
-
-import 'antd/dist/antd.css'
-import '../index.css'
 import { Upload, message } from 'antd'
 import { InboxOutlined } from '@ant-design/icons'
-import { useDispatch } from 'react-redux'
-import { upload } from '../redux/authToolkitRedux/StoreSlices/app'
+
+import { upload } from '../../redux/authToolkitRedux/StoreSlices/app'
+import 'antd/dist/antd.css'
 
 function Copyright() {
   return (
