@@ -9,9 +9,9 @@ import 'materialize-css'
 
 function App() {
 
-  // const isAuthenticated = useSelector((state: RootState) => state.authorization.isAuthenticated)
+  const isAuthenticated = useSelector((state: RootState) => state.authorization.isAuthenticated)
   //TODO для разработки, убрать
-  const isAuthenticated = true
+  // const isAuthenticated = true
   const routes = useRoutes(isAuthenticated)
 
   return (
