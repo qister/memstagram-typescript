@@ -8,74 +8,86 @@ import { useStyles, useStylesLoader } from '../../styles/memeStyle'
 import { mainStyles } from '../../styles/mainStyle'
 
 export function MemeBehavior(props: any): JSX.Element {
-  const classes = useStyles();
-  const classesLoader = useStylesLoader();
+  const classes = useStyles()
+  const classesLoader = useStylesLoader()
   const mainClasses = mainStyles()
 
-  const [id, setId] = useState(0);
+  const [id, setId] = useState(0)
 
   interface IMemeToShow extends IMeme {
-    likesNumber: number;
+    likesNumber: number
   }
 
   const [newCurrentMeme, setNewCurrentMeme] = useState<IMemeToShow>({
     id: 0,
-    author: "",
-    description: "",
-    imgUrl: "",
+    author: '',
+    description: '',
+    imgUrl: '',
     likedBy: [],
     //TODO сделать потом чтобы на сервере считалось лайкнул или нет
     liked: false,
-    created: "",
+    created: '',
     likesNumber: 0,
-  });
+  })
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const list = useSelector((state: RootState) => state.app.memeList);
+  const list = useSelector((state: RootState) => state.app.memeList)
   const { email, fetchingStatus } = useSelector(
-    (state: RootState) => state.authorization
-  );
+    (state: RootState) => state.authorization,
+  )
 
   useEffect(() => {
-    dispatch(appInit());
-  }, []);
+    dispatch(appInit())
+  }, [])
 
   useEffect(() => {
-    const currentMeme = list.find((meme: { id: number; }) => meme.id === id);
+    const currentMeme = list.find((meme) => meme.id === id)
     if (currentMeme) {
-      const { author, description, created, likedBy, imgUrl, id, liked } = currentMeme;
+      const {
+        author,
+        description,
+        created,
+        likedBy,
+        imgUrl,
+        id,
+        liked,
+      } = currentMeme
+
+      console.log('imgUrl: ', imgUrl)
 
       setNewCurrentMeme({
         author,
         description,
         created,
         likesNumber: likedBy.length,
-        imgUrl: "http://localhost:4000/" + imgUrl.slice(7),
+        imgUrl: 'http://localhost:4000/' + imgUrl.slice(7),
         //TODO убрать, сделать чтобы брались только нужные значения
         id,
         likedBy,
         liked,
-      });
-    }
-  }, [id, list]);
+      })
 
-  const { author, likesNumber, imgUrl, liked } = newCurrentMeme;
+      console.log('currentMeme: ', currentMeme)
+    }
+  }, [id, list])
+
+  const { author, likesNumber, imgUrl, liked } = newCurrentMeme
 
   function tapLike() {
     // setNewCurrentMeme((prev: any) => {
     //   return { ...prev, liked: !prev.liked }
     // })
 
-    dispatch(like({ id, email }));
+    dispatch(like({ id, email }))
   }
 
   function incrementIndex() {
-    setId(id < list.length - 1 ? id + 1 : id);
+    setId(id < list.length - 1 ? id + 1 : id)
   }
 
   function decrementIndex() {
-    setId(id > 0 ? id - 1 : id);
+    setId(id > 0 ? id - 1 : id)
   }
 
   return React.createElement(MemeTemplate, {
@@ -90,5 +102,5 @@ export function MemeBehavior(props: any): JSX.Element {
     incrementIndex,
     decrementIndex,
     tapLike,
-  });
+  })
 }

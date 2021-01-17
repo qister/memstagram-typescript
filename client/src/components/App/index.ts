@@ -1,1 +1,1 @@
-export { AppTemplate as App } from './AppTemplate'
+export { AppBehavior as App } from './AppBehavior'
