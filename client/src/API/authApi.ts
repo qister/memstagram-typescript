@@ -1,27 +1,12 @@
+import axios from 'axios'
+
 import { Credentials } from '../redux/authToolkitRedux/StoreSlices/authorization'
 
-export function authLoginFetch(credentials: Credentials) {
-    const request = async (url: string, method = 'GET', body: any, headers: any) => {
-        try {
-          // console.log('Headers', headers.headers['Content-Type'])
-          
-          if (body && (headers['Content-Type'] === 'application/json')) {
-            body = JSON.stringify(body)
-            // headers['Content-Type'] = 'application/json'
-          }
-  
-          const response = await fetch(url, { method, body, headers })
-          const data = await response.json()
-  
-          if (!response.ok) {
-            throw new Error(data.message || 'Что-то пошло не так')
-          }
-
-          return data
-        } catch (e) {
-          throw e
-        }
-      }
-
-    return request('/api/auth/login', 'POST', { ...credentials }, {'Content-Type': 'application/json'})
+export async function authLoginFetch(credentials: Credentials) {
+  try {
+    const { data } = await axios.post('/api/auth/login', credentials)
+    return data
+  } catch (error) {
+    throw new Error(error.message || 'Что-то пошло не так')
+  }
 }

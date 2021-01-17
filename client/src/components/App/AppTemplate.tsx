@@ -12,7 +12,7 @@ import 'materialize-css'
 
 const store = configureStore()
 
-export function AppTemplate() {
+  export function AppTemplate() {
   // const isAuthenticated = useSelector((state: RootState) => state.authorization.isAuthenticated)
   //TODO для разработки, убрать
   const isAuthenticated = true
