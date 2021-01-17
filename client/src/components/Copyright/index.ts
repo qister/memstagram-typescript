@@ -1,0 +1,1 @@
+export { CopyrightTemplate as Copyright } from './CopyrightTemplate'

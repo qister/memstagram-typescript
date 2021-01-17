@@ -1,6 +1,5 @@
-import React, { useContext } from 'react'
+import React from 'react'
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
@@ -10,33 +9,21 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
-    },
-    title: {
-      flexGrow: 1,
-    },
-  })
-)
+interface Props {
+  classes: any
+  anchorEl: any
+  open: boolean
+  handleMenu(event: React.MouseEvent<HTMLElement>): void
+  handleClose(): void
+}
 
-export const MenuAppBar = () => {
-  const classes = useStyles()
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const open = Boolean(anchorEl)
-
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
-
+export function MenuBarTemplate({
+  classes,
+  anchorEl,
+  open,
+  handleMenu,
+  handleClose
+}: Props) {
   return (
     <div className={classes.root}>
       <AppBar position="static">

@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { appInit, IMeme, like } from "../../redux/authToolkitRedux/StoreSlices/app";
 import { RootState } from "redux/authToolkitRedux/StoreSlices";
 import { MemeTemplate } from "./MemeTemplate";
-import { useStyles, useStylesLoader } from './style/memeStyle'
+import { useStyles, useStylesLoader } from '../../styles/memeStyle'
+import { mainStyles } from '../../styles/mainStyle'
 
 export function MemeBehavior(props: any): JSX.Element {
   const classes = useStyles();
   const classesLoader = useStylesLoader();
+  const mainClasses = mainStyles()
 
   const [id, setId] = useState(0);
 
@@ -40,7 +42,7 @@ export function MemeBehavior(props: any): JSX.Element {
   }, []);
 
   useEffect(() => {
-    const currentMeme = list.find((meme) => meme.id === id);
+    const currentMeme = list.find((meme: { id: number; }) => meme.id === id);
     if (currentMeme) {
       const { author, description, created, likedBy, imgUrl, id, liked } = currentMeme;
 
@@ -84,6 +86,7 @@ export function MemeBehavior(props: any): JSX.Element {
     imgUrl,
     liked,
     fetchingStatus,
+    mainClasses,
     incrementIndex,
     decrementIndex,
     tapLike,

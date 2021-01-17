@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+
 import { authLoginFetch } from '../../../API/authApi'
 
 export interface Credentials {
