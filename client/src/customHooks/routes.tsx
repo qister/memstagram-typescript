@@ -1,16 +1,16 @@
 import React from 'react'
-import { Switch, Route, Redirect, Router } from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
 
-import { Authorization } from './pages/Authorization'
-import { AddMeme } from './pages/AddMeme/AddMeme'
-import { Main } from './pages/Main/Main'
+import { Authorization } from '../pages/Authorization'
+import { AddMeme } from '../pages/AddMeme'
+import { Meme } from '../pages/Meme'
 
 export const useRoutes = (isAuthenticated: boolean) => {
   if (isAuthenticated) {
     return (
       <Switch>
         <Route path='/' exact>
-          <Main />
+          <Meme />
         </Route>
         <Route path='/add' exact>
           <AddMeme />

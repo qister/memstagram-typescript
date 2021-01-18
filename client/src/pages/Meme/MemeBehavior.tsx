@@ -1,18 +1,16 @@
-import { useState, useEffect, createElement } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import {
-  appInit,
-  IMeme,
-  like,
-} from '../../redux/authToolkitRedux/StoreSlices/app'
-import { RootState } from 'redux/authToolkitRedux/StoreSlices'
-import { MemeTemplate } from './MemeTemplate'
-import { useStyles, useStylesLoader } from './style/memeStyle'
+import { appInit, IMeme, like } from "../../redux/authToolkitRedux/StoreSlices/app";
+import { RootState } from "redux/authToolkitRedux/StoreSlices";
+import { MemeTemplate } from "./MemeTemplate";
+import { useStyles, useStylesLoader } from '../../styles/memeStyle'
+import { mainStyles } from '../../styles/mainStyle'
 
 export function MemeBehavior(props: any): JSX.Element {
   const classes = useStyles()
   const classesLoader = useStylesLoader()
+  const mainClasses = mainStyles()
 
   const [id, setId] = useState(0)
 
@@ -92,7 +90,7 @@ export function MemeBehavior(props: any): JSX.Element {
     setId(id > 0 ? id - 1 : id)
   }
 
-  return createElement(MemeTemplate, {
+  return React.createElement(MemeTemplate, {
     classes,
     classesLoader,
     likesNumber,
@@ -100,6 +98,7 @@ export function MemeBehavior(props: any): JSX.Element {
     imgUrl,
     liked,
     fetchingStatus,
+    mainClasses,
     incrementIndex,
     decrementIndex,
     tapLike,
