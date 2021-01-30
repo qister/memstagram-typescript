@@ -7,6 +7,7 @@ import { MenuBar } from '../MenuBar'
 import { RootState } from '../../redux/authToolkitRedux/StoreSlices'
 import '../../styles/App.scss'
 import 'materialize-css'
+import { MemeCardTemplate } from 'pages/MemeCard/MemeCardTemplate'
 
   export function AppTemplate() {
   const isAuthenticated = useSelector((state: RootState) => state.authorization.isAuthenticated)
@@ -16,8 +17,9 @@ import 'materialize-css'
 
   return (
     <Router>
-      {isAuthenticated && <MenuBar/>}
-      <div className="app">{routes}</div>
+      {/* {isAuthenticated && <MenuBar/>}
+      <div className="app">{routes}</div> */}
+      <MemeCardTemplate/>
     </Router>
   )
 }
