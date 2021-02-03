@@ -10,20 +10,49 @@
   color: #1890ff;
 }
 
-.logo {
+.layout-container {
+  height: inherit;
+}
+
+.layout-container__logo {
   height: 32px;
   background: rgba(255, 255, 255, 0.3);
   margin: 16px;
 }
 
-.layout-container {
-  height: inherit;
-}
-
-.layout-container__content {
+.layout-container-wrapper__content {
   background: #fff;
 }
 
-.layout-container__header {
+.layout-container-wrapper__header {
   background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  background-color: #fff;
+  border-bottom: 1px solid gray;
+}
+
+.layout-container-wrapper__header-user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.layout-container__sidebar {
+  overflow: auto;
+  height: 100vh;
+  //TODO при указании position: fixed контент налезает на сайдбар
+  // position: fixed;
+  left: 0;
+}
+
+.username {
+  max-width: 136px;
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-bottom: 0;
+  margin-right: 10px;
 }

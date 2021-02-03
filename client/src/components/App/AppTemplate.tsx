@@ -3,11 +3,9 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import { useRoutes } from '../../customHooks/routes'
-import { MenuBar } from '../MenuBar'
 import { RootState } from '../../redux/authToolkitRedux/StoreSlices'
 import '../../styles/App.scss'
 import 'materialize-css'
-import { Authorization } from 'pages/Authorization'
 import { AppLayout } from 'components/Layout/Layout'
 
 export function AppTemplate() {
@@ -21,7 +19,6 @@ export function AppTemplate() {
   return (
     <AppLayout>
       <Router>
-        {/* {isAuthenticated && <MenuBar />} */}
         <div className='app'>{routes}</div>
       </Router>
     </AppLayout>
