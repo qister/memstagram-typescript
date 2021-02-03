@@ -5,9 +5,9 @@ import { useSelector } from 'react-redux'
 import { useRoutes } from '../../customHooks/routes'
 import { MenuBar } from '../MenuBar'
 import { RootState } from '../../redux/authToolkitRedux/StoreSlices'
+import { MemeCardTemplate } from 'pages/MemeCard/MemeCardTemplate'
 import '../../styles/App.scss'
 import 'materialize-css'
-import { MemeCardTemplate } from 'pages/MemeCard/MemeCardTemplate'
 
   export function AppTemplate() {
   const isAuthenticated = useSelector((state: RootState) => state.authorization.isAuthenticated)
