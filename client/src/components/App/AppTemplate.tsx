@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 
 import { useRoutes } from '../../customHooks/routes'
 import { RootState } from '../../redux/authToolkitRedux/StoreSlices'
+import { MemeCardTemplate } from 'pages/MemeCard/MemeCardTemplate'
 import '../../styles/App.scss'
 import 'materialize-css'
 import { AppLayout } from 'components/Layout/Layout'
