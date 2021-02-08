@@ -1,3 +1,10 @@
-.ant-card-body {
-    display: none;
+.card-meme {
+    height: inherit;
+    width: 50%;
+}
+
+.ant-card-actions > li {
+    margin: 0;
+    color: rgba(0, 0, 0, 0.45);
+    margin-top: 25px;
 }

@@ -1,37 +1,49 @@
 import React from "react";
-import { Card } from "antd";
-import { LikeOutlined, DislikeOutlined } from "@ant-design/icons";
+import { Card, Avatar } from 'antd';
 
 import { Icon } from '../../UI/Icon'
 import './MemeCard.scss'
 
-export const MemeCardTemplate = () => {
+const { Meta } = Card;
 
-  const onLike = (value: any) => {
-    console.log('onLike value', value);
-  }
+interface IProps {
+  liked: boolean
+  likesNumber: any
+  author: string
+  imgUrl: string
+  fetchingStatus: string
+  decrementIndex(): void
+  incrementIndex(): void
+  toggleLike(): void
+}
 
+export const MemeCardTemplate = ({
+  liked,
+  likesNumber,
+  author,
+  imgUrl,
+  fetchingStatus,
+  decrementIndex,
+  incrementIndex,
+  toggleLike
+}: IProps) => {
   const ROOT_CLASS = 'card-meme'
-
+  
   return (
     <Card
       className={ROOT_CLASS}
-      style={{ width: 300 }}
       cover={
         <img
           alt="example"
-          src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+          src={imgUrl}
         />
       }
-      actions={[
-        <Icon value='dislike' onClick={onLike}>
-          <DislikeOutlined />
-        </Icon>,
-        <Icon value='like' onClick={onLike}>
-          <LikeOutlined />
-        </Icon>
-      ]}
+      actions={[ <Icon onClickLike={toggleLike} isLike={liked} /> ]}
     >
+      <Meta
+        avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+        title={author}
+      />
     </Card>
   );
 };
