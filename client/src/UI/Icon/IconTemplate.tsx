@@ -1,18 +1,19 @@
 import React from 'react'
+import { HeartFilled, HeartOutlined } from '@ant-design/icons';
+
+import './Icon.scss'
 
 interface IProps {
-    value: string
-    onClick(value: string): void
-    children: React.ReactNode
+    isLike: boolean
+    onClickLike(): void
 }
 
-export const IconTemplate = ({ children, value, onClick }: IProps) => {
-
-    const onClickIcon = () => {
-        onClick(value)
-    }
-
+export const IconTemplate = ({ isLike, onClickLike }: IProps) => {
+    console.log('IconTemplate isLIke', isLike);
+    
     return (
-        <div onClick={onClickIcon}>{children}</div>
+        <div onClick={onClickLike}>
+            {isLike ? <HeartFilled className='heart-icon' /> : <HeartOutlined className='heart-icon' />}
+        </div>
     )
 }
