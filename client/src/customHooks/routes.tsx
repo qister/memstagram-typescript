@@ -1,32 +1,24 @@
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 
-import { Authorization } from '../pages/Authorization'
-import { AddMeme } from '../pages/AddMeme'
-import { Meme } from '../pages/Meme'
-import { MemeCard } from 'pages/MemeCard'
+import { MemesTape } from '../pages/MemesTape'
+import { Profile } from '../pages/Profile'
+import { Statistics } from '../pages/Statistics'
+// import { AddMeme } from '../pages/AddMeme'
 
-export const useRoutes = (isAuthenticated: boolean) => {
-  if (isAuthenticated) {
-    return (
-      <Switch>
-        <Route path='/' exact>
-          <MemeCard />
-        </Route>
-        <Route path='/add' exact>
-          <AddMeme />
-        </Route>
-        <Redirect to='/' />
-      </Switch>
-    )
-  }
-
+export const useRoutes = () => {
   return (
     <Switch>
-      <Route path='/'>
-        <Authorization />
+      <Route path='/feed' exact>
+        <MemesTape />
       </Route>
-      <Redirect to='/' />
+      <Route path='/profile' exact>
+        <Profile />
+      </Route>
+      <Route path='/statistics' exact>
+        <Statistics />
+      </Route>
+      <Redirect to='/feed' />
     </Switch>
   )
 }
