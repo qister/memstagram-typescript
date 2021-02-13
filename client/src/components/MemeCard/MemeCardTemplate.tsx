@@ -30,20 +30,12 @@ export const MemeCardTemplate = ({
   const ROOT_CLASS = 'card-meme'
   
   return (
-    <Card
-      className={ROOT_CLASS}
-      cover={
-        <img
-          alt="example"
-          src={imgUrl}
-        />
-      }
-      actions={[ <Icon onClickLike={toggleLike} isLike={liked} /> ]}
-    >
+    <Card className={ROOT_CLASS} cover={ <img alt="example" src={imgUrl}/> }>
       <Meta
         avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
         title={author}
       />
+      <Icon onClickLike={toggleLike} isLike={liked} />
     </Card>
   );
 };

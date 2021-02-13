@@ -1,1 +1,0 @@
-export { MenuBarBehavior as MenuBar } from './MenuBarBehavior'
