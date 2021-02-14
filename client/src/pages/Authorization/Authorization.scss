@@ -1,13 +1,7 @@
-.authorization__title-container {
-    height: 150px;
-    width: 400px;
+.authorization {
+    height: inherit;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    transform-style: preserve-3d;
-}
-
-
-.title {
-    font-family: 'Dancing Script', cursive;
+    justify-content: center;
 }
