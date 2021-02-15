@@ -1,49 +1,69 @@
-import React from 'react'
-import { Typography, Button } from 'antd';
+import React from "react";
+import { Form, Input, Button, Checkbox } from "antd";
 
-import './Authorization.scss'
+import { AuthForm } from '../../constants/types'
+import "./Authorization.scss";
 
 interface Props {
-  changeHandler(event: React.ChangeEvent<HTMLInputElement>): void
-  loginHandler( event: React.MouseEvent<HTMLElement> | React.FormEvent<HTMLFormElement>): void
+  form: AuthForm,
+  changeHandler(event: React.ChangeEvent<HTMLInputElement>): void;
+  loginHandler(
+    event: React.MouseEvent<HTMLElement> | React.FormEvent<HTMLFormElement>
+  ): void;
 }
 
-const { Title } = Typography;
+const layout = {
+  labelCol: { span: 8 },
+  wrapperCol: { span: 16 },
+};
+const tailLayout = {
+  wrapperCol: { offset: 8, span: 16 },
+};
 
 export function AuthorizationTemplate({
+  form,
   changeHandler,
   loginHandler,
 }: Props): JSX.Element {
 
-  const ROOT_CLASS = 'authorization'
+  const { email, password } = form
+
+  console.log('AuthorizationTemplate email', email);
+  console.log('AuthorizationTemplate password', password);
+
+  const ROOT_CLASS = "authorization";
   return (
     <div className={ROOT_CLASS}>
-      <div className={`${ROOT_CLASS}__title-container`}>
-        <Title level={2}>Welcome to Memestagram</Title>
-      </div>
-      <div className={`${ROOT_CLASS}__input-field`}>
-        <Title level={4}>Email</Title>
-        <input
-          placeholder="Введите email"
-          id="email"
-          type="text"
-          name="email"
-          className="dscsdc"
-          onChange={changeHandler}
-        />
-      </div>
-      <div className={`${ROOT_CLASS}__input-field`}>
-        <Title level={4}>Password</Title>
-        <input
-          placeholder="Введите пароль"
-          id="password"
-          type="password"
-          name="password"
-          className=""
-          onChange={changeHandler}
-        />
-      </div>
-      <Button type='primary' onClick={loginHandler}>Войти</Button>
+      <Form
+        {...layout}
+        name="basic"
+        initialValues={{ remember: true }}
+      >
+        <Form.Item
+          label="Email"
+          name='email'
+          getValueFromEvent={changeHandler}
+        >
+          <Input name='email' defaultValue={email} />
+        </Form.Item>
+
+        <Form.Item
+          label="Password"
+          name='password'
+          getValueFromEvent={changeHandler}
+        >
+          <Input.Password name='password' defaultValue={password} />
+        </Form.Item>
+
+        <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+          <Checkbox>Remember me</Checkbox>
+        </Form.Item>
+
+        <Form.Item {...tailLayout}>
+          <Button type="primary" onClick={loginHandler}>Log in</Button>
+        </Form.Item>
+      </Form>
+
       {/* <button
               className="btn grey lighten-1 black-text"
               onClick={registerHandler}
@@ -52,5 +72,5 @@ export function AuthorizationTemplate({
               Регистрация
             </button> */}
     </div>
-  )
+  );
 }
