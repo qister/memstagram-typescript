@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { Dropdown, Menu } from 'antd'
 import { SettingOutlined, ExportOutlined } from '@ant-design/icons'
 
-import './Layout.scss'
+import './AppLayout/AppLayout.scss'
 
 export const User: FC<any> = ({ user, onLogout }) => {
   const handleLogout = (

@@ -3,6 +3,7 @@ import { CssBaseline, Paper } from '@material-ui/core'
 import { InboxOutlined } from '@ant-design/icons'
 
 import { Copyright } from '../../components/Copyright'
+
 import 'antd/dist/antd.css'
 
 interface Props {

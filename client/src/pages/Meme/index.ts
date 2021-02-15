@@ -1,1 +1,0 @@
-export { MemeBehavior as Meme } from './MemeBehavior'
