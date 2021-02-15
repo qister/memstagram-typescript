@@ -2,7 +2,7 @@ import React, { useState} from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { AppLayoutTemplate } from './AppLayoutTemplate'
-import { MENU_SIDEBAR_ITEMS } from '../../constants/constants'
+import { ContentPath } from '../../constants/enums'
 
 export interface MenuSideBarItem {
     key: string
@@ -11,7 +11,7 @@ export interface MenuSideBarItem {
 
 export const AppLayoutBehavior = (): JSX.Element => {
   const [collapsed, setCollapsed] = useState(false)
-  const [defaultSelectedKey, setOnTapeDefault] = useState<string[]>(['/feed'])
+  const [defaultSelectedKey, setOnTapeDefault] = useState<ContentPath[]>([ContentPath.Feed])
 
   const history = useHistory()
 
@@ -23,7 +23,6 @@ export const AppLayoutBehavior = (): JSX.Element => {
   return React.createElement(AppLayoutTemplate, {
     collapsed,
     defaultSelectedKey,
-    MENU_SIDEBAR_ITEMS,
     onMenuItemClick,
     setCollapsed,
   })
