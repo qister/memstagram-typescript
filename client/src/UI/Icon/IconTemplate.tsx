@@ -9,11 +9,9 @@ interface IProps {
 }
 
 export const IconTemplate = ({ isLike, onClickLike }: IProps) => {
-    console.log('IconTemplate isLIke', isLike);
-    
     return (
-        <div onClick={onClickLike}>
-            {isLike ? <HeartFilled className='heart-icon' /> : <HeartOutlined className='heart-icon' />}
+        <div className='icon-wrapper'>
+            {isLike ? <HeartFilled onClick={onClickLike} className='heart-icon' /> : <HeartOutlined onClick={onClickLike} className='heart-icon' />}
         </div>
     )
 }

@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { Typography, Button } from 'antd';
+
 import './Authorization.scss'
 
 interface Props {
   changeHandler(event: React.ChangeEvent<HTMLInputElement>): void
   loginHandler( event: React.MouseEvent<HTMLElement> | React.FormEvent<HTMLFormElement>): void
 }
+
+const { Title } = Typography;
 
 export function AuthorizationTemplate({
   changeHandler,
@@ -15,10 +19,10 @@ export function AuthorizationTemplate({
   return (
     <div className={ROOT_CLASS}>
       <div className={`${ROOT_CLASS}__title-container`}>
-        <div className="title">WELCOM TO MEMESTAGRAM</div>
+        <Title level={2}>Welcome to Memestagram</Title>
       </div>
       <div className={`${ROOT_CLASS}__input-field`}>
-        <label htmlFor="email">Email</label>
+        <Title level={4}>Email</Title>
         <input
           placeholder="Введите email"
           id="email"
@@ -29,7 +33,7 @@ export function AuthorizationTemplate({
         />
       </div>
       <div className={`${ROOT_CLASS}__input-field`}>
-        <label htmlFor="password">Пароль</label>
+        <Title level={4}>Password</Title>
         <input
           placeholder="Введите пароль"
           id="password"
@@ -39,12 +43,7 @@ export function AuthorizationTemplate({
           onChange={changeHandler}
         />
       </div>
-      <button
-        className={`${ROOT_CLASS}__input-button`}
-        onClick={loginHandler}
-      >
-        Войти
-      </button>
+      <Button type='primary' onClick={loginHandler}>Войти</Button>
       {/* <button
               className="btn grey lighten-1 black-text"
               onClick={registerHandler}
