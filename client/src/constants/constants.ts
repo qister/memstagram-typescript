@@ -1,14 +1,16 @@
+import { ContentPath } from '../constants/enums'
+
 export const MENU_SIDEBAR_ITEMS = [
     {
-      key: '/feed',
+      key: ContentPath.Feed,
       title: 'Лента'
     },
     {
-      key: '/statistics',
+      key: ContentPath.Statistics,
       title: 'Статистика'
     },
     {
-      key: '/profile',
+      key: ContentPath.Profile,
       title: 'Профиль'
     },
 ]

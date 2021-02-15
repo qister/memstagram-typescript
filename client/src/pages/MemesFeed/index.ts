@@ -1,0 +1,1 @@
+export { MemesFeedBehavior as MemesFeed } from './MemesFeedBehavior'

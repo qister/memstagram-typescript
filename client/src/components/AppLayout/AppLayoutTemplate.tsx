@@ -5,8 +5,9 @@ import {
 } from '@ant-design/icons'
 
 import { User } from '../User'
-import { useRoutes } from '../../customHooks/routes'
+import { useRoutes } from './appRoutes'
 import { MenuSideBarItem } from './AppLayoutBehavior'
+import { MENU_SIDEBAR_ITEMS } from '../../constants/constants'
 import './AppLayout.scss'
 
 const { Header, Sider, Content } = Layout
@@ -15,7 +16,6 @@ const routes = useRoutes()
 interface IProps {
   collapsed: boolean
   defaultSelectedKey: string[]
-  MENU_SIDEBAR_ITEMS: MenuSideBarItem[]
   onMenuItemClick: any
   setCollapsed: any
 }
@@ -23,7 +23,6 @@ interface IProps {
 export const AppLayoutTemplate = ({
   collapsed,
   defaultSelectedKey,
-  MENU_SIDEBAR_ITEMS,
   onMenuItemClick,
   setCollapsed,
 }: IProps): JSX.Element => {

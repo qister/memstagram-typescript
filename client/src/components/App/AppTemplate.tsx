@@ -1,7 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Route, Switch, Redirect } from 'react-router-dom'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { Route, Switch, Redirect, BrowserRouter as Router  } from 'react-router-dom'
 
 import { RootState } from '../../redux/authToolkitRedux/StoreSlices'
 import { AppLayout } from 'components/AppLayout'
@@ -14,14 +13,22 @@ export function AppTemplate() {
     (state: RootState) => state.authorization.isAuthenticated,
   )
   // const isAuthenticated = true
+
+  const routes = isAuthenticated ?
+    <>
+      <Route path='/' component={AppLayout} /> 
+      <Redirect to='/feed' />
+    </>
+  : 
+    <>
+      <Route path='/login' component={Authorization} />
+      <Redirect to='/login' />
+    </>
+
   return (
     <Router>
       <Switch>
-        {isAuthenticated 
-          ? <Route path='/' component={AppLayout}/>
-          : <Route path='/login' component={Authorization}/>
-        }
-        {!isAuthenticated && <Redirect to='/login' /> }
+        {routes}
       </Switch>
     </Router>
   )
