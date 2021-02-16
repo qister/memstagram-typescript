@@ -1,1 +1,0 @@
-export { MemeCardBehavior as MemeCard } from './MemeCardBehavior'

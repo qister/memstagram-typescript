@@ -1,7 +1,8 @@
-import { Router, Application, Request, Response, NextFunction } from 'express'
+import { Router, Request, Response, NextFunction } from 'express'
 import multer, { ErrorCode } from 'multer'
 
 const Meme = require('../models/Meme')
+const paginatedResults = require('../middleware/memes.middleware')
 
 const router = Router()
 
@@ -14,14 +15,8 @@ router.get('/show', async (req: Request, res: Response) => {
   }
 })
 
-router.get('/getlist', async (req: Request, res: Response) => {
-  try {
-    const allMemes: [] = await Meme.find({})
-
-    res.status(200).json(allMemes)
-  } catch (e) {
-    console.log('Error', e.message)
-  }
+router.get('/getlist', paginatedResults(Meme), async (req, res: any) => {
+  res.json(res.paginatedResults)
 })
 
 router.post('/likememe', async (req: Request, res: Response) => {

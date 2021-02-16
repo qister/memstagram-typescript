@@ -8,23 +8,17 @@ const { Meta } = Card;
 
 interface IProps {
   liked: boolean
-  likesNumber: any
-  author: string
+  likesNumber?: any
+  author?: string
   imgUrl: string
-  fetchingStatus: string
-  decrementIndex(): void
-  incrementIndex(): void
   toggleLike(): void
 }
 
-export const MemeCardTemplate = ({
+//TODO написать чтобы карточка просто принимала meme: IMeme и тогда убрать IProps
+export const MemeCard = ({
   liked,
-  likesNumber,
   author,
   imgUrl,
-  fetchingStatus,
-  decrementIndex,
-  incrementIndex,
   toggleLike
 }: IProps) => {
   const ROOT_CLASS = 'card-meme'
