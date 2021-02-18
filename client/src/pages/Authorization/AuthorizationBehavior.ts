@@ -2,18 +2,14 @@ import React, { useState }  from 'react'
 import { AuthorizationTemplate } from './AuthorizationTemplate'
 import { useDispatch } from 'react-redux'
 import { authLogin } from '../../redux/authToolkitRedux/StoreSlices/authorization'
+import { AuthForm } from '../../constants/types'
 
 export function AuthorizationBehavior(): JSX.Element {
     const dispatch = useDispatch()
   
-    type Form = {
-      email: string
-      password: string
-    }
-  
-    const [form, setForm] = useState<Form>({
-      email: '',
-      password: '',
+    const [form, setForm] = useState<AuthForm>({
+      email: '5@gmail.com',
+      password: '123123',
     })
   
     function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
@@ -24,6 +20,7 @@ export function AuthorizationBehavior(): JSX.Element {
       dispatch(authLogin(form))
     }
     return React.createElement(AuthorizationTemplate, {
+        form,
         changeHandler,
         loginHandler,
     })
