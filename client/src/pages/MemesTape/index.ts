@@ -1,0 +1,1 @@
+export { MemesTapeBehavior as MemesTape } from './MemesTapeBehavior'
