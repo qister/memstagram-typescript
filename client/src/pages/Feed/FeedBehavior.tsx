@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { MemeCard } from 'components/MemeCard/MemeCard'
+import { FeedTemplate } from './FeedTemplate'
 import { loadMemes, like } from 'redux/authToolkitRedux/StoreSlices/app'
 import { RootState } from 'redux/authToolkitRedux/StoreSlices'
 
-export const Feed = () => {
+export const FeedBehavior = () => {
   const [fetching, setFetching] = useState(true)
 
   const {
-    app: { memeList, total, nextPage },
+    app: { memeList, total, nextPage, FetchingStatus },
     authorization: { email },
   } = useSelector((state: RootState) => state)
 
@@ -23,13 +23,15 @@ export const Feed = () => {
   }, [fetching])
 
   useEffect(() => {
-    document.addEventListener('scroll', scrollHandler)
+    if (FetchingStatus) {
+      document.addEventListener('scroll', scrollHandler)
+    }
 
     return function () {
       document.removeEventListener('scroll', scrollHandler)
     }
     //TODO убрать зависимость, чтобы работало без нее
-  }, [nextPage])
+  }, [FetchingStatus])
 
   const scrollHandler = (e: any) => {
     if (
@@ -46,20 +48,8 @@ export const Feed = () => {
     dispatch(like({ id, email }))
   }
 
-  return (
-    <>
-      {memeList.map((meme: any, key) => {
-        const imgLink = 'http://localhost:4000/' + meme.imgUrl.slice(7)
-
-        return (
-          <MemeCard
-            key={key}
-            imgUrl={imgLink}
-            toggleLike={() => toggleLike(meme.id)}
-            liked={meme.liked}
-          />
-        )
-      })}
-    </>
-  )
+  return React.createElement(FeedTemplate, {
+    memeList,
+    toggleLike
+  })
 }

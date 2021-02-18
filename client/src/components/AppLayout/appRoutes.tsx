@@ -1,7 +1,7 @@
-import { Feed } from 'components/Feed/Feed'
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 
+import { Feed } from 'pages/Feed'
 import { Profile } from '../../pages/Profile'
 import { Statistics } from '../../pages/Statistics'
 //TODO добавить роут и страницу для загрузки мема

@@ -14,3 +14,5 @@ export const MENU_SIDEBAR_ITEMS = [
       title: 'Профиль'
     },
 ]
+
+export const IMG_LINK_PATH = 'http://localhost:4000/'

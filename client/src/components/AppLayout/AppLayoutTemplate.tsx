@@ -34,6 +34,7 @@ export const AppLayoutTemplate = ({
         collapsible
         collapsed={collapsed}
         onCollapse={setCollapsed}
+        style={{ height: '100vh' }}
       >
         <div className={`${ROOT_CLASS}__logo`} />
         <Menu 
@@ -56,11 +57,7 @@ export const AppLayoutTemplate = ({
         </Header>
         <Content
           className={`${ROOT_CLASS}-wrapper__content`}
-          style={{
-            margin: '24px 16px',
-            padding: 24,
-            minHeight: 280,
-          }}
+          style={{ margin: '24px 16px 0', overflow: 'initial' }}
         >
           <div className='app'>{routes}</div>
         </Content>

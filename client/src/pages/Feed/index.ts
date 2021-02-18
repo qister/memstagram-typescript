@@ -1,0 +1,1 @@
+export { FeedBehavior as Feed } from './FeedBehavior'

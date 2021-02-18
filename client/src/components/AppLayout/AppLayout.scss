@@ -10,6 +10,12 @@
   color: #1890ff;
 }
 
+#components-layout-demo-fixed-sider .logo {
+  height: 32px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
 // .layout-container {
 //   height: inherit;
 // }
@@ -42,7 +48,7 @@
 
 .layout-container__sidebar {
   overflow: auto;
-  position: fixed;
+  position: fixed !important;
   left: 0;
 }
 
