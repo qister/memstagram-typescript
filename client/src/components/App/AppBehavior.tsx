@@ -4,7 +4,7 @@ import { configureStore } from '../../redux/authToolkitRedux'
 
 import { AppTemplate } from './AppTemplate'
 
-const store = configureStore()
+export const store = configureStore()
 
 export function AppBehavior() {
   return (

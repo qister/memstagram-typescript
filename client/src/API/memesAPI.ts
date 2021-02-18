@@ -7,10 +7,12 @@ const config = {
   timeout: 3000,
 }
 
-export const getMemes = async () => {
+export const getMemes = async (page = 1) => {
   const instance = axios.create(config)
   try {
-    const { data } = await instance.get('/api/meme/getlist')
+    const { data } = await instance.get(
+      `/api/meme/getlist?page=${page}&limit=2`,
+    )
     return data
   } catch (error) {
     throw error
@@ -23,7 +25,6 @@ export const likeMeme = async (id: number, email: string) => {
       id,
       email,
     })
-    // console.log('response: ', response)
   } catch (error) {
     throw new Error(error)
   }

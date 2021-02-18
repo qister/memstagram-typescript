@@ -10,9 +10,9 @@
   color: #1890ff;
 }
 
-.layout-container {
-  height: inherit;
-}
+// .layout-container {
+//   height: inherit;
+// }
 
 .layout-container__logo {
   height: 32px;
@@ -42,9 +42,7 @@
 
 .layout-container__sidebar {
   overflow: auto;
-  height: 100vh;
-  //TODO при указании position: fixed контент налезает на сайдбар
-  // position: fixed;
+  position: fixed;
   left: 0;
 }
 
@@ -55,4 +53,9 @@
   text-overflow: ellipsis;
   margin-bottom: 0;
   margin-right: 10px;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
 }

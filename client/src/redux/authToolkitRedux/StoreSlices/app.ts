@@ -1,6 +1,7 @@
 import { uploadMeme } from './../../../API/memesAPI'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getMemes, likeMeme } from '../../../API/memesAPI'
+import { RootState } from '.'
 
 export enum FetchingStatus {
   idle = 'idle',
@@ -25,6 +26,8 @@ export interface AppState {
   memeList: Array<IMeme>
   FetchingStatus: FetchingStatus
   error: any
+  nextPage?: number
+  total: number
 }
 
 const initialState: AppState = {
@@ -32,15 +35,16 @@ const initialState: AppState = {
   memeList: [],
   FetchingStatus: FetchingStatus.idle,
   error: null,
+  total: 0,
 }
 
-export const appInit = createAsyncThunk('appInit', () => {
-  return getMemes()
+export const loadMemes = createAsyncThunk('loadMemes', async (page: number = 1) => {
+  return getMemes(page)
 })
 
 export const like = createAsyncThunk(
   'like',
-  async ({ id, email }: any, { getState }) => {
+  async ({ id, email }: any, {getState} ) => {
     //@ts-ignore
     // const { email } = getState().authorization
     return likeMeme(id, email)
@@ -57,14 +61,19 @@ const app = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(appInit.pending, (state) => {
+      .addCase(loadMemes.pending, (state) => {
         state.FetchingStatus = FetchingStatus.pending
       })
-      .addCase(appInit.fulfilled, (state, { payload }) => {
-        state.FetchingStatus = FetchingStatus.fulfilled
-        state.memeList = payload
-      })
-      .addCase(appInit.rejected, (state) => {
+      .addCase(
+        loadMemes.fulfilled,
+        (state, { payload: { memes, total, next } }) => {
+          state.FetchingStatus = FetchingStatus.fulfilled
+          state.memeList = [...state.memeList, ...memes]
+          state.total = total
+          state.nextPage = next?.page
+        },
+      )
+      .addCase(loadMemes.rejected, (state) => {
         state.FetchingStatus = FetchingStatus.rejected
       })
       .addCase(like.pending, (state) => {
