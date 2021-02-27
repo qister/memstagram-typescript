@@ -87,20 +87,19 @@ const fileFilter = (req: any, file: any, cb: any) => {
 
 const upload = multer({ storage: storage, fileFilter })
 
-router.post('/addpic', upload.single('file'), async (req, res) => {
-  console.log('req body', req.body)
+router.post('/addpic', upload.single('file'), async ({file, body: {description, author}}, res) => {
   try {
-    const body = JSON.stringify(req.body, null, 2)
-    const trueBody = JSON.parse(body)
-
-    const allMemes = await Meme.find({})
-    const nextId = allMemes.length
-
+    // Пока не убирать, multer вставляет [Object: null prototype]. Может быть нужно потом для корректного парсинга body
+    // https://stackoverflow.com/questions/54986409/why-request-body-is-null-in-file-upload-with-postman-in-node-js
+    // const body = JSON.stringify(req.body, null, 2)
+    // const trueBody = JSON.parse(body)
+    
+    const total = await Meme.countDocuments().exec()
     const meme = new Meme({
-      id: nextId,
-      author: trueBody.author,
-      description: trueBody.description,
-      imgUrl: req.file.path,
+      id: total,
+      author: author,
+      description: description,
+      imgUrl: file.path,
       likedBy: [],
       created: Date.now(),
     })

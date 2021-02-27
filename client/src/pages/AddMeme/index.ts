@@ -1,1 +1,0 @@
-export { AddMemeBehavior as AddMeme } from './AddMemeBehavior'

@@ -5,13 +5,12 @@ import {
 } from '@ant-design/icons'
 
 import { User } from '../User'
-import { useRoutes } from './appRoutes'
+import { routes } from './appRoutes'
 import { MenuSideBarItem } from './AppLayoutBehavior'
 import { MENU_SIDEBAR_ITEMS } from '../../constants/constants'
 import './AppLayout.scss'
 
 const { Header, Sider, Content } = Layout
-const routes = useRoutes()
 
 interface IProps {
   collapsed: boolean
