@@ -1,20 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { IFetchingStatus } from 'constants/enums'
 
-import { authLoginFetch, logoutFetch } from '../../../API/authApi'
+import { fetchLogin, logoutFetch } from '../../../API/authApi'
 
-export interface Credentials {
+export interface ICredentials {
   email: string
   password: string
 }
 
-export enum IFetchingStatus {
-  idle = 'idle',
-  pending = 'pending',
-  fulfilled = 'fulfilled',
-  rejected = 'rejected',
-}
-
-export interface AuthorizationState {
+export interface IAuthorizationState {
   token: string
   userId: string
   email: string
@@ -22,7 +16,7 @@ export interface AuthorizationState {
   fetchingStatus: IFetchingStatus
 }
 
-const initialState: AuthorizationState = {
+const initialState: IAuthorizationState = {
   token: '',
   userId: '',
   email: '',
@@ -32,8 +26,8 @@ const initialState: AuthorizationState = {
 
 export const authLogin = createAsyncThunk(
   'authLogin',
-  (credentials: Credentials) => {
-    return authLoginFetch(credentials)
+  (credentials: ICredentials) => {
+    return fetchLogin(credentials)
   },
 )
 
@@ -66,4 +60,6 @@ const authorization = createSlice({
   },
 })
 
-export default authorization.reducer
+const { reducer } = authorization
+
+export { reducer as authReducer }
