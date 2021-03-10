@@ -1,16 +1,17 @@
 import axios from 'axios'
 
-const config = {
+const axiosInstance = axios.create({
   headers: {
+    Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+    // TODO: контент тайп потом убрать из инстанса и передавать только где нужно
     'Content-Type': 'application/json',
   },
   timeout: 3000,
-}
+})
 
 export const getMemes = async (page = 1) => {
-  const instance = axios.create(config)
   try {
-    const { data } = await instance.get(
+    const { data } = await axiosInstance.get(
       `/api/meme/getlist?page=${page}&limit=2`,
     )
     return data
@@ -19,12 +20,9 @@ export const getMemes = async (page = 1) => {
   }
 }
 
-export const likeMeme = async (id: number, email: string) => {
+export const likeMeme = async (id: number) => {
   try {
-    await axios.post('/api/meme/likememe', {
-      id,
-      email,
-    })
+    await axiosInstance.post('/api/meme/likememe', { id })
   } catch (error) {
     throw new Error(error)
   }
@@ -32,6 +30,7 @@ export const likeMeme = async (id: number, email: string) => {
 
 export const uploadMeme = async (meme: any) => {
   try {
+    // TODO: добавить axiosInstance чтобы подставлялся хедер с авторизацией
     const response = await axios.post('/api/meme/addpic', meme, {
       headers: {
         'Content-Type': 'multipart/form-data',

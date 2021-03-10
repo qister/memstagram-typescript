@@ -1,8 +1,11 @@
-import { Router, Request, Response, NextFunction } from 'express'
+import { Router, Request, Response } from 'express'
 import multer, { ErrorCode } from 'multer'
+const jwt = require('jsonwebtoken')
 
 const Meme = require('../models/Meme')
 const paginatedResults = require('../middleware/memes.middleware')
+const authenticateToken = require('../middleware/auth.middleware')
+const User = require('../models/User')
 
 const router = Router()
 
@@ -15,42 +18,52 @@ router.get('/show', async (req: Request, res: Response) => {
   }
 })
 
-router.get('/getlist', paginatedResults(Meme), async (req, res: any) => {
-  res.json(res.paginatedResults)
-})
-
-router.post('/likememe', async (req: Request, res: Response) => {
-  try {
-    console.log('meme to like: ', req.body)
-    const { id, email } = req.body
-    if ((id >= 0) && email) {
-
-      const memeBefore = await Meme.findOne({ id })
-      
-      if (memeBefore.likedBy.some((user: string) => user === email)) {
-        await Meme.updateOne(
-          { id },
-          {
-            likedBy: memeBefore.likedBy.filter(
-              (user: string) => user !== email
-            ),
-          }
-        )
-        res.status(201).json(`Meme with id ${id} was disliked`)
-      } else {
-        await Meme.updateOne(
-          { id },
-          { likedBy: [...memeBefore.likedBy, email] }
-        )
-        res.status(201).json(`Meme with id ${id} was liked`)
-      }
-    } else {
-      throw new Error('unable to like meme')
-    }
-  } catch (e) {
-    console.log('Like error', e.message)
+router.get(
+  '/getlist',
+  [authenticateToken, paginatedResults(Meme)],
+  async (req: any, res: any) => {
+    res.json(res.paginatedResults)
   }
-})
+)
+
+router.post(
+  '/likememe',
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    try {
+      const tokenId = req.headers.authorization?.split(' ')[1]
+      const { userId } = jwt.verify(tokenId, process.env.ACCESS_TOKEN_SECRET)
+      const user = await User.find({ _id: userId })
+      const { email } = user
+      const { id } = req.body
+      if (id >= 0) {
+        const memeBefore = await Meme.findOne({ id })
+        // TODO: сделать чтобы лайки были массивом id или юзернеймов, т.к. почту можно поменять и в целом не очень хорошо на клиент передавать список почт
+        if (memeBefore.likedBy.some((user: string) => user === email)) {
+          await Meme.updateOne(
+            { id },
+            {
+              likedBy: memeBefore.likedBy.filter(
+                (user: string) => user !== email
+              ),
+            }
+          )
+          res.status(201).json(`Meme with id ${id} was disliked`)
+        } else {
+          await Meme.updateOne(
+            { id },
+            { likedBy: [...memeBefore.likedBy, email] }
+          )
+          res.status(201).json(`Meme with id ${id} was liked`)
+        }
+      } else {
+        throw new Error('unable to like meme')
+      }
+    } catch (e) {
+      console.log('Like error', e.message)
+    }
+  }
+)
 
 //addMemes
 
