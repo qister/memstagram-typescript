@@ -6,11 +6,15 @@ const config = require('config')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
-
-
 const router = Router()
 
-// /api/auth
+const generateAccessToken = (user: any) => {
+  console.log('generateAccessToken');
+  
+  return jwt.sign({ userId: user.id }, process.env.ACCESS_TOKEN_SECRET, {
+      expiresIn: '15s',
+  })
+}
 
 router.post(
   '/register',
@@ -27,7 +31,7 @@ router.post(
 
       if (!errors.isEmpty) {
         return res.status(400).json({
-          errors: errors.array(),
+          errors: errors.array(), 
           message: 'Некорректные данные при регистрации',
         })
       }
@@ -53,6 +57,23 @@ router.post(
   }
 )
 
+let refreshTokens: any[] = []
+
+router.post('/token', (req: Request, res: Response) => {
+  const refreshToken = req.body.token
+  console.log('/postToken refreshToken from body', refreshToken);
+  
+
+  if (refreshToken === null) return res.sendStatus(401)
+  if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403)
+
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err: any, user: any) => {
+    if (err) return res.sendStatus(403)
+    const accessToken = generateAccessToken(user)
+    res.json({ accessToken })
+  })
+})
+ 
 router.post(
   '/login',
   [
@@ -61,8 +82,6 @@ router.post(
   ],
   async (req: Request, res: Response) => {
     try {
-      // console.log(req);
-
       const errors = validationResult(req)
 
       if (!errors.isEmpty) {
@@ -89,11 +108,16 @@ router.post(
           .json({ message: 'Неверный пароль, попробуйте снова' })
       }
 
-      const token = jwt.sign({ userId: user.id }, config.get('jwtSecret'), {
-        expiresIn: '1h',
-      })
+      const accessToken = generateAccessToken(user)
+      const refreshToken = jwt.sign({ userId: user.id }, process.env.REFRESH_TOKEN_SECRET)
+      refreshTokens.push(refreshToken)
 
-      res.json({ token, userId: user.id, email: user.email })
+      console.log('refreshTokens arr', refreshTokens);
+
+      console.log('/postLogin accessToken', accessToken);
+      console.log('/postLogin refreshToken', refreshToken);
+
+      res.json({ accessToken, refreshToken, userId: user.id, email: user.email })
     } catch (e) {
       console.log('Error message: ', e.message)
 
@@ -101,5 +125,13 @@ router.post(
     }
   }
 )
+
+router.delete('/logout', (req: Request, res: Response) => {
+
+  console.log('route logout');
+  
+  refreshTokens = refreshTokens.filter(token => token !== req.body.token)
+  res.sendStatus(204)
+})
 
 module.exports = router

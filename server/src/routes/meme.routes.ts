@@ -1,5 +1,6 @@
-import { Router, Request, Response, NextFunction } from 'express'
+import { Router, Request, Response } from 'express'
 import multer, { ErrorCode } from 'multer'
+const jwt = require('jsonwebtoken')
 
 const Meme = require('../models/Meme')
 const paginatedResults = require('../middleware/memes.middleware')
