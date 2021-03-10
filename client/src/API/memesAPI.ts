@@ -2,6 +2,7 @@ import axios from 'axios'
 
 const config = {
   headers: {
+    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
     'Content-Type': 'application/json',
   },
   timeout: 3000,
@@ -21,10 +22,7 @@ export const getMemes = async (page = 1) => {
 
 export const likeMeme = async (id: number, email: string) => {
   try {
-    await axios.post('/api/meme/likememe', {
-      id,
-      email,
-    })
+    await axios.post('/api/meme/likememe', { id, email }, config)
   } catch (error) {
     throw new Error(error)
   }

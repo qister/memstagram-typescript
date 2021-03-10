@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-import { authLoginFetch } from '../../../API/authApi'
+import { authLoginFetch, logoutFetch } from '../../../API/authApi'
 
 export interface Credentials {
   email: string
@@ -37,16 +37,26 @@ export const authLogin = createAsyncThunk(
   },
 )
 
+export const logout = createAsyncThunk(
+  'logout',
+  () => logoutFetch()
+)
+
 const authorization = createSlice({
   name: 'authorization',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    // login // 
     builder.addCase(authLogin.pending, (state) => {
       state.fetchingStatus = IFetchingStatus.pending
     })
     builder.addCase(authLogin.fulfilled, (state, action) => {
       state.fetchingStatus = IFetchingStatus.fulfilled
+      
+      localStorage.removeItem('accessToken')
+      localStorage.setItem('accessToken', action.payload.accessToken)
+
       state.token = action.payload.token
       state.userId = action.payload.userId
       state.email = action.payload.email
