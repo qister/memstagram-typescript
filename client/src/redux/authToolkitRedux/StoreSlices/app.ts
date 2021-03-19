@@ -2,13 +2,7 @@ import { uploadMeme } from './../../../API/memesAPI'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getMemes, likeMeme } from '../../../API/memesAPI'
 import { RootState } from '.'
-
-export enum FetchingStatus {
-  idle = 'idle',
-  pending = 'pending',
-  fulfilled = 'fulfilled',
-  rejected = 'rejected',
-}
+import { IFetchingStatus } from 'constants/enums'
 
 export interface IMeme {
   id: number
@@ -24,7 +18,7 @@ export interface IMeme {
 export interface AppState {
   currentUser: string
   memeList: Array<IMeme>
-  FetchingStatus: FetchingStatus
+  IFetchingStatus: IFetchingStatus
   error: any
   nextPage?: number
   total: number
@@ -33,7 +27,7 @@ export interface AppState {
 const initialState: AppState = {
   currentUser: '',
   memeList: [],
-  FetchingStatus: FetchingStatus.idle,
+  IFetchingStatus: IFetchingStatus.idle,
   error: null,
   total: 0,
 }
@@ -64,22 +58,22 @@ const app = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(loadMemes.pending, (state) => {
-        state.FetchingStatus = FetchingStatus.pending
+        state.IFetchingStatus = IFetchingStatus.pending
       })
       .addCase(
         loadMemes.fulfilled,
         (state, { payload: { memes, total, next } }) => {
-          state.FetchingStatus = FetchingStatus.fulfilled
+          state.IFetchingStatus = IFetchingStatus.fulfilled
           state.memeList = [...state.memeList, ...memes]
           state.total = total
           state.nextPage = next?.page
         },
       )
       .addCase(loadMemes.rejected, (state) => {
-        state.FetchingStatus = FetchingStatus.rejected
+        state.IFetchingStatus = IFetchingStatus.rejected
       })
       .addCase(like.pending, (state) => {
-        state.FetchingStatus = FetchingStatus.pending
+        state.IFetchingStatus = IFetchingStatus.pending
       })
       .addCase(
         like.fulfilled,
@@ -91,7 +85,7 @@ const app = createSlice({
             },
           },
         ) => {
-          state.FetchingStatus = FetchingStatus.fulfilled
+          state.IFetchingStatus = IFetchingStatus.fulfilled
           // TODO
           // Вытаскивать текущего пользователя напрямую из другого стора
           // const { email } = getState().authorization
@@ -119,13 +113,13 @@ const app = createSlice({
         },
       )
       .addCase(like.rejected, (state) => {
-        state.FetchingStatus = FetchingStatus.rejected
+        state.IFetchingStatus = IFetchingStatus.rejected
       })
       .addCase(upload.pending, () => {})
       .addCase(upload.fulfilled, (state) => {
         console.log('success')
 
-        state.FetchingStatus = FetchingStatus.fulfilled
+        state.IFetchingStatus = IFetchingStatus.fulfilled
       })
       .addCase(upload.rejected, () => {})
   },

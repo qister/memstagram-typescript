@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-import { Credentials } from '../redux/authToolkitRedux/StoreSlices/authorization'
+import { ICredentials } from '../redux/authToolkitRedux/StoreSlices/authorization'
 
-export async function authLoginFetch(credentials: Credentials) {
+export const fetchLogin = async (credentials: ICredentials) => {
   try {
     const { data } = await axios.post('/api/auth/login', credentials)
     return data
@@ -12,11 +12,11 @@ export async function authLoginFetch(credentials: Credentials) {
 }
 
 export async function logoutFetch() {
-  console.log('logoutFetch');
-  
+  console.log('logoutFetch')
+
   try {
     return await axios.delete('/api/auth/logout')
   } catch (error) {
-    throw new Error(error.message || 'Не удалось выйти')
+    console.error(error.message || 'Не удалось выйти')
   }
 }

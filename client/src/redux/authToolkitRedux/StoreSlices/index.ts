@@ -1,12 +1,13 @@
 import { combineReducers } from 'redux'
 
-import authorization from './authorization'
-import app from './app'
-
 import { store } from 'components/App/AppBehavior'
+import app from './app'
+import { authReducer } from './authorization'
+import { regReducer } from './registration'
 
 export const reducers = combineReducers({
-  authorization,
+  authorization: authReducer,
+  registration: regReducer,
   app,
 })
 
