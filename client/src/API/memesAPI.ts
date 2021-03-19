@@ -1,3 +1,4 @@
+import { message } from 'antd'
 import axios from 'axios'
 
 const axiosInstance = axios.create({
@@ -28,15 +29,18 @@ export const likeMeme = async (id: number) => {
   }
 }
 
-export const uploadMeme = async (meme: any) => {
+export const uploadMeme = async (data: FormData) => {
   try {
     // TODO: добавить axiosInstance чтобы подставлялся хедер с авторизацией
-    const response = await axios.post('/api/meme/addpic', meme, {
+    const response = await axios.post('/api/meme/addpic', data, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     })
     console.log('upload response: ', response)
+    // TODO
+    // Добавить обработку ошибок и успешных запросов, здесь ее лучше сделать или в компоненте?..
+    message.success(`File uploaded successfully.`)
   } catch (error) {
     throw new Error(error)
   }
