@@ -1,6 +1,5 @@
-import {Application, Request, Response, NextFunction } from 'express'
+require("dotenv").config();
 const express = require('express')
-// const express = require('express')
 
 import mongoose from 'mongoose'
 import config from 'config'

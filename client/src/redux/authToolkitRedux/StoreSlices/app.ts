@@ -38,16 +38,18 @@ const initialState: AppState = {
   total: 0,
 }
 
-export const loadMemes = createAsyncThunk('loadMemes', async (page: number = 1) => {
-  return getMemes(page)
-})
+export const loadMemes = createAsyncThunk(
+  'loadMemes',
+  async (page: number = 1) => {
+    return getMemes(page)
+  },
+)
 
 export const like = createAsyncThunk(
   'like',
-  async ({ id, email }: any, {getState} ) => {
-    //@ts-ignore
-    // const { email } = getState().authorization
-    return likeMeme(id, email)
+  // TODO: сделать чтобы вместо айди использовались строки - поменять модель мема итд
+  async ({ id }: { id: number }) => {
+    return likeMeme(id)
   },
 )
 
@@ -85,7 +87,7 @@ const app = createSlice({
           state,
           {
             meta: {
-              arg: { id, email },
+              arg: { id },
             },
           },
         ) => {
@@ -93,12 +95,15 @@ const app = createSlice({
           // TODO
           // Вытаскивать текущего пользователя напрямую из другого стора
           // const { email } = getState().authorization
+          const email = '123' // Хардкод чтобы не ломалась функция ниже
+
           state.memeList = state.memeList.map((meme: any) => {
             if (meme.id === id) {
               return {
                 ...meme,
                 liked: !meme.liked,
-                //TODO поправить, чтобы пересчитывать просто количество лайков, а не весь массив пользователей
+                // TODO поправить, чтобы пересчитывать просто количество лайков, а не весь массив пользователей
+                // можно убрать пересчет массива лайков на клиенте
                 likedBy: meme.likedBy.some((user: string) => user === email)
                   ? meme.likedBy.filter((user: string) => user !== email)
                   : [

@@ -18,6 +18,7 @@ interface IProps {
   defaultSelectedKey: string[]
   onMenuItemClick: any
   setCollapsed: any
+  onHandleLogout(): void
 }
 
 export const AppLayoutTemplate = ({
@@ -25,6 +26,7 @@ export const AppLayoutTemplate = ({
   defaultSelectedKey,
   onMenuItemClick,
   setCollapsed,
+  onHandleLogout,
 }: IProps): JSX.Element => {
   const ROOT_CLASS = 'layout-container'
   return (
@@ -49,8 +51,8 @@ export const AppLayoutTemplate = ({
       </Sider>
       <Layout className={`${ROOT_CLASS}-wrapper`}>
         <Header className={`${ROOT_CLASS}-wrapper__header`}>
-          <div className={`${ROOT_CLASS}-wrapper__header-user`}>
-            <User user={{ name: 'user' }} onLogout={() => {}} />
+          <div className={`${ROOT_CLASS}-wrapper__header-user`} onClick={onHandleLogout}>
+            <User user={{ name: 'user' }} />
             <Avatar icon={<UserOutlined />} />
           </div>
         </Header>

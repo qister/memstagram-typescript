@@ -10,7 +10,6 @@ export const Feed = () => {
 
   const {
     app: { memeList, total, nextPage },
-    authorization: { email },
   } = useSelector((state: RootState) => state)
 
   const dispatch = useDispatch()
@@ -43,7 +42,7 @@ export const Feed = () => {
   }
 
   const toggleLike = (id: number) => {
-    dispatch(like({ id, email }))
+    dispatch(like({ id }))
   }
 
   return (

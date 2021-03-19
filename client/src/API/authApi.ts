@@ -10,3 +10,13 @@ export async function authLoginFetch(credentials: Credentials) {
     throw new Error(error.message || 'Что-то пошло не так')
   }
 }
+
+export async function logoutFetch() {
+  console.log('logoutFetch');
+  
+  try {
+    return await axios.delete('/api/auth/logout')
+  } catch (error) {
+    throw new Error(error.message || 'Не удалось выйти')
+  }
+}
