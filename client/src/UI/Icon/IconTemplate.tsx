@@ -4,14 +4,14 @@ import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import './Icon.scss'
 
 interface IProps {
-    isLike: boolean
+    liked: boolean
     onClickLike(): void
 }
 
-export const IconTemplate = ({ isLike, onClickLike }: IProps) => {
+export const IconTemplate = ({ liked, onClickLike }: IProps) => {
     return (
         <div className='icon-wrapper'>
-            {isLike ? <HeartFilled onClick={onClickLike} className='heart-icon' /> : <HeartOutlined onClick={onClickLike} className='heart-icon' />}
+            {liked ? <HeartFilled onClick={onClickLike} className='heart-icon' /> : <HeartOutlined onClick={onClickLike} className='heart-icon' />}
         </div>
     )
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { MemeCard } from 'components/MemeCard/MemeCard'
-import { loadMemes, like, IMeme } from 'redux/authToolkitRedux/StoreSlices/app'
+import { loadMemes, IMeme } from 'redux/authToolkitRedux/StoreSlices/app'
 import { RootState } from 'redux/authToolkitRedux/StoreSlices'
 
 export const Feed = () => {
@@ -41,21 +41,13 @@ export const Feed = () => {
     }
   }
 
-  const toggleLike = (id: number) => {
-    dispatch(like({ id }))
-  }
-
   return (
     <>
       {memeList.map((meme: IMeme, key) => {
-        const imgLink = 'http://localhost:4000/' + meme.imgUrl.slice(7)
-
         return (
           <MemeCard
             key={key}
-            imgUrl={imgLink}
-            toggleLike={() => toggleLike(meme.id)}
-            liked={meme.liked}
+            meme={meme}
           />
         )
       })}
