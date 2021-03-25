@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 
 import { AppLayoutTemplate } from './AppLayoutTemplate'
 import { ContentPath } from '../../constants/enums'
-import { logoutFetch } from 'API/authApi'
+import { logout } from 'redux/authToolkitRedux/StoreSlices/authorization'
 
 export interface MenuSideBarItem {
     key: string
@@ -24,7 +24,7 @@ export const AppLayoutBehavior = (): JSX.Element => {
   }
 
   const onHandleLogout = () => {
-    dispatch(logoutFetch)
+    dispatch(logout())
   }
 
   return React.createElement(AppLayoutTemplate, {

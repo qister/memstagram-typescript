@@ -3,16 +3,13 @@ const express = require('express')
 
 import mongoose from 'mongoose'
 import config from 'config'
-import bodyParser from 'body-parser'
-// require('typescript-require')
+const cookieParser = require('cookie-parser'); 
 
 const app = express()
+app.use(cookieParser());
 
 const PORT: number = config.get('port') || 5000
 const URI: string = config.get('mongoUri')
-
-// app.use(bodyParser.json())
-// app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.json({extended: true}))
 
 app.use('/api/meme', require('./routes/meme.routes'))
@@ -20,7 +17,7 @@ app.use('/api/auth', require('./routes/auth.routes'))
 
 app.use(express.static('public'));
 
-async function start() {
+const start = async () => {
   try {
     await mongoose.connect(URI, {
       useNewUrlParser: true,

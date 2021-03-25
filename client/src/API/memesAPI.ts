@@ -1,9 +1,14 @@
 import { message } from 'antd'
 import axios from 'axios'
+import { getAccessTokenFromCookie } from 'utils/auth'
+
+const tokenFromCookie = getAccessTokenFromCookie()
+const token = tokenFromCookie ?? ''
 
 const axiosInstance = axios.create({
   headers: {
-    Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+    // TODO не хранить access_token в куках, перейти на другое хранилище 
+    Authorization: 'Bearer ' + token,
     // TODO: контент тайп потом убрать из инстанса и передавать только где нужно
     'Content-Type': 'application/json',
   },

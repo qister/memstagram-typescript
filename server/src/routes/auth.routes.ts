@@ -9,20 +9,16 @@ const Token = require('../models/Token')
 
 const router = Router()
 
-// Генерация токенов ///
-const generateAccessToken = (userId: any) => {
-  console.log('generateAccessToken')
-
-  return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: '2m',
+// Генерация токенов
+const generateAccessToken = (userId: any) =>
+  jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: '15m',
   })
-}
 
-const generateRefreshToken = (userId: any) => {
-  return jwt.sign({ userId }, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: '3m',
+const generateRefreshToken = (userId: any) =>
+  jwt.sign({ userId }, process.env.REFRESH_TOKEN_SECRET, {
+    expiresIn: '30d',
   })
-}
 
 // заменяет refreshToken
 const replaceDbRefreshToken = (tokenId: any, userId: any) => {
@@ -85,22 +81,6 @@ router.post(
   }
 )
 
-// let refreshTokens: any[] = []
-
-// router.post('/token', (req: Request, res: Response) => {
-//   const refreshToken = req.body.token
-//   console.log('/postToken refreshToken from body', refreshToken);
-
-//   if (refreshToken === null) return res.sendStatus(401)
-//   if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403)
-
-//   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err: any, user: any) => {
-//     if (err) return res.sendStatus(403)
-//     const accessToken = generateAccessToken(user)
-//     res.json({ accessToken })
-//   })
-// })
-
 router.post(
   '/login',
   [
@@ -135,17 +115,17 @@ router.post(
           .json({ message: 'Неверный пароль, попробуйте снова' })
       }
 
-      // как было раньше
-      // const accessToken = generateAccessToken(user.id)
-      // const refreshToken = generateRefreshToken(user.id)
-      // refreshTokens.push(refreshToken)
-      // res.json({ accessToken, refreshToken, userId: user.id, email: user.email })
-
-      // как сейчас
       updateTokens(user.id).then((tokens: any) => {
-        console.log('updateTokens tokens', tokens)
+        res.cookie('refresh_token', tokens.refreshToken, {
+          httpOnly: true,
+          maxAge: 1000 * 60 * 60 * 24 * 30,
+        })
 
-        return res.json(tokens)
+        return res.json({
+          tokens: {
+            access_token: tokens.accessToken,
+          },
+        })
       })
     } catch (e) {
       console.log('Error message: ', e.message)
@@ -187,16 +167,22 @@ const refreshTokens = (req: Request, res: Response) => {
     .catch((err: any) => res.status(400).json({ message: err.message }))
 }
 
-// как сейчас
+// TODO Дописать этот метод чтобы работал при перриодическом обновлении на клиенте
 router.post('/refreshTokens', refreshTokens)
 
-// как было
-// router.delete('/logout', (req: Request, res: Response) => {
-
-//   console.log('route logout');
-
-//   refreshTokens = refreshTokens.filter(token => token !== req.body.token)
-//   res.sendStatus(204)
-// })
+router.delete('/logout', async (req: Request, res: Response) => {
+  try {
+    const refreshToken = req.cookies.refresh_token
+    const { userId } = jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET
+    )
+    await Token.findOneAndRemove({ userId }).exec()
+    res.cookie('refresh_token', '', { maxAge: 0 })
+    res.sendStatus(204)
+  } catch (error) {
+    console.log('error: ', error)
+  }
+})
 
 module.exports = router
