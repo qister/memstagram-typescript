@@ -12,8 +12,6 @@ export const fetchLogin = async (credentials: ICredentials) => {
 }
 
 export async function logoutFetch() {
-  console.log('logoutFetch')
-
   try {
     return await axios.delete('/api/auth/logout')
   } catch (error) {

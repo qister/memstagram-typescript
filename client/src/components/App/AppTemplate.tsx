@@ -1,5 +1,5 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Route,
   Switch,
@@ -13,12 +13,18 @@ import '../../styles/App.scss'
 import 'materialize-css'
 import { Registration } from 'pages/Registration/Registration'
 import { LoginForm } from 'pages/Authorization/Login'
+import { initToken } from 'redux/authToolkitRedux/StoreSlices/authorization'
 
 export function AppTemplate() {
   const isAuthenticated = useSelector(
     (state: RootState) => state.authorization.isAuthenticated,
   )
-  // const isAuthenticated = true
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(initToken())
+  }, [isAuthenticated])
 
   const routes = isAuthenticated ? (
     <>
@@ -27,11 +33,9 @@ export function AppTemplate() {
     </>
   ) : (
     <>
-      {/* <Route path='/login' component={Authorization} /> */}
-      <Route path='/login' component={LoginForm} exact/>
-      <Route path='/register' component={Registration} exact/>
+      <Route path='/login' component={LoginForm} exact />
+      <Route path='/register' component={Registration} exact />
       <Route component={LoginForm} />
-      {/* <Redirect to='/login' /> */}
     </>
   )
 
