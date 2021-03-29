@@ -39,6 +39,7 @@ export const uploadMeme = async (data: FormData) => {
     // TODO: добавить axiosInstance чтобы подставлялся хедер с авторизацией
     const response = await axios.post('/api/meme/addpic', data, {
       headers: {
+        Authorization: 'Bearer ' + token,
         'Content-Type': 'multipart/form-data',
       },
     })
