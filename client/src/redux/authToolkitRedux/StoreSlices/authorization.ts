@@ -14,17 +14,11 @@ export interface ICredentials {
 }
 
 export interface IAuthorizationState {
-  token: string
-  userId: string
-  email: string
   isAuthenticated: boolean
   fetchingStatus: IFetchingStatus
 }
 
 const initialState: IAuthorizationState = {
-  token: '',
-  userId: '',
-  email: '',
   isAuthenticated: false,
   fetchingStatus: IFetchingStatus.idle,
 }
