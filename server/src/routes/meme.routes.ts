@@ -1,11 +1,10 @@
 import { Router, Request, Response } from 'express'
-import multer, { ErrorCode } from 'multer'
-const jwt = require('jsonwebtoken')
+import multer from 'multer'
 
 const Meme = require('../models/Meme')
 const paginatedResults = require('../middleware/memes.middleware')
 const authenticateToken = require('../middleware/auth.middleware')
-const User = require('../models/User')
+const getUser = require('../middleware/user.middleware')
 
 const router = Router()
 
@@ -29,14 +28,10 @@ router.get(
 router.post(
   '/likememe',
   authenticateToken,
-  async (req: Request, res: Response) => {
+  getUser,
+  async (req: Request & any, res: Response) => {
     try {
-      // TODO этот блок вынести в милдвэр тк юзер почти везде нужен
-      const tokenId = req.headers.authorization?.split(' ')[1]
-      const { userId } = jwt.verify(tokenId, process.env.ACCESS_TOKEN_SECRET)
-      const user = await User.find({ _id: userId })
-      ///
-      const { email } = user
+      const { email } = req.user
       const { id } = req.body
       if (id >= 0) {
         const memeBefore = await Meme.findOne({ id })
@@ -89,50 +84,53 @@ const fileFilter = (req: any, file: any, cb: any) => {
 
 const upload = multer({ storage, fileFilter })
 
-router.post('/addpic', upload.array('memelist[][file]'), async (req, res) => {
-  try {
-    // Пока не убирать, multer вставляет [Object: null prototype]. Может быть нужно потом для корректного парсинга body
-    // https://stackoverflow.com/questions/54986409/why-request-body-is-null-in-file-upload-with-postman-in-node-js
-    // const body = JSON.stringify(req.body, null, 2)
-    // const trueBody = JSON.parse(body)
+router.post(
+  '/addpic',
+  authenticateToken,
+  getUser,
+  upload.array('memelist[][file]'),
+  async (req: Request & any, res) => {
+    try {
+      // Пока не убирать, multer вставляет [Object: null prototype]. Может быть нужно потом для корректного парсинга body
+      // https://stackoverflow.com/questions/54986409/why-request-body-is-null-in-file-upload-with-postman-in-node-js
+      // const body = JSON.stringify(req.body, null, 2)
+      // const trueBody = JSON.parse(body)
 
-    const files = req.files as Express.Multer.File[]
-    const description = req.body['memelist[][description]']
-    const onlyOneMemeUploaded =
-      typeof req.body['memelist[][description]'] === 'string'
-    const descriptionList = onlyOneMemeUploaded
-      ? [description]
-      : [...description]
-    const total = await Meme.countDocuments().exec()
-    // TODO этот блок вынести в милдвэр тк юзер почти везде нужен
-    const tokenId = req.headers.authorization?.split(' ')[1]
-    const { userId } = jwt.verify(tokenId, process.env.ACCESS_TOKEN_SECRET)
-    // TODO поменять емейл на ник
-    const user = await User.findOne({ _id: userId })
-    console.log('user: ', user);
-    
-    //
+      const files = req.files as Express.Multer.File[]
+      const description = req.body['memelist[][description]']
+      const onlyOneMemeUploaded =
+        typeof req.body['memelist[][description]'] === 'string'
+      const descriptionList = onlyOneMemeUploaded
+        ? [description]
+        : [...description]
+      const total = await Meme.countDocuments().exec()
+      const user = req.user
 
-    const memeArray = descriptionList.map((description: string, i: number) => ({
-      //TODO избавится от использования id
-      id: total + i,
-      //TODO добавлять просто id юзера или посмотреть лучшие практики как лучше делать
-      author: user.email,
-      description,
-      imgUrl: files[i].path,
-      likedBy: [],
-      created: Date.now(),
-    }))
+      //
 
-    await Meme.insertMany(memeArray)
+      const memeArray = descriptionList.map(
+        (description: string, index) => ({
+          //TODO избавится от использования id
+          id: total + index,
+          //TODO добавлять просто id юзера или посмотреть лучшие практики как лучше делать
+          author: user.email,
+          description,
+          imgUrl: files[index].path,
+          likedBy: [],
+          created: Date.now(),
+        })
+      )
 
-    return res.status(201).json({
-      message: 'Meme uploded successfully',
-    })
-  } catch (error) {
-    console.log('Add meme error', error)
-    return res.status(400)
+      await Meme.insertMany(memeArray)
+
+      return res.status(201).json({
+        message: 'Meme uploded successfully',
+      })
+    } catch (error) {
+      console.log('Add meme error', error)
+      return res.status(400)
+    }
   }
-})
+)
 
 module.exports = router

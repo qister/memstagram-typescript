@@ -1,7 +1,6 @@
 import { Router, Request, Response } from 'express'
 const User = require('../models/User')
 const { check, validationResult } = require('express-validator')
-const config = require('config')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
