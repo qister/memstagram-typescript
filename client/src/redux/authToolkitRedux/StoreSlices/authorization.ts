@@ -6,7 +6,7 @@ import {
   setAccessTokenToCookie,
 } from 'utils/auth'
 
-import { fetchLogin, logoutFetch } from '../../../API/authApi'
+import { fetchLogin, fetchLogout } from '../../../API/authApi'
 
 export interface ICredentials {
   email: string
@@ -36,7 +36,7 @@ export const authLogin = createAsyncThunk(
   },
 )
 
-export const logout = createAsyncThunk('logout', logoutFetch)
+export const logout = createAsyncThunk('logout', fetchLogout)
 
 const authorization = createSlice({
   name: 'authorization',

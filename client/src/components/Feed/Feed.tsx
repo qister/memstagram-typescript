@@ -35,6 +35,7 @@ export const Feed = () => {
       e.target.documentElement.scrollHeight -
         (e.target.documentElement.scrollTop + window.innerHeight) <
         100 &&
+      // TODO пофиксить чтобы в стейте не дублировались мемы и подрузка новых работала корректно
       memeList.length < total
     ) {
       setFetching(true)
