@@ -3,11 +3,13 @@ import { Layout, Menu, Avatar } from 'antd'
 import {
   UserOutlined,
 } from '@ant-design/icons'
+import classNames from 'classnames'
 
 import { User } from '../User'
 import { routes } from './appRoutes'
 import { MenuSideBarItem } from './AppLayoutBehavior'
 import { MENU_SIDEBAR_ITEMS } from '../../constants/constants'
+import { ContentPath } from 'constants/enums'
 import './AppLayout.scss'
 
 const { Header, Sider, Content } = Layout
@@ -27,9 +29,14 @@ export const AppLayoutTemplate = ({
   setCollapsed,
   onHandleLogout,
 }: IProps): JSX.Element => {
+  const layout_container_class = classNames('layout-container',
+    {
+      ['layout-container_theme-height']: !Array.isArray(defaultSelectedKey) && defaultSelectedKey !== ContentPath.Feed
+    }
+  )
   const ROOT_CLASS = 'layout-container'
   return (
-    <Layout className={ROOT_CLASS}>
+    <Layout className={layout_container_class}>
       <Sider
         className={`${ROOT_CLASS}__sidebar`}
         collapsible

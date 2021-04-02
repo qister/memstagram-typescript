@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Form, Input, Button, Checkbox, Typography } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
-
-import './Login.scss'
 import { useDispatch } from 'react-redux'
+
 import { authLogin } from 'redux/authToolkitRedux/StoreSlices/authorization'
+import './Login.scss'
 
 const { Link } = Typography
 
