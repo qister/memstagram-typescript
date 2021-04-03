@@ -1,9 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 
-const Meme = require('../models/Meme')
-
 const paginatedResults = (model: any) => {
-  return async (req: Request, res: Response, next: NextFunction) => {
+  return async (req: Request, res: Response & any, next: NextFunction) => {
     const page = Number(req.query.page)
     const limit = Number(req.query.limit)
 
@@ -30,7 +28,6 @@ const paginatedResults = (model: any) => {
       }
 
       results.memes = await model.find().limit(limit).skip(startIndex).exec()
-      //@ts-ignore
       res.paginatedResults = results
       next()
     } catch (e) {

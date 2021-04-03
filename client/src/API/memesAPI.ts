@@ -7,9 +7,8 @@ const token = tokenFromCookie ?? ''
 
 const axiosInstance = axios.create({
   headers: {
-    // TODO не хранить access_token в куках, перейти на другое хранилище 
+    // TODO не хранить access_token в куках, перейти на другое хранилище
     Authorization: 'Bearer ' + token,
-    // TODO: контент тайп потом убрать из инстанса и передавать только где нужно
     'Content-Type': 'application/json',
   },
   timeout: 3000,
@@ -36,10 +35,8 @@ export const likeMeme = async (id: number) => {
 
 export const uploadMeme = async (data: FormData) => {
   try {
-    // TODO: добавить axiosInstance чтобы подставлялся хедер с авторизацией
-    const response = await axios.post('/api/meme/addpic', data, {
+    const response = await axiosInstance.post('/api/meme/addpic', data, {
       headers: {
-        Authorization: 'Bearer ' + token,
         'Content-Type': 'multipart/form-data',
       },
     })

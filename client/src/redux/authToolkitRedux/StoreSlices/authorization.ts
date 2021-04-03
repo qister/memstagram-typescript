@@ -67,6 +67,7 @@ const authorization = createSlice({
     })
     builder.addCase(logout.fulfilled, (state) => {
       // TODO: добавить еще кейс для оффлайн логаута чтобы удалить токен если нет интернета
+      // тут можно удалять все токены с бэка, а для оффлайн логаута удалять только на фронте
       deleteAccessTokenFromCookie()
       state.fetchingStatus = IFetchingStatus.fulfilled
       state.isAuthenticated = false
@@ -78,4 +79,3 @@ const { reducer } = authorization
 
 export { reducer as authReducer }
 export const { initToken } = authorization.actions
-
