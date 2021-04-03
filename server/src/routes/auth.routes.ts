@@ -3,31 +3,32 @@ const User = require('../models/User')
 const { check, validationResult } = require('express-validator')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+const authenticateToken = require('../middleware/auth.middleware')
 
 const Token = require('../models/Token')
 
 const router = Router()
 
 // Генерация токенов
-const generateAccessToken = (userId: any) =>
-  jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, {
+const generateAccessToken = (userId: string) =>
+  jwt.sign({ userId, type: 'access' }, process.env.ACCESS_TOKEN_SECRET, {
     expiresIn: '15m',
   })
 
-const generateRefreshToken = (userId: any) =>
-  jwt.sign({ userId }, process.env.REFRESH_TOKEN_SECRET, {
+const generateRefreshToken = (userId: string) =>
+  jwt.sign({ userId, type: 'refresh' }, process.env.REFRESH_TOKEN_SECRET, {
     expiresIn: '30d',
   })
 
 // заменяет refreshToken
-const replaceDbRefreshToken = (tokenId: any, userId: any) => {
+const replaceDbRefreshToken = (tokenId: string, userId: string) => {
   return Token.findOneAndRemove({ userId })
     .exec()
     .then(() => Token.create({ tokenId, userId }))
 }
 
 // Генерация обоих токенов и обновление
-const updateTokens = (userId: any) => {
+const updateTokens = (userId: string) => {
   const accessToken = generateAccessToken(userId)
   const refreshToken = generateRefreshToken(userId)
 
@@ -135,10 +136,12 @@ router.post(
 )
 
 const refreshTokens = (req: Request, res: Response) => {
-  const { refreshToken } = req.body
+  const refreshToken = req.cookies.refresh_token
   let payload
   try {
-    payload = jwt.verify(refreshToken)
+    payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
+    console.log('payload: ', payload)
+
     if (payload.type !== 'refresh') {
       res.status(400).json({ message: 'Invalid token!' })
       return
@@ -153,21 +156,31 @@ const refreshTokens = (req: Request, res: Response) => {
     }
   }
 
-  Token.findOne({ tokenId: payload.id })
+  Token.findOne({ tokenId: refreshToken })
     .exec()
     .then((token: any) => {
       if (token === null) {
         throw new Error('Invalid token!')
       }
 
-      return updateTokens(token.userId)
+      return updateTokens(token.userId).then((tokens: any) => {
+        res.cookie('refresh_token', tokens.refreshToken, {
+          httpOnly: true,
+          maxAge: 1000 * 60 * 60 * 24 * 30,
+        })
+
+        return res.json({
+          tokens: {
+            access_token: tokens.accessToken,
+          },
+        })
+      })
     })
-    .then((tokens: any) => res.json(tokens))
     .catch((err: any) => res.status(400).json({ message: err.message }))
 }
 
 // TODO Дописать этот метод чтобы работал при перриодическом обновлении на клиенте
-router.post('/refreshTokens', refreshTokens)
+router.post('/refresh_tokens', authenticateToken, refreshTokens)
 
 router.delete('/logout', async (req: Request, res: Response) => {
   try {

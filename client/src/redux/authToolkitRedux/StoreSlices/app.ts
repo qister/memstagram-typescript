@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getMemes, likeMeme } from '../../../API/memesAPI'
 import { RootState } from '.'
 import { IFetchingStatus } from 'constants/enums'
+import { getUser } from 'API/userApi'
 
 export interface IMeme {
   id: number
@@ -16,7 +17,7 @@ export interface IMeme {
 }
 
 export interface AppState {
-  currentUser: string
+  currentUser: any
   memeList: Array<IMeme>
   IFetchingStatus: IFetchingStatus
   error: any
@@ -25,7 +26,7 @@ export interface AppState {
 }
 
 const initialState: AppState = {
-  currentUser: '',
+  currentUser: {},
   memeList: [],
   IFetchingStatus: IFetchingStatus.idle,
   error: null,
@@ -49,6 +50,10 @@ export const like = createAsyncThunk(
 
 export const upload = createAsyncThunk('upload', async (data: any) => {
   return uploadMeme(data)
+})
+
+export const fetchUser = createAsyncThunk('fetchUser', async () => {
+  return getUser()
 })
 
 const app = createSlice({
@@ -122,6 +127,9 @@ const app = createSlice({
         state.IFetchingStatus = IFetchingStatus.fulfilled
       })
       .addCase(upload.rejected, () => {})
+      .addCase(fetchUser.fulfilled, (state, action) => {
+        state.currentUser = action.payload.user
+      })
   },
 })
 
