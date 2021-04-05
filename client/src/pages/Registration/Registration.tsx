@@ -4,7 +4,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons'
 
 import './Registration.scss'
 import { useDispatch, useSelector } from 'react-redux'
-import { register } from 'redux/authToolkitRedux/StoreSlices/registration'
+import { fetchRegistration } from 'redux/authToolkitRedux/StoreSlices/registration'
 import { RootState } from 'redux/authToolkitRedux/StoreSlices'
 import { IFetchingStatus } from 'constants/enums'
 import { useHistory } from 'react-router'
@@ -38,7 +38,7 @@ export const Registration = () => {
 
   const onSubmit = async () => {
     const { email, password } = form.getFieldsValue()
-    dispatch(register({ email, password }))
+    dispatch(fetchRegistration({ email, password }))
   }
 
   const onChangeForm = () => {

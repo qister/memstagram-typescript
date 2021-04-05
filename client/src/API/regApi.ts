@@ -1,11 +1,10 @@
 import { ICredentials } from '../redux/authToolkitRedux/StoreSlices/registration'
 import { axiosInstance } from './axios'
 
-export const fetchRegistration = async (credentials: ICredentials) => {
-  try {
-    const response = axiosInstance.post('/api/auth/register', credentials)
-    return response
-  } catch (error) {
-    throw new Error(error.message || 'Что-то пошло не так')
-  }
+// TODO после успешной регистрации сетить сетить имейл в логин и перенаправлять на страницу логина
+
+interface IGetRegistrationResult {
+  user: { email: string }
 }
+export const getRegistration = (credentials: ICredentials) =>
+  axiosInstance.post<IGetRegistrationResult>('/api/auth/register', credentials)

@@ -6,7 +6,7 @@ import {
   setAccessTokenToCookie,
 } from 'utils/auth'
 
-import { fetchLogin, fetchLogout, updateTokens } from '../../../API/authApi'
+import { getLogin, getLogout, updateTokens } from '../../../API/authApi'
 
 export interface ICredentials {
   email: string
@@ -29,14 +29,14 @@ const initialState: IAuthorizationState = {
   fetchingStatus: IFetchingStatus.idle,
 }
 
-export const authLogin = createAsyncThunk(
-  'authLogin',
+export const fetchLogin = createAsyncThunk(
+  'fetchLogin',
   (credentials: ICredentials) => {
-    return fetchLogin(credentials)
+    return getLogin(credentials)
   },
 )
 
-export const logout = createAsyncThunk('logout', fetchLogout)
+export const fetchLogout = createAsyncThunk('fetchLogout', getLogout)
 
 export const fetchUpdateTokens = createAsyncThunk(
   'fetchUpdateTokens',
@@ -57,22 +57,19 @@ const authorization = createSlice({
   },
   extraReducers: (builder) => {
     // login //
-    builder.addCase(authLogin.pending, (state) => {
+    builder.addCase(fetchLogin.pending, (state) => {
       state.fetchingStatus = IFetchingStatus.pending
     })
-    builder.addCase(authLogin.fulfilled, (state, action) => {
+    builder.addCase(fetchLogin.fulfilled, (state, action) => {
       state.fetchingStatus = IFetchingStatus.fulfilled
-      const {
-        tokens: { access_token },
-      } = action.payload
+      const { access_token } = action.payload.data.tokens
       setAccessTokenToCookie(access_token)
-      // TODO: сделать получение юзера по токену
       state.isAuthenticated = true
     })
-    builder.addCase(authLogin.rejected, (state) => {
+    builder.addCase(fetchLogin.rejected, (state) => {
       state.fetchingStatus = IFetchingStatus.rejected
     })
-    builder.addCase(logout.fulfilled, (state) => {
+    builder.addCase(fetchLogout.fulfilled, (state) => {
       // TODO: добавить еще кейс для оффлайн логаута чтобы удалить токен если нет интернета
       // тут можно удалять все токены с бэка, а для оффлайн логаута удалять только на фронте
       deleteAccessTokenFromCookie()

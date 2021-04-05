@@ -73,7 +73,7 @@ router.post(
 
       await user.save()
 
-      res.status(201).json({ message: 'Пользователь создан' })
+      res.status(201).json({ user: { email } })
     } catch (e) {
       console.log(e)
       res.status(500).json({ message: 'что-то пошло не так, попробуйте снова' })

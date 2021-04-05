@@ -45,13 +45,27 @@ router.post(
               ),
             }
           )
-          res.status(201).json(`Meme with id ${id} was disliked`)
+
+          // TODO убрать этот пересчет и изменять только значение liked
+          const memeAfter = {
+            ...memeBefore.toObject(),
+            likedBy: memeBefore.likedBy.filter(
+              (user: string) => user !== email
+            ),
+          }
+          res.status(201).json({ meme: memeAfter })
         } else {
           await Meme.updateOne(
             { id },
             { likedBy: [...memeBefore.likedBy, email] }
           )
-          res.status(201).json(`Meme with id ${id} was liked`)
+          // TODO убрать этот пересчет и изменять только значение liked
+          const memeAfter = {
+            ...memeBefore.toObject(),
+            likedBy: [...memeBefore.likedBy, email],
+          }
+
+          res.status(201).json({ meme: memeAfter })
         }
       } else {
         throw new Error('unable to like meme')
@@ -108,23 +122,21 @@ router.post(
 
       //
 
-      const memeArray = descriptionList.map(
-        (description: string, index) => ({
-          //TODO избавится от использования id
-          id: total + index,
-          //TODO добавлять просто id юзера или посмотреть лучшие практики как лучше делать
-          author: user.email,
-          description,
-          imgUrl: files[index].path,
-          likedBy: [],
-          created: Date.now(),
-        })
-      )
+      const memeArray = descriptionList.map((description: string, index) => ({
+        //TODO избавится от использования id
+        id: total + index,
+        //TODO добавлять просто id юзера или посмотреть лучшие практики как лучше делать
+        author: user.email,
+        description,
+        imgUrl: files[index].path,
+        likedBy: [],
+        created: Date.now(),
+      }))
 
       await Meme.insertMany(memeArray)
 
       return res.status(201).json({
-        message: 'Meme uploded successfully',
+        memes: memeArray,
       })
     } catch (error) {
       console.log('Add meme error', error)

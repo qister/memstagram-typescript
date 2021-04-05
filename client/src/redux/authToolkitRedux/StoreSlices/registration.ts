@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { fetchRegistration } from 'API/regApi'
+import { getRegistration } from 'API/regApi'
 import { IFetchingStatus } from 'constants/enums'
 
 export interface ICredentials {
@@ -16,10 +16,10 @@ const initialState: IRegistrationState = {
   fetchingStatus: IFetchingStatus.idle,
 }
 
-export const register = createAsyncThunk(
-  'register',
+export const fetchRegistration = createAsyncThunk(
+  'fetchRegistration',
   (credentials: ICredentials) => {
-    return fetchRegistration(credentials)
+    return getRegistration(credentials)
   },
 )
 
@@ -28,14 +28,14 @@ const registration = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(register.pending, (state) => {
+    builder.addCase(fetchRegistration.pending, (state) => {
       state.fetchingStatus = IFetchingStatus.pending
     })
-    builder.addCase(register.fulfilled, (state, action) => {
+    builder.addCase(fetchRegistration.fulfilled, (state, action) => {
       state.fetchingStatus = IFetchingStatus.fulfilled
       // TODO: тут надо сделать переадресацию на страницу логина
     })
-    builder.addCase(register.rejected, (state, action) => {
+    builder.addCase(fetchRegistration.rejected, (state, action) => {
       state.fetchingStatus = IFetchingStatus.rejected
       state.error = action.error
     })

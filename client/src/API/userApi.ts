@@ -1,12 +1,5 @@
 import { axiosInstance } from './axios'
 
-export const getUser = async () => {
-  try {
-    const { data } = await axiosInstance.get(
-      `/api/user/info`,
-    )
-    return data
-  } catch (error) {
-    throw error
-  }
-}
+//TODO решить что должен отправлять бэк в юзере и прописать тип
+export const getUser = async () =>
+  axiosInstance.get<{ user: { email: string } }>(`/api/user/info`)

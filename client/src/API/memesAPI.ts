@@ -1,38 +1,34 @@
-import { message } from 'antd'
+import { IMeme } from 'redux/authToolkitRedux/StoreSlices/app'
 
 import { axiosInstance } from './axios'
 
-export const getMemes = async (page = 1) => {
-  try {
-    const { data } = await axiosInstance.get(
-      `/api/meme/getlist?page=${page}&limit=2`,
-    )
-    return data
-  } catch (error) {
-    throw error
+// TODO опреледиться что возвращается с бэка и правильно описать IMeme
+interface IGetMemesReult {
+  total: number
+  next: {
+    page: number
+    limit: number
   }
+  previous: {
+    page: number
+    limit: number
+  }
+  memes: IMeme[]
 }
 
-export const likeMeme = async (id: number) => {
-  try {
-    await axiosInstance.post('/api/meme/likememe', { id })
-  } catch (error) {
-    throw new Error(error)
-  }
+export const getMemeList = (page = 1) =>
+  axiosInstance.get<IGetMemesReult>(`/api/meme/getlist?page=${page}&limit=2`)
+
+export const likeMeme = (id: number) =>
+  axiosInstance.post<{ meme: IMeme }>('/api/meme/likememe', { id })
+
+interface IUploadMemeResult {
+  memes: IMeme[]
 }
 
-export const uploadMeme = async (data: FormData) => {
-  try {
-    const response = await axiosInstance.post('/api/meme/addpic', data, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-    console.log('upload response: ', response)
-    // TODO
-    // Добавить обработку ошибок и успешных запросов, здесь ее лучше сделать или в компоненте?..
-    message.success(`File uploaded successfully.`)
-  } catch (error) {
-    throw new Error(error)
-  }
-}
+export const uploadMeme = (data: FormData) =>
+  axiosInstance.post<IUploadMemeResult>('/api/meme/addpic', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
