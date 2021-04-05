@@ -1,18 +1,6 @@
 import { message } from 'antd'
-import axios from 'axios'
-import { getAccessTokenFromCookie } from 'utils/auth'
 
-const tokenFromCookie = getAccessTokenFromCookie()
-const token = tokenFromCookie ?? ''
-
-const axiosInstance = axios.create({
-  headers: {
-    // TODO не хранить access_token в куках, перейти на другое хранилище
-    Authorization: 'Bearer ' + token,
-    'Content-Type': 'application/json',
-  },
-  timeout: 3000,
-})
+import { axiosInstance } from './axios'
 
 export const getMemes = async (page = 1) => {
   try {

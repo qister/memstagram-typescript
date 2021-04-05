@@ -6,7 +6,7 @@ import {
   setAccessTokenToCookie,
 } from 'utils/auth'
 
-import { fetchLogin, fetchLogout } from '../../../API/authApi'
+import { fetchLogin, fetchLogout, updateTokens } from '../../../API/authApi'
 
 export interface ICredentials {
   email: string
@@ -38,13 +38,18 @@ export const authLogin = createAsyncThunk(
 
 export const logout = createAsyncThunk('logout', fetchLogout)
 
+export const fetchUpdateTokens = createAsyncThunk(
+  'fetchUpdateTokens',
+  updateTokens,
+)
+
 const authorization = createSlice({
   name: 'authorization',
   initialState,
   reducers: {
     initToken: (state) => {
       const token = getAccessTokenFromCookie()
-      // TODO наверное надо добавить еще получение юзера сразу или обновление токена
+      // TODO наверное надо добавить еще проверку на валидность, получение юзера сразу или обновление токена
       if (token) {
         state.isAuthenticated = true
       }
@@ -57,8 +62,10 @@ const authorization = createSlice({
     })
     builder.addCase(authLogin.fulfilled, (state, action) => {
       state.fetchingStatus = IFetchingStatus.fulfilled
-      const token = action.payload.tokens.access_token
-      setAccessTokenToCookie(token)
+      const {
+        tokens: { access_token },
+      } = action.payload
+      setAccessTokenToCookie(access_token)
       // TODO: сделать получение юзера по токену
       state.isAuthenticated = true
     })
@@ -70,6 +77,16 @@ const authorization = createSlice({
       // тут можно удалять все токены с бэка, а для оффлайн логаута удалять только на фронте
       deleteAccessTokenFromCookie()
       state.fetchingStatus = IFetchingStatus.fulfilled
+      state.isAuthenticated = false
+    })
+    // обновление токенов
+    builder.addCase(fetchUpdateTokens.fulfilled, (state, action) => {
+      const { access_token } = action.payload.data.tokens
+      setAccessTokenToCookie(access_token)
+      state.isAuthenticated = true
+    })
+    builder.addCase(fetchUpdateTokens.rejected, (state, action) => {
+      // TODO настроить обработку ошибки
       state.isAuthenticated = false
     })
   },

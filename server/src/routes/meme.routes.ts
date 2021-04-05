@@ -4,7 +4,7 @@ import multer from 'multer'
 const Meme = require('../models/Meme')
 const paginatedResults = require('../middleware/memes.middleware')
 const authenticateToken = require('../middleware/auth.middleware')
-const getUser = require('../middleware/user.middleware')
+const { getUser } = require('../middleware/user.middleware')
 
 const router = Router()
 
