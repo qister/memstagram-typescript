@@ -23,6 +23,7 @@ export function AppTemplate() {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    // TODO сделать чтобы при логауте не отправлялся запрос на обновление токенов
     dispatch(fetchUpdateTokens())
   }, [])
 

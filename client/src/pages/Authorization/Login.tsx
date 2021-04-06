@@ -3,7 +3,7 @@ import { Form, Input, Button, Checkbox, Typography } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { useDispatch } from 'react-redux'
 
-import { authLogin } from 'redux/authToolkitRedux/StoreSlices/authorization'
+import { fetchLogin } from 'redux/authToolkitRedux/StoreSlices/authorization'
 import './Login.scss'
 
 const { Link } = Typography
@@ -24,9 +24,9 @@ export const LoginForm = () => {
   }
 
   const onSubmit = () => {
-    const {email, password} = form.getFieldsValue()
+    const { email, password } = form.getFieldsValue()
 
-    dispatch(authLogin({email, password}))
+    dispatch(fetchLogin({ email, password }))
   }
 
   return (

@@ -1,6 +1,6 @@
 import { uploadMeme } from './../../../API/memesAPI'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getMemes, likeMeme } from '../../../API/memesAPI'
+import { getMemeList, likeMeme } from '../../../API/memesAPI'
 import { RootState } from '.'
 import { IFetchingStatus } from 'constants/enums'
 import { getUser } from 'API/userApi'
@@ -33,15 +33,15 @@ const initialState: AppState = {
   total: 0,
 }
 
-export const loadMemes = createAsyncThunk(
-  'loadMemes',
+export const fetchMemeList = createAsyncThunk(
+  'fetchMemeList',
   async (page: number = 1) => {
-    return getMemes(page)
+    return getMemeList(page)
   },
 )
 
-export const like = createAsyncThunk(
-  'like',
+export const fetchLikeMeme = createAsyncThunk(
+  'fetchLikeMeme',
   // TODO: сделать чтобы вместо айди использовались строки - поменять модель мема итд
   async ({ id }: { id: number }) => {
     return likeMeme(id)
@@ -62,26 +62,25 @@ const app = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(loadMemes.pending, (state) => {
+      .addCase(fetchMemeList.pending, (state) => {
         state.IFetchingStatus = IFetchingStatus.pending
       })
-      .addCase(
-        loadMemes.fulfilled,
-        (state, { payload: { memes, total, next } }) => {
-          state.IFetchingStatus = IFetchingStatus.fulfilled
-          state.memeList = [...state.memeList, ...memes]
-          state.total = total
-          state.nextPage = next?.page
-        },
-      )
-      .addCase(loadMemes.rejected, (state) => {
+      .addCase(fetchMemeList.fulfilled, (state, action) => {
+        const { memes, total, next } = action.payload.data
+        state.IFetchingStatus = IFetchingStatus.fulfilled
+        state.memeList = [...state.memeList, ...memes]
+        state.total = total
+        // TODO поправить пагинацию и убрать ? тк сейчас next.page приходит не всегда
+        state.nextPage = next?.page
+      })
+      .addCase(fetchMemeList.rejected, (state) => {
         state.IFetchingStatus = IFetchingStatus.rejected
       })
-      .addCase(like.pending, (state) => {
+      .addCase(fetchLikeMeme.pending, (state) => {
         state.IFetchingStatus = IFetchingStatus.pending
       })
       .addCase(
-        like.fulfilled,
+        fetchLikeMeme.fulfilled,
         (
           state,
           {
@@ -117,7 +116,7 @@ const app = createSlice({
           })
         },
       )
-      .addCase(like.rejected, (state) => {
+      .addCase(fetchLikeMeme.rejected, (state) => {
         state.IFetchingStatus = IFetchingStatus.rejected
       })
       .addCase(upload.pending, () => {})
@@ -128,7 +127,7 @@ const app = createSlice({
       })
       .addCase(upload.rejected, () => {})
       .addCase(fetchUser.fulfilled, (state, action) => {
-        state.currentUser = action.payload.user
+        state.currentUser = action.payload.data.user
       })
   },
 })

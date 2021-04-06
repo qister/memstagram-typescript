@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { MemeCard } from 'components/MemeCard/MemeCard'
-import { loadMemes, IMeme } from 'redux/authToolkitRedux/StoreSlices/app'
+import { fetchMemeList, IMeme } from 'redux/authToolkitRedux/StoreSlices/app'
 import { RootState } from 'redux/authToolkitRedux/StoreSlices'
 
 export const Feed = () => {
@@ -16,7 +16,7 @@ export const Feed = () => {
 
   useEffect(() => {
     if (fetching) {
-      dispatch(loadMemes(nextPage))
+      dispatch(fetchMemeList(nextPage))
       setFetching(false)
     }
   }, [fetching])
@@ -45,12 +45,7 @@ export const Feed = () => {
   return (
     <>
       {memeList.map((meme: IMeme, key) => {
-        return (
-          <MemeCard
-            key={key}
-            meme={meme}
-          />
-        )
+        return <MemeCard key={key} meme={meme} />
       })}
     </>
   )
