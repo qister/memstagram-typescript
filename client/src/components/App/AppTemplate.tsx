@@ -5,7 +5,7 @@ import { Route, Switch, Redirect, BrowserRouter as Router } from 'react-router-d
 import { RootState } from '../../redux/authToolkitRedux/StoreSlices'
 import { AppLayout } from 'components/AppLayout'
 import '../../styles/App.scss'
-import { Registration } from 'pages/Registration/Registration'
+import { Registration } from 'pages/Registration/StepsRegistration/Registration'
 import { LoginForm } from 'pages/Authorization/Login'
 import { fetchUpdateTokens } from 'redux/authToolkitRedux/StoreSlices/authorization'
 import { fetchUser } from 'redux/authToolkitRedux/StoreSlices/app'
@@ -39,9 +39,9 @@ export function AppTemplate() {
     </>
   ) : (
     <>
-      <Route path="/login" component={LoginForm} exact />
-      <Route path="/register" component={Registration} exact />
-      <Route component={LoginForm} />
+      <Route path='/login' component={LoginForm} exact />
+      <Route path='/register' component={Registration} exact />
+      {/* <Route component={LoginForm} /> */}
     </>
   )
 
