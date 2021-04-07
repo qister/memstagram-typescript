@@ -1,5 +1,8 @@
 import { Router, Request, Response } from 'express'
+
 const User = require('../models/User')
+const Meme = require('../models/Meme')
+
 const { check, validationResult } = require('express-validator')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
@@ -101,7 +104,6 @@ router.post(
       const { email, password } = req.body
 
       const user = await User.findOne({ email })
-      console.log(user)
 
       if (!user) {
         return res.status(400).json('Пользователь не найден')

@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose'
 
 const memeSchema = new Schema({
   id: Number,
-  author: String,
+  authorId: String,
   description: String,
   imgUrl: String,
   liked: Boolean,
