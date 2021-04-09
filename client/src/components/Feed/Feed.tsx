@@ -1,52 +1,41 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Spin } from 'antd'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 import { MemeCard } from 'components/MemeCard/MemeCard'
 import { fetchMemeList, IMeme } from 'redux/authToolkitRedux/StoreSlices/app'
 import { RootState } from 'redux/authToolkitRedux/StoreSlices'
 
-export const Feed = () => {
-  const [fetching, setFetching] = useState(true)
+import './Feed.scss'
 
+// Если функционала InfiniteScroll не хватит, можно написать свой через рефы
+export const Feed = () => {
   const {
-    app: { memeList, total, nextPage },
+    app: { memeList, total },
   } = useSelector((state: RootState) => state)
 
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    if (fetching) {
-      dispatch(fetchMemeList(nextPage))
-      setFetching(false)
-    }
-  }, [fetching])
+  const loadMemes = () => dispatch(fetchMemeList())
 
   useEffect(() => {
-    document.addEventListener('scroll', scrollHandler)
+    loadMemes()
+  }, [])
 
-    return function () {
-      document.removeEventListener('scroll', scrollHandler)
-    }
-    //TODO убрать зависимость, чтобы работало без нее
-  }, [nextPage])
-
-  const scrollHandler = (e: any) => {
-    if (
-      e.target.documentElement.scrollHeight -
-        (e.target.documentElement.scrollTop + window.innerHeight) <
-        100 &&
-      // TODO пофиксить чтобы в стейте не дублировались мемы и подрузка новых работала корректно
-      memeList.length < total
-    ) {
-      setFetching(true)
-    }
-  }
+  const ROOT_CLASS = 'feed'
 
   return (
-    <>
-      {memeList.map((meme: IMeme, key) => {
-        return <MemeCard key={key} meme={meme} />
-      })}
-    </>
+    <InfiniteScroll
+      dataLength={memeList.length}
+      next={loadMemes}
+      hasMore={memeList.length < total}
+      loader={<Spin />}
+      className={ROOT_CLASS}
+    >
+      {memeList.map((meme: IMeme, index) => (
+        <MemeCard key={index} meme={meme} />
+      ))}
+    </InfiniteScroll>
   )
 }
