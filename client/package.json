@@ -21,6 +21,7 @@
     "axios": "0.21.1",
     "classnames": "2.2.6",
     "less": "4.1.1",
+    "libphonenumber-js": "^1.9.16",
     "materialize-css": "1.0.0",
     "node": "14.15.0",
     "node-sass": "4.14.1",
