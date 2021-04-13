@@ -24,6 +24,7 @@ const start = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
+      useFindAndModify: false
     })
     console.log('монга подключена ', new Date().toLocaleDateString())
 

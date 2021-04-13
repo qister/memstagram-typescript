@@ -18,9 +18,7 @@ const initialState: IRegistrationState = {
 
 export const fetchRegistration = createAsyncThunk(
   'fetchRegistration',
-  (credentials: ICredentials) => {
-    return getRegistration(credentials)
-  },
+  (credentials: ICredentials) => getRegistration(credentials),
 )
 
 const registration = createSlice({
@@ -44,4 +42,4 @@ const registration = createSlice({
 
 const { reducer } = registration
 
-export { reducer as regReducer }
+export { reducer as registration }

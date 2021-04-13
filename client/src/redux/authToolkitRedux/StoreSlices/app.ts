@@ -6,12 +6,11 @@ import { getUser } from 'API/userApi'
 import { RootState } from '.'
 
 export interface IMeme {
-  id: number
+  _id: string
   author: string
   description: string
   imgUrl: string
   likedBy: Array<string>
-  //TODO сделать потом чтобы на сервере считалось лайкнул или нет
   liked: boolean
   created: string
 }
@@ -19,6 +18,7 @@ export interface IMeme {
 export interface AppState {
   currentUser: any
   memeList: Array<IMeme>
+  //TODO поменять на FetchingStatus
   IFetchingStatus: IFetchingStatus
   error: any
   nextPage: number
@@ -46,19 +46,16 @@ export const fetchMemeList = createAsyncThunk(
 
 export const fetchLikeMeme = createAsyncThunk(
   'fetchLikeMeme',
-  // TODO: сделать чтобы вместо айди использовались строки - поменять модель мема итд
-  ({ id }: { id: number }) => {
-    return likeMeme(id)
+  ({ _id }: { _id: string }) => {
+    return likeMeme(_id)
   },
 )
 
-export const upload = createAsyncThunk('upload', async (data: any) => {
-  return uploadMeme(data)
-})
+export const upload = createAsyncThunk('upload', (data: any) =>
+  uploadMeme(data),
+)
 
-export const fetchUser = createAsyncThunk('fetchUser', async () => {
-  return getUser()
-})
+export const fetchUser = createAsyncThunk('fetchUser', getUser)
 
 const app = createSlice({
   name: 'app',
@@ -89,35 +86,14 @@ const app = createSlice({
           state,
           {
             meta: {
-              arg: { id },
+              arg: { _id },
             },
           },
         ) => {
           state.IFetchingStatus = IFetchingStatus.fulfilled
-          // TODO
-          // Вытаскивать текущего пользователя напрямую из другого стора
-          // const { email } = getState().authorization
-          const email = '123' // Хардкод чтобы не ломалась функция ниже
-
-          state.memeList = state.memeList.map((meme: any) => {
-            if (meme.id === id) {
-              return {
-                ...meme,
-                liked: !meme.liked,
-                // TODO поправить, чтобы пересчитывать просто количество лайков, а не весь массив пользователей
-                // можно убрать пересчет массива лайков на клиенте
-                likedBy: meme.likedBy.some((user: string) => user === email)
-                  ? meme.likedBy.filter((user: string) => user !== email)
-                  : [
-                      ...meme.likedBy,
-                      //TODO
-                      email,
-                    ],
-              }
-            } else {
-              return meme
-            }
-          })
+          state.memeList = state.memeList.map((meme) =>
+            meme._id === _id ? { ...meme, liked: !meme.liked } : meme,
+          )
         },
       )
       .addCase(fetchLikeMeme.rejected, (state) => {
@@ -125,8 +101,6 @@ const app = createSlice({
       })
       .addCase(upload.pending, () => {})
       .addCase(upload.fulfilled, (state) => {
-        console.log('success')
-
         state.IFetchingStatus = IFetchingStatus.fulfilled
       })
       .addCase(upload.rejected, () => {})
@@ -136,4 +110,6 @@ const app = createSlice({
   },
 })
 
-export default app.reducer
+const { reducer } = app
+
+export { reducer as app }

@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
+import { IMeme } from '../models/Meme'
 
 const paginatedResults = (model: any) => {
   return async (req: Request, res: Response & any, next: NextFunction) => {
@@ -27,7 +28,14 @@ const paginatedResults = (model: any) => {
         }
       }
 
-      results.memes = await model.find().limit(limit).skip(startIndex).exec()
+      const memesFromDb = await model
+        .find()
+        .limit(limit)
+        .skip(startIndex)
+        .exec()
+
+      const memes = memesFromDb.map((meme: IMeme) => meme.toObject())
+      results.memes = memes
       res.paginatedResults = results
       next()
     } catch (e) {

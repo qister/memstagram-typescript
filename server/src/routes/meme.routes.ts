@@ -19,9 +19,19 @@ router.get('/show', async (req: Request, res: Response) => {
 
 router.get(
   '/getlist',
-  [authenticateToken, paginatedResults(Meme)],
-  async (req: any, res: any) => {
-    res.json(res.paginatedResults)
+  [authenticateToken, getUser, paginatedResults(Meme)],
+  async (req: Request & any, res: Response & any) => {
+    const userId = req.user._id.toString()
+    const filteredResults = {
+      ...res.paginatedResults,
+      memes: res.paginatedResults.memes.map((meme: any) => {
+        return meme.likedBy.some((id: string) => id === userId)
+          ? { ...meme, liked: true }
+          : { ...meme, liked: false }
+      }),
+    }
+
+    res.json(filteredResults)
   }
 )
 
@@ -31,44 +41,32 @@ router.post(
   getUser,
   async (req: Request & any, res: Response) => {
     try {
-      const { email } = req.user
-      const { id } = req.body
-      if (id >= 0) {
-        const memeBefore = await Meme.findOne({ id })
-        // TODO: сделать чтобы лайки были массивом id или юзернеймов, т.к. почту можно поменять и в целом не очень хорошо на клиент передавать список почт
-        if (memeBefore.likedBy.some((user: string) => user === email)) {
-          await Meme.updateOne(
-            { id },
-            {
-              likedBy: memeBefore.likedBy.filter(
-                (user: string) => user !== email
-              ),
-            }
-          )
+      const userId = req.user._id.toString() // Формат будет "5fa1c20446d1b111d6add6ae"
+      const memeId = req.body._id // формат будет ObjectId("5fa1c20446d1b111d6add6ae")
+      const memeBefore = await Meme.findById(memeId)
 
-          // TODO убрать этот пересчет и изменять только значение liked
-          const memeAfter = {
-            ...memeBefore.toObject(),
-            likedBy: memeBefore.likedBy.filter(
-              (user: string) => user !== email
-            ),
-          }
-          res.status(201).json({ meme: memeAfter })
-        } else {
-          await Meme.updateOne(
-            { id },
-            { likedBy: [...memeBefore.likedBy, email] }
-          )
-          // TODO убрать этот пересчет и изменять только значение liked
-          const memeAfter = {
-            ...memeBefore.toObject(),
-            likedBy: [...memeBefore.likedBy, email],
-          }
+      if (memeBefore.likedBy.some((id: string) => id === userId)) {
+        await Meme.findByIdAndUpdate(memeId, {
+          likedBy: memeBefore.likedBy.filter((id: string) => id !== userId),
+        })
 
-          res.status(201).json({ meme: memeAfter })
+        //TODO отправлять на фронт только нужные поля, а не все, что есть в меме
+        const memeAfter = {
+          ...memeBefore.toObject(),
+          liked: false,
         }
+        res.status(201).json({ meme: memeAfter })
       } else {
-        throw new Error('unable to like meme')
+        await Meme.findByIdAndUpdate(memeId, {
+          likedBy: [...memeBefore.likedBy, userId],
+        })
+        //TODO отправлять на фронт только нужные поля, а не все, что есть в меме
+        const memeAfter = {
+          ...memeBefore.toObject(),
+          liked: true,
+        }
+
+        res.status(201).json({ meme: memeAfter })
       }
     } catch (e) {
       console.log('Like error', e.message)
@@ -117,16 +115,11 @@ router.post(
       const descriptionList = onlyOneMemeUploaded
         ? [description]
         : [...description]
-      const total = await Meme.countDocuments().exec()
       const user = req.user
 
-      //
-
       const memeArray = descriptionList.map((description: string, index) => ({
-        //TODO избавится от использования id
-        id: total + index,
-        //TODO добавлять просто id юзера или посмотреть лучшие практики как лучше делать
-        author: user.email,
+        //TODO не использовать toString чтобы были связи у мемов с юзерами в базе
+        authorId: user._id.toString(),
         description,
         imgUrl: files[index].path,
         likedBy: [],
