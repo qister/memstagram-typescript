@@ -1,9 +1,9 @@
 import { uploadMeme } from './../../../API/memesAPI'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getMemeList, likeMeme } from '../../../API/memesAPI'
-import { RootState } from '.'
 import { IFetchingStatus } from 'constants/enums'
 import { getUser } from 'API/userApi'
+import { RootState } from '.'
 
 export interface IMeme {
   id: number
@@ -21,7 +21,7 @@ export interface AppState {
   memeList: Array<IMeme>
   IFetchingStatus: IFetchingStatus
   error: any
-  nextPage?: number
+  nextPage: number
   total: number
 }
 
@@ -30,20 +30,24 @@ const initialState: AppState = {
   memeList: [],
   IFetchingStatus: IFetchingStatus.idle,
   error: null,
+  nextPage: 1,
   total: 0,
 }
 
 export const fetchMemeList = createAsyncThunk(
   'fetchMemeList',
-  async (page: number = 1) => {
-    return getMemeList(page)
+  (_, { getState }) => {
+    const {
+      app: { nextPage },
+    } = getState() as RootState
+    return getMemeList(nextPage)
   },
 )
 
 export const fetchLikeMeme = createAsyncThunk(
   'fetchLikeMeme',
   // TODO: сделать чтобы вместо айди использовались строки - поменять модель мема итд
-  async ({ id }: { id: number }) => {
+  ({ id }: { id: number }) => {
     return likeMeme(id)
   },
 )
