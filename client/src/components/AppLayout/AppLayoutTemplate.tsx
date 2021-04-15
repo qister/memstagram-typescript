@@ -1,8 +1,6 @@
 import React from 'react'
 import { Layout, Menu, Avatar } from 'antd'
-import {
-  UserOutlined,
-} from '@ant-design/icons'
+import { UserOutlined } from '@ant-design/icons'
 import classNames from 'classnames'
 
 import { User } from '../User'
@@ -29,11 +27,10 @@ export const AppLayoutTemplate = ({
   setCollapsed,
   onHandleLogout,
 }: IProps): JSX.Element => {
-  const layout_container_class = classNames('layout-container',
-    {
-      ['layout-container_theme-height']: !Array.isArray(defaultSelectedKey) && defaultSelectedKey !== ContentPath.Feed
-    }
-  )
+  const layout_container_class = classNames('layout-container', {
+    ['layout-container_theme-height']:
+      !Array.isArray(defaultSelectedKey) && defaultSelectedKey !== ContentPath.Feed,
+  })
   const ROOT_CLASS = 'layout-container'
   return (
     <Layout className={layout_container_class}>
@@ -44,14 +41,16 @@ export const AppLayoutTemplate = ({
         onCollapse={setCollapsed}
       >
         <div className={`${ROOT_CLASS}__logo`} />
-        <Menu 
-          theme='dark'
-          mode='inline'
+        <Menu
+          theme="dark"
+          mode="inline"
           selectedKeys={defaultSelectedKey}
           onClick={onMenuItemClick}
         >
           {MENU_SIDEBAR_ITEMS.map((item: MenuSideBarItem) => (
-            <Menu.Item key={item.key} icon={<UserOutlined />}>{item.title}</Menu.Item>
+            <Menu.Item key={item.key} icon={<UserOutlined />}>
+              {item.title}
+            </Menu.Item>
           ))}
         </Menu>
       </Sider>
@@ -70,7 +69,7 @@ export const AppLayoutTemplate = ({
             minHeight: 280,
           }}
         >
-          <div className='app'>{routes}</div>
+          <div className="app">{routes}</div>
         </Content>
       </Layout>
     </Layout>

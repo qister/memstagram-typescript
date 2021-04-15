@@ -1,0 +1,68 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "plugin:prettier/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "prettier",
+    "sonarjs",
+    "jsx-a11y",
+    "import"
+  ],
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jest": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2019,
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-param-reassign": 2,
+    "react/self-closing-comp": [
+      2,
+      {
+        "component": true
+      }
+    ],
+    "import/no-useless-path-segments": [
+      2,
+      {
+        "noUselessIndex": true
+      }
+    ],
+    "prettier/prettier": [
+      2,
+      {
+        "singleQuote": true
+      }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": [
+          "src"
+        ],
+        "extensions": [
+          ".js",
+          ".ts",
+          ".tsx"
+        ]
+      }
+    },
+    "import/ignore": [
+      "node_modules"
+    ],
+    "react": {
+      "pragma": "React",
+      "version": "detect"
+    }
+  }
+}

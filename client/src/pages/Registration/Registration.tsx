@@ -25,9 +25,7 @@ export const Registration = () => {
   const dispatch = useDispatch()
   const history = useHistory()
 
-  const { fetchingStatus } = useSelector(
-    (state: RootState) => state.registration,
-  )
+  const { fetchingStatus } = useSelector((state: RootState) => state.registration)
 
   // TODO: вынести это в редюсер и убрать отсюда, надо глянуть как с роутингом внутри стора работать
   useEffect(() => {
@@ -53,7 +51,7 @@ export const Registration = () => {
       <Form
         {...layout}
         form={form}
-        name='register'
+        name="register"
         initialValues={{
           residence: ['zhejiang', 'hangzhou', 'xihu'],
           prefix: '86',
@@ -61,8 +59,8 @@ export const Registration = () => {
         scrollToFirstError
       >
         <Form.Item
-          name='email'
-          label='E-mail'
+          name="email"
+          label="E-mail"
           rules={[
             {
               type: 'email',
@@ -78,8 +76,8 @@ export const Registration = () => {
         </Form.Item>
 
         <Form.Item
-          name='password'
-          label='Password'
+          name="password"
+          label="Password"
           rules={[
             {
               required: true,
@@ -92,8 +90,8 @@ export const Registration = () => {
         </Form.Item>
 
         <Form.Item
-          name='confirm'
-          label='Confirm Password'
+          name="confirm"
+          label="Confirm Password"
           dependencies={['password']}
           hasFeedback
           rules={[
@@ -106,9 +104,7 @@ export const Registration = () => {
                 if (!value || getFieldValue('password') === value) {
                   return Promise.resolve()
                 }
-                return Promise.reject(
-                  new Error('The two passwords that you entered do not match!'),
-                )
+                return Promise.reject(new Error('The two passwords that you entered do not match!'))
               },
             }),
           ]}
@@ -117,11 +113,11 @@ export const Registration = () => {
         </Form.Item>
 
         <Form.Item
-          name='nickname'
+          name="nickname"
           label={
             <span>
               Nickname&nbsp;
-              <Tooltip title='What do you want others to call you?'>
+              <Tooltip title="What do you want others to call you?">
                 <QuestionCircleOutlined />
               </Tooltip>
             </span>
@@ -139,12 +135,7 @@ export const Registration = () => {
         </Form.Item>
 
         <Form.Item {...tailLayout}>
-          <Button
-            type='primary'
-            htmlType='submit'
-            onClick={onSubmit}
-            disabled={!isValid}
-          >
+          <Button type="primary" htmlType="submit" onClick={onSubmit} disabled={!isValid}>
             Register
           </Button>
         </Form.Item>

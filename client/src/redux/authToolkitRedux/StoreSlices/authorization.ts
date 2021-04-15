@@ -23,19 +23,13 @@ const initialState: IAuthorizationState = {
   fetchingStatus: IFetchingStatus.idle,
 }
 
-export const fetchLogin = createAsyncThunk(
-  'fetchLogin',
-  (credentials: ICredentials) => {
-    return getLogin(credentials)
-  },
-)
+export const fetchLogin = createAsyncThunk('fetchLogin', (credentials: ICredentials) => {
+  return getLogin(credentials)
+})
 
 export const fetchLogout = createAsyncThunk('fetchLogout', getLogout)
 
-export const fetchUpdateTokens = createAsyncThunk(
-  'fetchUpdateTokens',
-  updateTokens,
-)
+export const fetchUpdateTokens = createAsyncThunk('fetchUpdateTokens', updateTokens)
 
 const authorization = createSlice({
   name: 'authorization',

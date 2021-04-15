@@ -26,17 +26,11 @@ export const MemeCard = ({ meme: { _id, author, liked, imgUrl } }: IProps) => {
     <Card
       className={ROOT_CLASS}
       cover={
-        <img
-          alt='example'
-          src={imgLink}
-          style={{ maxHeight: `${window.innerHeight * 0.8}px` }}
-        />
+        <img alt="example" src={imgLink} style={{ maxHeight: `${window.innerHeight * 0.8}px` }} />
       }
     >
       <Meta
-        avatar={
-          <Avatar src='https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png' />
-        }
+        avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
         title={author}
       />
       <Icon onClickLike={toggleLike} liked={liked} />
