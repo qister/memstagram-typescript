@@ -1,18 +1,38 @@
-import React from 'react'
-import { Form, Input, Button, Tooltip, Checkbox, Select } from 'antd'
+import React, { useState } from 'react'
+import { Form, Input, Tooltip, Select } from 'antd'
 import { QuestionCircleOutlined } from '@ant-design/icons'
+import { parsePhoneNumberFromString } from 'libphonenumber-js'
 
 import { IStep } from '../Registration'
 
 const { Option } = Select
 
 export const Step2 = ({
-    form,
+    hidden,
     onChangeForm,
-    normalizePhoneNumber,
-    next,
-    prev,
 }: IStep) => {
+
+    const [hasPhone, setIsPhone] = useState(false);
+
+    const togglePhone = () => {
+        setIsPhone(!hasPhone)
+    }
+
+    const normalizePhoneNumber = (value: string) => {
+        if (value) {
+            const phoneNumber = parsePhoneNumberFromString(value, 'RU')
+            if (!phoneNumber) {
+                return value
+            }
+
+            return (
+                phoneNumber.formatInternational()
+            )
+        } else {
+            return
+        }
+    }
+
     const prefixSelector = (
         <Form.Item name="prefix" noStyle>
           <Select style={{ width: 70 }}>
@@ -20,16 +40,9 @@ export const Step2 = ({
           </Select>
         </Form.Item>
     );
-
-    const onNextClick = () => {
-        form
-            .validateFields()
-            .then(() => next())
-            .catch(() => { return })
-    }
-
+    const ROOT_CLASS = 'step'
     return (
-        <>
+        <div className={ROOT_CLASS}>
             <Form.Item
                 name='nickname'
                 label={
@@ -39,13 +52,14 @@ export const Step2 = ({
                         </Tooltip>
                     </span>
                 }
-            rules={[
-              {
-                required: true,
-                message: 'Please input your nickname!',
-                whitespace: true,
-              },
-            ]}
+                rules={[
+                {
+                    required: true,
+                    message: 'Please input your nickname!',
+                    whitespace: true,
+                },
+                ]}
+                hidden={hidden}
             >
                 <Input onChange={onChangeForm} />
             </Form.Item>
@@ -54,6 +68,7 @@ export const Step2 = ({
                 name="phone"
                 label="Phone Number"
                 rules={[{ required: false, message: 'Please input your phone number!' }]}
+                hidden={hidden}
             >
                 <Input
                     addonBefore={prefixSelector}
@@ -64,22 +79,6 @@ export const Step2 = ({
                     // }}
                 />
             </Form.Item>
-
-            <Form.Item>
-                <Button
-                    type="primary"
-                    onClick={onNextClick}
-                    htmlType="submit"
-                >
-                    Дальше
-                </Button>
-            </Form.Item>
-
-            <Form.Item>
-                <Button style={{ margin: '0 8px' }} onClick={prev}>
-                    Назад
-                </Button>
-            </Form.Item>
-        </>
+        </div>
     )
 }

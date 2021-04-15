@@ -1,86 +1,77 @@
 import React, { useState } from 'react'
-import { Upload, message } from 'antd';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { Upload, Form } from 'antd';
+import ImgCrop from 'antd-img-crop';
+import classNames from 'classnames'
 
 import 'antd/dist/antd.css';
-import './Steps.scss';
 
 import { IStep } from '../Registration'
 
-export const Step3 = ({}: IStep) => {
-    const [loading, setLoading] = useState(false)
-    const [imageUrl, setImageUrl] = useState('')
+export const Step3 = ({
+    hidden,
+    form,
+    theme,
+    onChangeForm,
+}: IStep) => {
+    const [fileList, setFileList] = useState<any>([]);
 
-    function getBase64(img: any, callback: any) {
-        console.log('getBase64 img', img);
-        
-        return new Promise((resolve, reject) => {
+    const {
+        email,
+        nickname,
+        phone
+    } = form.getFieldsValue()
+    
+      const onChange = ({ fileList: newFileList }: any) => {
+        setFileList(newFileList);
+        // TODO записать файл через onChangeForm
+      };
+    
+    const onPreview = async (file: any) => {
+        let src = file.url;
+        if (!src) {
+          src = await new Promise(resolve => {
             const reader = new FileReader();
-            reader.addEventListener('load', () => callback(reader.result));
-            reader.readAsDataURL(img);
+            reader.readAsDataURL(file.originFileObj);
             reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
-    }
-    
-    function beforeUpload(file: any) {
-        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-        if (!isJpgOrPng) {
-          message.error('You can only upload JPG/PNG file!');
+          });
         }
-        // TODO добавить свою проверку на размер
-        // const isLt2M = file.size / 1024 / 1024 < 2;
-        // if (!isLt2M) {
-        //   message.error('Image must smaller than 2MB!');
-        // }
-        return isJpgOrPng;
-    }
-    
-    const uploadButton = (
-        <div>
-            {loading ? <LoadingOutlined /> : <PlusOutlined />}
-            <div style={{ marginTop: 8 }}>Upload</div>
-        </div>
-    );
-
-    const handleChange = (info: any) => {
-        console.log('info', info);
-        
-        if (info.file.status === 'uploading') {
-            setLoading(true)
-          return;
-        }
-
-        if (info.file.status === 'error') {
-            setLoading(false)
-          return;
-        }
-
-        if (info.file.status === 'done') {
-          // Get this url from response in real world.
-          getBase64(info.file.originFileObj, (imgUrl: React.SetStateAction<string>) => {
-                setLoading(false)
-                setImageUrl(imgUrl)
-            }
-          );
-        }
+        const image = new Image();
+        image.src = src;
+        const imgWindow = window.open(src);
+        imgWindow?.document.write(image.outerHTML);
     };
 
-    console.log('load imageUrl', imageUrl);
-    
+
+
+    const ROOT_CLASS = 'step'
+    const stepClassName = classNames(ROOT_CLASS, {
+        [`${ROOT_CLASS}_theme-${theme}`]: !!theme,
+    })
     return (
-        <Upload
-            name="avatar"
-            listType="picture-card"
-            className="avatar-uploader"
-            showUploadList={false}
-            action={imageUrl}
-            beforeUpload={beforeUpload}
-            onChange={handleChange}
-        >
-            {imageUrl ? 
-                <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : 
-                uploadButton}
-      </Upload>
+        <div className={stepClassName}>
+            {!hidden &&
+                <div className={`${ROOT_CLASS}__filled-fields`}>
+                    <div className={`${ROOT_CLASS}__field`}>Email: {email}</div>
+                    <div className={`${ROOT_CLASS}__field`}>Nickname: {nickname}</div>
+                    <div className={`${ROOT_CLASS}__field`}>Phone number: {phone}</div>
+                </div>
+            }
+            <Form.Item
+                hidden={hidden}
+                name="upload"
+            >
+                <ImgCrop rotate>
+                    <Upload
+                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                        listType="picture-card"
+                        fileList={fileList}
+                        onChange={onChange}
+                        onPreview={onPreview}
+                    >
+                        {!fileList.length && '+ Upload'}
+                    </Upload>
+                </ImgCrop>
+            </Form.Item>
+        </div>
     )
 }
