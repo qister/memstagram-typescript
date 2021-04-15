@@ -1,27 +1,53 @@
 import React from 'react'
-import { Button, message, Form } from 'antd';
+import { Button, message, Form, Row, Col } from 'antd';
+
+import '../Registration.scss'
 
 interface IActionBar {
-    prev: () => void
+    current: number
+    tailLayout: any
+    onPrevStepClick: () => void
+    onNextStepClick: () => void
 }
 
 export const ActionBarTemplate = ({
-    prev,
+    current,
+    tailLayout,
+    onPrevStepClick,
+    onNextStepClick,
 }: IActionBar) => {
     return (
         <div className="steps-action">
-            <>
-                <Button
-                    type="primary"
-                    onClick={() => message.success('Processing complete!')}
-                    htmlType="submit"
-                >
-                    Зарегистрироваться
-                </Button>
-                <Button style={{ margin: '0 8px' }} onClick={prev}>
-                    Назад
-                </Button>
-            </>
+                {current > 0 &&
+                        <Form.Item>
+                            <Button onClick={onPrevStepClick}>
+                                Назад
+                            </Button>
+                        </Form.Item>
+                }
+                {current !== 2 &&
+                        <Form.Item {...tailLayout}>
+                            <Button
+                                type="primary"
+                                onClick={onNextStepClick}
+                                htmlType="submit"
+                            >
+                                Дальше
+                            </Button>
+                        </Form.Item>
+                }
+                {current === 2 &&
+                        <Form.Item>
+                            <Button
+                                style={{ marginLeft: '33px' }}
+                                type="primary"
+                                onClick={() => message.success('Processing complete!')}
+                                htmlType="submit"
+                            >
+                                Зарегистрироваться
+                            </Button>
+                        </Form.Item>
+                }
         </div>
     )
 }

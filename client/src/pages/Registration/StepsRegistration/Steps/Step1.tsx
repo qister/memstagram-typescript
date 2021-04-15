@@ -1,24 +1,15 @@
 import React from 'react'
-import { Form, Input, Button, Tooltip } from 'antd'
+import { Form, Input } from 'antd'
 
 import { IStep } from '../Registration'
 
 export const Step1 = ({
-    form,
-    tailLayout,
+    hidden,
     onChangeForm,
-    next,
 }: IStep) => {
-
-    const onNextClick = () => {
-        form
-            .validateFields()
-            .then(() => next())
-            .catch(() => { return })
-    }
-
+    const ROOT_CLASS = 'step'
     return (
-        <>
+        <div className={ROOT_CLASS}>
             <Form.Item
                 name='email'
                 label='E-mail'
@@ -32,7 +23,8 @@ export const Step1 = ({
                         message: 'Please input your E-mail!',
                     },
                 ]}
-                >
+                hidden={hidden}
+            >
                 <Input
                     onChange={onChangeForm}
                     style={{ width: '100%' }}
@@ -49,7 +41,8 @@ export const Step1 = ({
                     },
                 ]}
                 hasFeedback
-                >
+                hidden={hidden}
+            >
                 <Input.Password
                     onChange={onChangeForm}
                     style={{ width: '100%' }}
@@ -77,22 +70,13 @@ export const Step1 = ({
                     },
                     }),
                 ]}
-                >
+                hidden={hidden}
+            >
                 <Input.Password
                     onChange={onChangeForm}
                     style={{ width: '100%' }}
                 />
             </Form.Item>
-
-            <Form.Item {...tailLayout}>
-                <Button
-                    type="primary"
-                    onClick={onNextClick}
-                    htmlType="submit"
-                >
-                    Дальше
-                </Button>
-            </Form.Item>
-        </>
+        </div>
     )
 }

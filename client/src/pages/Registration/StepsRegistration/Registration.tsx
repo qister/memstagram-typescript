@@ -4,7 +4,6 @@ import {
     Typography,
     Form,
 } from 'antd';
-import { parsePhoneNumberFromString } from 'libphonenumber-js'
 
 import { Step1 } from './Steps/Step1';
 import { Step2 } from './Steps/Step2';
@@ -29,60 +28,56 @@ const steps = [
 ];
 
 const layout = {
+    labelCol: { span: 8 },
     wrapperCol: { span: 16 },
-}
+};
 
 const tailLayout = {
     wrapperCol: { offset: 8, span: 16 },
 }
 
 export interface IStep {
-    tailLayout?: any, // { offset: number, span: number } TODO ругается, посмотреть
-    form: any
-    hasPhone?: boolean,
-    togglePhone?: () => void
+    form?: any
+    hidden: boolean,
+    theme?: string
     onChangeForm?: () => void
-    normalizePhoneNumber?: (value: string) => void
-    next: () => void
-    prev?: () => void
 }
 
 export const Registration = () => {
     const [current, setCurrent] = useState(0);
-    const [hasPhone, setIsPhone] = useState(false);
     const [form] = Form.useForm()
 
-    const next = () => {
-        setCurrent(current + 1);
-    };
-
-    const prev = () => {
-        setCurrent(current - 1);
-    };
-
     const onChangeForm = () => {
-        console.log('Registration form', form.getFieldsValue());
+        console.log('Registration form', form.getFieldsValue())
     };
 
-    const togglePhone = () => {
-        setIsPhone(!hasPhone)
-    }
+    const onNextClick = () => {
+        if (current === 0) {
+            form
+                .validateFields(['email', 'password', 'confirm'])
+                .then((data) => {
+                    console.log('validate data', data);
+                    
+                    setCurrent(current + 1);
+                })
+                .catch(() => { return })
+        }
 
-    const normalizePhoneNumber = (value: string) => {
-        if (value) {
-            const phoneNumber = parsePhoneNumberFromString(value, 'RU')
-            if (!phoneNumber) {
-                return value
-            }
-
-            return (
-                phoneNumber.formatInternational()
-            )
-        } else {
-            return
+        if (current === 1) {
+            form
+                .validateFields(['nickname'])
+                .then(() => setCurrent(current + 1))
+                .catch(() => { return })
         }
     }
 
+    const onPrevStepClick = () => {
+        setCurrent(current - 1);
+    };
+
+    // console.log('Registration form', form.getFieldsValue());
+
+    console.log('Registration form', form.getFieldsValue())
     const ROOT_CLASS = 'registration'
     return (
         <div className={ROOT_CLASS}>
@@ -91,7 +86,11 @@ export const Registration = () => {
             </div>
             <Steps current={current} className={`${ROOT_CLASS}__steps`}>
                 {steps.map(item => (
-                <Step key={item.title} />
+                <Step 
+                    key={item.title}
+                    // TODO дописать, чтобы можно было переходить на предыдущий шаг
+                    onClick={onNextClick}
+                />
                 ))}
             </Steps>
             <div className={`${ROOT_CLASS}__steps-content`}>
@@ -100,41 +99,29 @@ export const Registration = () => {
                     name='register'
                     form={form}
                     initialValues={{
-                        residence: ['zhejiang', 'hangzhou', 'xihu'],
                         prefix: '7',
                     }}
                     scrollToFirstError
                 >
-                    {current === 0 &&
-                        <Step1
-                            tailLayout={tailLayout}
-                            form={form}
-                            onChangeForm={onChangeForm}
-                            next={next}
-                        />
-                    }
-                    {current === 1 &&
-                        <Step2
-                            form={form}
-                            next={next}
-                            prev={prev}
-                            hasPhone={hasPhone}
-                            togglePhone={togglePhone}
-                            onChangeForm={onChangeForm}
-                            normalizePhoneNumber={normalizePhoneNumber}
-                        />
-                    }
-                    {current === 2 &&
-                        <Step3
-                            form={form}
-                            next={next}
-                        />
-                    }
-                    {current === steps.length - 1 && (
-                        <ActionBar
-                            prev={prev}
-                        />
-                    )}
+                    <Step1
+                        onChangeForm={onChangeForm}
+                        hidden={current !== 0}
+                    />
+                    <Step2
+                        onChangeForm={onChangeForm}
+                        hidden={current !== 1}
+                    />
+                    <Step3
+                        hidden={current !== 2}
+                        form={form}
+                        theme='step_3'
+                    />
+                    <ActionBar
+                        tailLayout={tailLayout}
+                        current={current}
+                        onNextStepClick={onNextClick}
+                        onPrevStepClick={onPrevStepClick}
+                    />
                 </Form>
             </div>
         </div>
