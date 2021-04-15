@@ -12,11 +12,11 @@ interface IProps {
   meme: IMeme
 }
 
-export const MemeCard = ({ meme: { id, author, liked, imgUrl } }: IProps) => {
+export const MemeCard = ({ meme: { _id, author, liked, imgUrl } }: IProps) => {
   const dispatch = useDispatch()
 
   const toggleLike = () => {
-    dispatch(fetchLikeMeme({ id }))
+    dispatch(fetchLikeMeme({ _id }))
   }
 
   const imgLink = 'http://localhost:4000/' + imgUrl.slice(7)

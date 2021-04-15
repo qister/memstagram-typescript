@@ -41,6 +41,7 @@ const authorization = createSlice({
   name: 'authorization',
   initialState,
   reducers: {
+    // TODO это убрать т.к. уже есть fetchUpdateTokens
     initToken: (state) => {
       const token = getAccessTokenFromCookie()
       // TODO наверное надо добавить еще проверку на валидность, получение юзера сразу или обновление токена
@@ -85,5 +86,5 @@ const authorization = createSlice({
 
 const { reducer } = authorization
 
-export { reducer as authReducer }
+export { reducer as authorization }
 export const { initToken } = authorization.actions

@@ -33,7 +33,7 @@ export const Feed = () => {
       loader={<Spin />}
       className={ROOT_CLASS}
     >
-      {memeList.map((meme: IMeme, index) => (
+      {memeList.map((meme, index) => (
         <MemeCard key={index} meme={meme} />
       ))}
     </InfiniteScroll>
