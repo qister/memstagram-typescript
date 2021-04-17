@@ -1,22 +1,22 @@
-require("dotenv").config();
+require('dotenv').config()
 const express = require('express')
 
 import mongoose from 'mongoose'
 import config from 'config'
-const cookieParser = require('cookie-parser'); 
+const cookieParser = require('cookie-parser')
 
 const app = express()
-app.use(cookieParser());
+app.use(cookieParser())
 
 const PORT: number = config.get('port') || 5000
 const URI: string = config.get('mongoUri')
-app.use(express.json({extended: true}))
+app.use(express.json({ extended: true }))
 
 app.use('/api/meme', require('./routes/meme.routes'))
 app.use('/api/auth', require('./routes/auth.routes'))
 app.use('/api/user', require('./routes/user.routes'))
 
-app.use(express.static('public'));
+app.use(express.static('public'))
 
 const start = async () => {
   try {
@@ -24,7 +24,7 @@ const start = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
-      useFindAndModify: false
+      useFindAndModify: false,
     })
     console.log('монга подключена ', new Date().toLocaleDateString())
 
