@@ -14,9 +14,7 @@ export interface MenuSideBarItem {
 export const AppLayoutBehavior = (): JSX.Element => {
   const dispatch = useDispatch()
   const [collapsed, setCollapsed] = useState(false)
-  const [defaultSelectedKey, setOnTapeDefault] = useState<ContentPath[]>([
-    ContentPath.Feed,
-  ])
+  const [defaultSelectedKey, setOnTapeDefault] = useState<ContentPath[]>([ContentPath.Feed])
 
   const history = useHistory()
 

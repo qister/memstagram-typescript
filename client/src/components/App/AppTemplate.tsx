@@ -1,11 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  Route,
-  Switch,
-  Redirect,
-  BrowserRouter as Router,
-} from 'react-router-dom'
+import { Route, Switch, Redirect, BrowserRouter as Router } from 'react-router-dom'
 
 import { RootState } from '../../redux/authToolkitRedux/StoreSlices'
 import { AppLayout } from 'components/AppLayout'
@@ -16,9 +11,7 @@ import { fetchUpdateTokens } from 'redux/authToolkitRedux/StoreSlices/authorizat
 import { fetchUser } from 'redux/authToolkitRedux/StoreSlices/app'
 
 export function AppTemplate() {
-  const { isAuthenticated } = useSelector(
-    (state: RootState) => state.authorization,
-  )
+  const { isAuthenticated } = useSelector((state: RootState) => state.authorization)
 
   const dispatch = useDispatch()
 
@@ -41,13 +34,13 @@ export function AppTemplate() {
 
   const routes = isAuthenticated ? (
     <>
-      <Route path='/' component={AppLayout} />
-      <Redirect to='/feed' />
+      <Route path="/" component={AppLayout} />
+      <Redirect to="/feed" />
     </>
   ) : (
     <>
-      <Route path='/login' component={LoginForm} exact />
-      <Route path='/register' component={Registration} exact />
+      <Route path="/login" component={LoginForm} exact />
+      <Route path="/register" component={Registration} exact />
       <Route component={LoginForm} />
     </>
   )

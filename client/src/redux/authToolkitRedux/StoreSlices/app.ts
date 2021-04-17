@@ -1,6 +1,6 @@
-import { uploadMeme } from './../../../API/memesAPI'
+import { uploadMeme, getMemeList, likeMeme } from '../../../API/memesAPI'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getMemeList, likeMeme } from '../../../API/memesAPI'
+
 import { IFetchingStatus } from 'constants/enums'
 import { getUser } from 'API/userApi'
 import { RootState } from '.'
@@ -34,26 +34,18 @@ const initialState: AppState = {
   total: 0,
 }
 
-export const fetchMemeList = createAsyncThunk(
-  'fetchMemeList',
-  (_, { getState }) => {
-    const {
-      app: { nextPage },
-    } = getState() as RootState
-    return getMemeList(nextPage)
-  },
-)
+export const fetchMemeList = createAsyncThunk('fetchMemeList', (_, { getState }) => {
+  const {
+    app: { nextPage },
+  } = getState() as RootState
+  return getMemeList(nextPage)
+})
 
-export const fetchLikeMeme = createAsyncThunk(
-  'fetchLikeMeme',
-  ({ _id }: { _id: string }) => {
-    return likeMeme(_id)
-  },
-)
+export const fetchLikeMeme = createAsyncThunk('fetchLikeMeme', ({ _id }: { _id: string }) => {
+  return likeMeme(_id)
+})
 
-export const upload = createAsyncThunk('upload', (data: any) =>
-  uploadMeme(data),
-)
+export const upload = createAsyncThunk('upload', (data: any) => uploadMeme(data))
 
 export const fetchUser = createAsyncThunk('fetchUser', getUser)
 

@@ -18,5 +18,5 @@ export const setAccessTokenToCookie = (accessToken: string) => {
 }
 
 export const deleteAccessTokenFromCookie = () => {
-  document.cookie = "access_token=null;max-age=0"
+  document.cookie = 'access_token=null;max-age=0'
 }

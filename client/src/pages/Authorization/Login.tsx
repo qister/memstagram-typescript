@@ -32,51 +32,48 @@ export const LoginForm = () => {
   return (
     <div className={ROOT_CLASS}>
       <Form
-        name='normal_login'
-        className='login-form'
+        name="normal_login"
+        className="login-form"
         initialValues={{ remember: true }}
         form={form}
       >
-        <Form.Item
-          name='email'
-          rules={[{ required: true, message: 'Please input your email!' }]}
-        >
+        <Form.Item name="email" rules={[{ required: true, message: 'Please input your email!' }]}>
           <Input
-            prefix={<UserOutlined className='site-form-item-icon' />}
-            placeholder='email'
+            prefix={<UserOutlined className="site-form-item-icon" />}
+            placeholder="email"
             onChange={onChangeForm}
           />
         </Form.Item>
         <Form.Item
-          name='password'
+          name="password"
           rules={[{ required: true, message: 'Please input your Password!' }]}
         >
           <Input
-            prefix={<LockOutlined className='site-form-item-icon' />}
-            type='password'
-            placeholder='Password'
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            type="password"
+            placeholder="Password"
             onChange={onChangeForm}
           />
         </Form.Item>
         <Form.Item>
-          <Form.Item name='remember' valuePropName='checked' noStyle>
+          <Form.Item name="remember" valuePropName="checked" noStyle>
             <Checkbox onChange={onChangeForm}>Remember me</Checkbox>
           </Form.Item>
           {/* TODO добавить восстановление пароля */}
-          <Link href=''>Forgot password</Link>
+          <Link href="">Forgot password</Link>
         </Form.Item>
 
         <Form.Item>
           <Button
-            type='primary'
-            htmlType='submit'
-            className='login-form-button'
+            type="primary"
+            htmlType="submit"
+            className="login-form-button"
             disabled={!isValid}
             onClick={onSubmit}
           >
             Log in
           </Button>
-          Or <Link href='/register'>register now</Link>
+          Or <Link href="/register">register now</Link>
         </Form.Item>
       </Form>
     </div>
