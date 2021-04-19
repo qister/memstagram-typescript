@@ -1,11 +1,12 @@
-import { uploadMeme, getMemeList, likeMeme } from '../../../API/memesAPI'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { IFetchingStatus } from 'constants/enums'
 import { getUser } from 'API/userApi'
 import { RootState } from '.'
+import { getMemeList, getUserMemes, likeMeme, uploadMeme } from 'API/memesAPI'
 
 export interface IMeme {
+  //TODO мб тип надо поменять на ObjectId, хотя сейчас работает и так
   _id: string
   author: string
   description: string
@@ -17,6 +18,7 @@ export interface IMeme {
 
 export interface AppState {
   currentUser: any
+  userMemes: Array<IMeme>
   memeList: Array<IMeme>
   //TODO поменять на FetchingStatus
   IFetchingStatus: IFetchingStatus
@@ -27,6 +29,7 @@ export interface AppState {
 
 const initialState: AppState = {
   currentUser: {},
+  userMemes: [],
   memeList: [],
   IFetchingStatus: IFetchingStatus.idle,
   error: null,
@@ -40,6 +43,8 @@ export const fetchMemeList = createAsyncThunk('fetchMemeList', (_, { getState })
   } = getState() as RootState
   return getMemeList(nextPage)
 })
+
+export const fetchUserMemes = createAsyncThunk('fetchUserMemes', getUserMemes)
 
 export const fetchLikeMeme = createAsyncThunk('fetchLikeMeme', ({ _id }: { _id: string }) => {
   return likeMeme(_id)
@@ -98,6 +103,11 @@ const app = createSlice({
       .addCase(upload.rejected, () => {})
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.currentUser = action.payload.data.user
+      })
+      //TODO разделить этот редюсер
+      .addCase(fetchUserMemes.fulfilled, (state, action) => {
+        state.userMemes = action.payload.data.memes
+        state.currentUser.memesCount = action.payload.data.total
       })
   },
 })

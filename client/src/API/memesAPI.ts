@@ -19,6 +19,9 @@ interface IGetMemesReult {
 export const getMemeList = (page = 1) =>
   axiosInstance.get<IGetMemesReult>(`/api/meme/getlist?page=${page}&limit=2`)
 
+export const getUserMemes = () =>
+  axiosInstance.get<{ memes: IMeme[]; total: number }>(`/api/meme/user_memes`)
+
 export const likeMeme = (_id: string) =>
   axiosInstance.post<{ meme: IMeme }>('/api/meme/likememe', { _id })
 

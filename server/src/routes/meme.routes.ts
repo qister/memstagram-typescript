@@ -21,17 +21,40 @@ router.get(
   '/getlist',
   [authenticateToken, getUser, paginatedResults(Meme)],
   async (req: Request & any, res: Response & any) => {
-    const userId = req.user._id.toString()
+    const userId = req.user._id
     const filteredResults = {
       ...res.paginatedResults,
       memes: res.paginatedResults.memes.map((meme: any) => {
-        return meme.likedBy.some((id: string) => id === userId)
+        return meme.likedBy.some(
+          // TODO тип ObjectId или лучше прописать типы у мема
+          (id: any) => id.toString() === userId.toString()
+        )
           ? { ...meme, liked: true }
           : { ...meme, liked: false }
       }),
     }
 
-    res.json(filteredResults)
+    res.status(200).json(filteredResults)
+  }
+)
+
+router.get(
+  '/user_memes',
+  // TODO добавить пагинацию + можно совместить с запросом getlist через дополнительный параметр
+  [authenticateToken, getUser],
+  async (req: Request & any, res: Response & any) => {
+    const userId = req.user._id
+    try {
+      // TODO убрать total когда будет пагинация
+      const total = await Meme.find({ authorId: userId })
+        .countDocuments()
+        .exec()
+      const userMemes = await Meme.find({ authorId: userId })
+
+      res.json({ memes: userMemes, total })
+    } catch (error) {
+      console.log(error.message)
+    }
   }
 )
 
@@ -41,13 +64,21 @@ router.post(
   getUser,
   async (req: Request & any, res: Response) => {
     try {
-      const userId = req.user._id.toString() // Формат будет "5fa1c20446d1b111d6add6ae"
-      const memeId = req.body._id // формат будет ObjectId("5fa1c20446d1b111d6add6ae")
+      const userId = req.user._id
+      const memeId = req.body._id
       const memeBefore = await Meme.findById(memeId)
 
-      if (memeBefore.likedBy.some((id: string) => id === userId)) {
+      if (
+        memeBefore.likedBy.some(
+          // TODO тип ObjectId, добавить функцию которая будет сравнивать id
+          (id: any) => id.toString() === userId.toString()
+        )
+      ) {
         await Meme.findByIdAndUpdate(memeId, {
-          likedBy: memeBefore.likedBy.filter((id: string) => id !== userId),
+          likedBy: memeBefore.likedBy.filter(
+            // TODO тип ObjectId
+            (id: any) => id.toString() !== userId.toString()
+          ),
         })
 
         //TODO отправлять на фронт только нужные поля, а не все, что есть в меме
@@ -118,8 +149,7 @@ router.post(
       const user = req.user
 
       const memeArray = descriptionList.map((description: string, index) => ({
-        //TODO не использовать toString чтобы были связи у мемов с юзерами в базе
-        authorId: user._id.toString(),
+        authorId: user._id,
         description,
         imgUrl: files[index].path,
         likedBy: [],
