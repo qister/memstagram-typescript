@@ -1,14 +1,12 @@
 import { Router, Request, Response } from 'express'
 
-const User = require('../models/User')
-const Meme = require('../models/Meme')
+import { Token } from '../models/Token'
+import { User } from '../models/User'
 
 const { check, validationResult } = require('express-validator')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const authenticateToken = require('../middleware/auth.middleware')
-
-const Token = require('../models/Token')
 
 const router = Router()
 
@@ -64,7 +62,6 @@ router.post(
       }
       const { email, password } = req.body
       const candidate = await User.findOne({ email })
-
       if (candidate) {
         return res
           .status(400)
@@ -117,7 +114,7 @@ router.post(
           .json({ message: 'Неверный пароль, попробуйте снова' })
       }
 
-      updateTokens(user.id).then((tokens: any) => {
+      updateTokens(user._id.toString()).then((tokens: any) => {
         res.cookie('refresh_token', tokens.refreshToken, {
           httpOnly: true,
           maxAge: 1000 * 60 * 60 * 24 * 30,
