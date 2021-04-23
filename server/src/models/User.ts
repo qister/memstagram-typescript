@@ -1,10 +1,15 @@
-import { Schema, model, Types } from 'mongoose'
+import { Schema, model, Types, Document } from 'mongoose'
 
-const schema = new Schema({
+const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   // TODO вынести в отдельный эндпоинт
   // userMemes: [{ type: Types.ObjectId, ref: 'Meme' }],
 })
 
-module.exports = model('User', schema)
+export interface IUser extends Document {
+  email: string
+  password: string
+}
+
+export const User = model<IUser>('User', userSchema)

@@ -1,7 +1,8 @@
 import { Router, Request, Response } from 'express'
 import multer from 'multer'
 
-const Meme = require('../models/Meme')
+import { IUser } from './../models/User'
+import { Meme } from '../models/Meme'
 const paginatedResults = require('../middleware/memes.middleware')
 const authenticateToken = require('../middleware/auth.middleware')
 const { getUser } = require('../middleware/user.middleware')
@@ -20,13 +21,12 @@ router.get('/show', async (req: Request, res: Response) => {
 router.get(
   '/getlist',
   [authenticateToken, getUser, paginatedResults(Meme)],
-  async (req: Request & any, res: Response & any) => {
+  async (req: Request & { user: IUser }, res: Response & any) => {
     const userId = req.user._id
     const filteredResults = {
       ...res.paginatedResults,
       memes: res.paginatedResults.memes.map((meme: any) => {
         return meme.likedBy.some(
-          // TODO тип ObjectId или лучше прописать типы у мема
           (id: any) => id.toString() === userId.toString()
         )
           ? { ...meme, liked: true }
@@ -42,7 +42,7 @@ router.get(
   '/user_memes',
   // TODO добавить пагинацию + можно совместить с запросом getlist через дополнительный параметр
   [authenticateToken, getUser],
-  async (req: Request & any, res: Response & any) => {
+  async (req: Request & { user: IUser }, res: Response & any) => {
     const userId = req.user._id
     try {
       // TODO убрать total когда будет пагинация
@@ -62,42 +62,41 @@ router.post(
   '/likememe',
   authenticateToken,
   getUser,
-  async (req: Request & any, res: Response) => {
+  async (req: Request & { user: IUser } & any, res: Response) => {
     try {
       const userId = req.user._id
       const memeId = req.body._id
       const memeBefore = await Meme.findById(memeId)
 
-      if (
-        memeBefore.likedBy.some(
-          // TODO тип ObjectId, добавить функцию которая будет сравнивать id
-          (id: any) => id.toString() === userId.toString()
-        )
-      ) {
-        await Meme.findByIdAndUpdate(memeId, {
-          likedBy: memeBefore.likedBy.filter(
-            // TODO тип ObjectId
-            (id: any) => id.toString() !== userId.toString()
-          ),
-        })
+      if (memeBefore) {
+        if (
+          //TODO вынести это в отдельную константу и везде использовать
+          memeBefore.likedBy.some((id) => id.toString() === userId.toString())
+        ) {
+          await Meme.findByIdAndUpdate(memeId, {
+            likedBy: memeBefore.likedBy.filter(
+              (id) => id.toString() !== userId.toString()
+            ),
+          })
 
-        //TODO отправлять на фронт только нужные поля, а не все, что есть в меме
-        const memeAfter = {
-          ...memeBefore.toObject(),
-          liked: false,
-        }
-        res.status(201).json({ meme: memeAfter })
-      } else {
-        await Meme.findByIdAndUpdate(memeId, {
-          likedBy: [...memeBefore.likedBy, userId],
-        })
-        //TODO отправлять на фронт только нужные поля, а не все, что есть в меме
-        const memeAfter = {
-          ...memeBefore.toObject(),
-          liked: true,
-        }
+          //TODO отправлять на фронт только нужные поля, а не все, что есть в меме
+          const memeAfter = {
+            ...memeBefore.toObject(),
+            liked: false,
+          }
+          res.status(201).json({ meme: memeAfter })
+        } else {
+          await Meme.findByIdAndUpdate(memeId, {
+            likedBy: [...memeBefore.likedBy, userId],
+          })
+          //TODO отправлять на фронт только нужные поля, а не все, что есть в меме
+          const memeAfter = {
+            ...memeBefore.toObject(),
+            liked: true,
+          }
 
-        res.status(201).json({ meme: memeAfter })
+          res.status(201).json({ meme: memeAfter })
+        }
       }
     } catch (e) {
       console.log('Like error', e.message)
@@ -143,19 +142,18 @@ router.post(
       const description = req.body['memelist[][description]']
       const onlyOneMemeUploaded =
         typeof req.body['memelist[][description]'] === 'string'
-      const descriptionList = onlyOneMemeUploaded
+      const descriptionList: string[] = onlyOneMemeUploaded
         ? [description]
         : [...description]
       const user = req.user
 
-      const memeArray = descriptionList.map((description: string, index) => ({
+      const memeArray = descriptionList.map((description, index) => ({
         authorId: user._id,
         description,
         imgUrl: files[index].path,
         likedBy: [],
-        created: Date.now(),
+        created: new Date(),
       }))
-
       await Meme.insertMany(memeArray)
 
       return res.status(201).json({

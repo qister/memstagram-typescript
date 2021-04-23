@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express'
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
-const User = require('../models/User')
+import { User } from '../models/User'
 
 const getUser = async (
   req: Request & any,
