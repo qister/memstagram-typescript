@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { ICredentials } from '../redux/authToolkitRedux/StoreSlices/authorization'
+import { ICredentials } from 'pages/Authorization/authSlice'
 import { axiosInstance } from './axios'
 
 interface IFetchLoginResult {

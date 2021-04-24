@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 
 import { AppLayoutTemplate } from './AppLayoutTemplate'
 import { ContentPath } from '../../constants/enums'
-import { fetchLogout } from 'redux/authToolkitRedux/StoreSlices/authorization'
+import { fetchLogout } from 'pages/Authorization/authSlice'
 
 export interface MenuSideBarItem {
   key: string

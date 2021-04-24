@@ -7,8 +7,11 @@ import { AppLayout } from 'components/AppLayout'
 import '../../styles/App.scss'
 import { Registration } from 'pages/Registration/Registration'
 import { LoginForm } from 'pages/Authorization/Login'
-import { fetchUpdateTokens } from 'redux/authToolkitRedux/StoreSlices/authorization'
-import { fetchUser } from 'redux/authToolkitRedux/StoreSlices/app'
+import { fetchUser } from 'pages/Profile/userSlice'
+import { fetchUpdateTokens } from 'pages/Authorization/authSlice'
+
+// TODO вынести в константы?
+const period = 10 * 60 * 1000 // 10 минут
 
 export function AppTemplate() {
   const { isAuthenticated } = useSelector((state: RootState) => state.authorization)
@@ -27,7 +30,7 @@ export function AppTemplate() {
 
     const interval = setInterval(() => {
       dispatch(fetchUpdateTokens())
-    }, 10 * 60 * 1000)
+    }, period)
 
     return () => clearInterval(interval)
   }, [isAuthenticated])

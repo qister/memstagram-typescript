@@ -1,5 +1,4 @@
-import { IMeme } from 'redux/authToolkitRedux/StoreSlices/app'
-
+import { IMeme } from 'constants/interfaces'
 import { axiosInstance } from './axios'
 
 // TODO опреледиться что возвращается с бэка и правильно описать IMeme

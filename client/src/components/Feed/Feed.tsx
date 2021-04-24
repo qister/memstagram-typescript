@@ -4,16 +4,14 @@ import { Spin } from 'antd'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
 import { MemeCard } from 'components/MemeCard/MemeCard'
-import { fetchMemeList } from 'redux/authToolkitRedux/StoreSlices/app'
 import { RootState } from 'redux/authToolkitRedux/StoreSlices'
 
 import './Feed.scss'
+import { fetchMemeList } from './feedSlice'
 
 // Если функционала InfiniteScroll не хватит, можно написать свой через рефы
 export const Feed = () => {
-  const {
-    app: { memeList, total },
-  } = useSelector((state: RootState) => state)
+  const { memeList, total } = useSelector((state: RootState) => state.feed)
 
   const dispatch = useDispatch()
 
