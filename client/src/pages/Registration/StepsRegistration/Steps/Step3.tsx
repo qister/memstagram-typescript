@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Upload, Form } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import classNames from 'classnames'
@@ -11,10 +11,9 @@ export const Step3 = ({
     hidden,
     form,
     theme,
-    onChangeForm,
+    fileList,
+    toggleFile,
 }: IStep) => {
-    const [fileList, setFileList] = useState<any>([]);
-
     const {
         email,
         nickname,
@@ -22,8 +21,7 @@ export const Step3 = ({
     } = form.getFieldsValue()
     
       const onChange = ({ fileList: newFileList }: any) => {
-        setFileList(newFileList);
-        // TODO записать файл через onChangeForm
+        toggleFile(newFileList);
       };
     
     const onPreview = async (file: any) => {
@@ -41,12 +39,13 @@ export const Step3 = ({
         imgWindow?.document.write(image.outerHTML);
     };
 
-
-
     const ROOT_CLASS = 'step'
     const stepClassName = classNames(ROOT_CLASS, {
         [`${ROOT_CLASS}_theme-${theme}`]: !!theme,
     })
+
+    console.log('step 3 fileList', fileList);
+    
     return (
         <div className={stepClassName}>
             {!hidden &&

@@ -7,10 +7,7 @@ import { IStep } from '../Registration'
 
 const { Option } = Select
 
-export const Step2 = ({
-    hidden,
-    onChangeForm,
-}: IStep) => {
+export const Step2 = ({ hidden }: IStep) => {
 
     const [hasPhone, setIsPhone] = useState(false);
 
@@ -61,7 +58,7 @@ export const Step2 = ({
                 ]}
                 hidden={hidden}
             >
-                <Input onChange={onChangeForm} />
+                <Input />
             </Form.Item>
 
             <Form.Item

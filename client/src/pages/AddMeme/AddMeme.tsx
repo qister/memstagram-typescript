@@ -22,6 +22,9 @@ export const AddMeme = () => {
   const dispatch = useDispatch()
 
   const onChangeForm = () => {
+    const data = form.getFieldsValue()
+    console.log('load meme onChangeForm', data);
+
     form
       .validateFields()
       .then(() => setIsValid(true))

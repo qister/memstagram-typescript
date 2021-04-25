@@ -60,12 +60,12 @@ router.post(
           message: 'Некорректные данные при регистрации',
         })
       }
-      const { email, password } = req.body
+      const { email, password, nickname, file } = req.body
       const candidate = await User.findOne({ email })
       if (candidate) {
         return res
           .status(400)
-          .json({ message: 'Такой плfeffeьзователь уже есть ' })
+          .json({ message: 'Такой пользователь уже есть ' })
       }
 
       const hashedPassword = await bcrypt.hash(password, 12)

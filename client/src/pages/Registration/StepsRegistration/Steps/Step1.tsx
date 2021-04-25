@@ -3,10 +3,7 @@ import { Form, Input } from 'antd'
 
 import { IStep } from '../Registration'
 
-export const Step1 = ({
-    hidden,
-    onChangeForm,
-}: IStep) => {
+export const Step1 = ({ hidden }: IStep) => {
     const ROOT_CLASS = 'step'
     return (
         <div className={ROOT_CLASS}>
@@ -25,10 +22,7 @@ export const Step1 = ({
                 ]}
                 hidden={hidden}
             >
-                <Input
-                    onChange={onChangeForm}
-                    style={{ width: '100%' }}
-                />
+                <Input style={{ width: '100%' }} />
             </Form.Item>
 
             <Form.Item
@@ -43,10 +37,7 @@ export const Step1 = ({
                 hasFeedback
                 hidden={hidden}
             >
-                <Input.Password
-                    onChange={onChangeForm}
-                    style={{ width: '100%' }}
-                />
+                <Input.Password style={{ width: '100%' }} />
             </Form.Item>
 
             <Form.Item
@@ -72,10 +63,7 @@ export const Step1 = ({
                 ]}
                 hidden={hidden}
             >
-                <Input.Password
-                    onChange={onChangeForm}
-                    style={{ width: '100%' }}
-                />
+                <Input.Password style={{ width: '100%' }} />
             </Form.Item>
         </div>
     )
