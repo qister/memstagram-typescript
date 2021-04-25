@@ -39,8 +39,8 @@ export function AppTemplate() {
     </>
   ) : (
     <>
-      <Route path='/login' component={LoginForm} exact />
-      <Route path='/register' component={Registration} exact />
+      <Route path="/login" component={LoginForm} exact />
+      <Route path="/register" component={Registration} exact />
       {/* <Route component={LoginForm} /> */}
     </>
   )

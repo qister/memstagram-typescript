@@ -23,7 +23,7 @@ export const AddMeme = () => {
 
   const onChangeForm = () => {
     const data = form.getFieldsValue()
-    console.log('load meme onChangeForm', data);
+    console.log('load meme onChangeForm', data)
 
     form
       .validateFields()
