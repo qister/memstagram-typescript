@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, message, Form, Row, Col } from 'antd';
+import { Button, Form } from 'antd';
 
 import '../Registration.scss'
 
@@ -8,6 +8,7 @@ interface IActionBar {
     tailLayout: any
     onPrevStepClick: () => void
     onNextStepClick: () => void
+    onRegister: () => void
 }
 
 export const ActionBarTemplate = ({
@@ -15,6 +16,7 @@ export const ActionBarTemplate = ({
     tailLayout,
     onPrevStepClick,
     onNextStepClick,
+    onRegister,
 }: IActionBar) => {
     return (
         <div className="steps-action">
@@ -41,7 +43,7 @@ export const ActionBarTemplate = ({
                             <Button
                                 style={{ marginLeft: '33px' }}
                                 type="primary"
-                                onClick={() => message.success('Processing complete!')}
+                                onClick={onRegister}
                                 htmlType="submit"
                             >
                                 Зарегистрироваться
