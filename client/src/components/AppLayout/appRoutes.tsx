@@ -1,7 +1,7 @@
 import { Feed } from 'components/Feed/Feed'
 import { AddMeme } from 'pages/AddMeme/AddMeme'
 import React from 'react'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 
 import { Profile } from '../../pages/Profile'
 import { Statistics } from '../../pages/Statistics'
@@ -21,6 +21,6 @@ export const routes = (
     <Route path={ContentPath.Add} exact>
       <AddMeme />
     </Route>
-    <Redirect to={ContentPath.Feed} />
+    <Route component={Feed} />
   </Switch>
 )

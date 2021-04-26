@@ -35,7 +35,11 @@ export const fetchLikeMeme = createAsyncThunk('fetchLikeMeme', ({ _id }: { _id: 
 const feed = createSlice({
   name: 'feed',
   initialState,
-  reducers: {},
+  reducers: {
+    reset: (state) => {
+      Object.assign(state, initialState)
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchMemeList.pending, (state) => {
@@ -79,6 +83,10 @@ const feed = createSlice({
   },
 })
 
-const { reducer } = feed
+const {
+  reducer,
+  actions: { reset },
+} = feed
 
 export { reducer as feed }
+export { reset as resetFeedState }

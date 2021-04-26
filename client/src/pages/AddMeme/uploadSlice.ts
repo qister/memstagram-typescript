@@ -3,11 +3,13 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { IFetchingStatus } from 'constants/enums'
 import { uploadMeme } from 'API/memesAPI'
 
-export interface AppState {
+import './AddMeme.scss'
+
+export interface UploadState {
   fetchingStatus: IFetchingStatus
 }
 
-const initialState: AppState = {
+const initialState: UploadState = {
   fetchingStatus: IFetchingStatus.idle,
 }
 
@@ -16,7 +18,11 @@ export const fetchUploadMemes = createAsyncThunk('upload', (data: any) => upload
 const upload = createSlice({
   name: 'upload',
   initialState,
-  reducers: {},
+  reducers: {
+    reset: (state) => {
+      Object.assign(state, initialState)
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUploadMemes.pending, () => {})
@@ -27,6 +33,10 @@ const upload = createSlice({
   },
 })
 
-const { reducer } = upload
+const {
+  reducer,
+  actions: { reset },
+} = upload
 
 export { reducer as upload }
+export { reset as resetUploadState }
