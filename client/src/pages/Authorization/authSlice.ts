@@ -1,12 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { getLogin, getLogout, updateTokens } from 'API/authApi'
 import { IFetchingStatus } from 'constants/enums'
-import {
-  deleteAccessTokenFromCookie,
-  getAccessTokenFromCookie,
-  setAccessTokenToCookie,
-} from 'utils/auth'
-
-import { getLogin, getLogout, updateTokens } from '../../../API/authApi'
+import { deleteAccessTokenFromCookie, setAccessTokenToCookie } from 'utils/auth'
 
 export interface ICredentials {
   email: string
@@ -34,18 +29,8 @@ export const fetchUpdateTokens = createAsyncThunk('fetchUpdateTokens', updateTok
 const authorization = createSlice({
   name: 'authorization',
   initialState,
-  reducers: {
-    // TODO это убрать т.к. уже есть fetchUpdateTokens
-    initToken: (state) => {
-      const token = getAccessTokenFromCookie()
-      // TODO наверное надо добавить еще проверку на валидность, получение юзера сразу или обновление токена
-      if (token) {
-        state.isAuthenticated = true
-      }
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
-    // login //
     builder.addCase(fetchLogin.pending, (state) => {
       state.fetchingStatus = IFetchingStatus.pending
     })
@@ -81,4 +66,3 @@ const authorization = createSlice({
 const { reducer } = authorization
 
 export { reducer as authorization }
-export const { initToken } = authorization.actions

@@ -3,8 +3,9 @@ import { Card, Avatar } from 'antd'
 import { useDispatch } from 'react-redux'
 
 import { Icon } from '../../UI/Icon'
-import { IMeme, fetchLikeMeme } from 'redux/authToolkitRedux/StoreSlices/app'
 import './MemeCard.scss'
+import { IMeme } from 'constants/interfaces'
+import { fetchLikeMeme } from 'components/Feed/feedSlice'
 
 const { Meta } = Card
 

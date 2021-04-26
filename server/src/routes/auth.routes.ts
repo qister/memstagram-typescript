@@ -178,7 +178,6 @@ const refreshTokens = (req: Request, res: Response) => {
     .catch((err: any) => res.status(400).json({ message: err.message }))
 }
 
-// TODO Дописать этот метод чтобы работал при перриодическом обновлении на клиенте
 router.post('/refresh_tokens', authenticateToken, refreshTokens)
 
 router.delete('/logout', async (req: Request, res: Response) => {

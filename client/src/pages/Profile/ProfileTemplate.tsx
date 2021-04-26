@@ -5,7 +5,7 @@ import { UserOutlined } from '@ant-design/icons'
 
 import './Profile.scss'
 import { RootState } from 'redux/authToolkitRedux/StoreSlices'
-import { fetchUserMemes } from 'redux/authToolkitRedux/StoreSlices/app'
+import { fetchUserMemes } from './userSlice'
 
 export const ProfileTemplate = () => {
   const dispatch = useDispatch()
@@ -15,9 +15,10 @@ export const ProfileTemplate = () => {
   }, [])
 
   const {
+    currentUser: { email },
+    totalUserMemesCount,
     userMemes,
-    currentUser: { email, memesCount },
-  } = useSelector((state: RootState) => state.app)
+  } = useSelector((state: RootState) => state.user)
 
   const getMemeUrl = (url: string) => {
     return 'http://localhost:4000/' + url.slice(7)
@@ -33,7 +34,7 @@ export const ProfileTemplate = () => {
         </div>
         <div className={`${ROOT_CLASS}__info`}>
           <div>{email}</div>
-          <div>{memesCount} Публикаций</div>
+          <div>{totalUserMemesCount} Публикаций</div>
         </div>
       </div>
       {/* TODO: сделать динамическое изменение размера картинок в гриде в зависимости от количества, можно воспользоваться антовскими гридами */}

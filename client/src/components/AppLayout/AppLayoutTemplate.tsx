@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Layout, Menu, Avatar } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 import classNames from 'classnames'
@@ -9,6 +10,7 @@ import { MenuSideBarItem } from './AppLayoutBehavior'
 import { MENU_SIDEBAR_ITEMS } from '../../constants/constants'
 import { ContentPath } from 'constants/enums'
 import './AppLayout.scss'
+import { RootState } from 'redux/authToolkitRedux/StoreSlices'
 
 const { Header, Sider, Content } = Layout
 
@@ -28,9 +30,13 @@ export const AppLayoutTemplate = ({
   onHandleLogout,
 }: IProps): JSX.Element => {
   const layout_container_class = classNames('layout-container', {
+    //  TODO theme пропсом передавать
     ['layout-container_theme-height']:
       !Array.isArray(defaultSelectedKey) && defaultSelectedKey !== ContentPath.Feed,
   })
+
+  const { email } = useSelector((state: RootState) => state.user.currentUser)
+
   const ROOT_CLASS = 'layout-container'
   return (
     <Layout className={layout_container_class}>
@@ -57,7 +63,8 @@ export const AppLayoutTemplate = ({
       <Layout className={`${ROOT_CLASS}-wrapper`}>
         <Header className={`${ROOT_CLASS}-wrapper__header`}>
           <div className={`${ROOT_CLASS}-wrapper__header-user`} onClick={onHandleLogout}>
-            <User user={{ name: 'user' }} />
+            {/* TODO поменять на ник */}
+            <User user={{ name: email }} />
             <Avatar icon={<UserOutlined />} />
           </div>
         </Header>

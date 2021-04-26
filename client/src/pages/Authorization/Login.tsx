@@ -3,8 +3,8 @@ import { Form, Input, Button, Checkbox, Typography } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { useDispatch } from 'react-redux'
 
-import { fetchLogin } from 'redux/authToolkitRedux/StoreSlices/authorization'
 import './Login.scss'
+import { fetchLogin } from './authSlice'
 
 const { Link } = Typography
 

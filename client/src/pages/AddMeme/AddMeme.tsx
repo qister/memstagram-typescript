@@ -5,8 +5,8 @@ import { serialize } from 'object-to-formdata'
 import { Form, Upload, Row, Col, Input, Button, Typography } from 'antd'
 import { InboxOutlined, PlusOutlined } from '@ant-design/icons'
 
-import { upload } from 'redux/authToolkitRedux/StoreSlices/app'
 import { RcFile } from 'antd/lib/upload'
+import { fetchUploadMemes } from './uploadSlice'
 
 const { Title } = Typography
 const { Dragger } = Upload
@@ -64,7 +64,7 @@ export const AddMeme = () => {
 
     const serializedData = serialize(dataToSerialize)
 
-    dispatch(upload(serializedData))
+    dispatch(fetchUploadMemes(serializedData))
   }
 
   //TODO добавить теги с категориями
