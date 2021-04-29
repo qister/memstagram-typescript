@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
 import { AppLayoutTemplate } from './AppLayoutTemplate'
-import { ContentPath } from '../../constants/enums'
 import { fetchLogout } from 'pages/Authorization/authSlice'
 
+// TODO убрать и поправить тип
 export interface MenuSideBarItem {
   key: string
   title: string
@@ -14,14 +13,6 @@ export interface MenuSideBarItem {
 export const AppLayoutBehavior = (): JSX.Element => {
   const dispatch = useDispatch()
   const [collapsed, setCollapsed] = useState(false)
-  const [defaultSelectedKey, setOnTapeDefault] = useState<ContentPath[]>([ContentPath.Feed])
-
-  const history = useHistory()
-
-  const onMenuItemClick = ({ key }: any) => {
-    setOnTapeDefault(key)
-    history.push(key)
-  }
 
   const onHandleLogout = () => {
     dispatch(fetchLogout())
@@ -29,8 +20,6 @@ export const AppLayoutBehavior = (): JSX.Element => {
 
   return React.createElement(AppLayoutTemplate, {
     collapsed,
-    defaultSelectedKey,
-    onMenuItemClick,
     setCollapsed,
     onHandleLogout,
   })
