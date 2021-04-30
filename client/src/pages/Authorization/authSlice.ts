@@ -11,11 +11,13 @@ export interface ICredentials {
 export interface IAuthorizationState {
   isAuthenticated: boolean
   fetchingStatus: IFetchingStatus
+  logoutFetchingStatus: IFetchingStatus
 }
 
 const initialState: IAuthorizationState = {
   isAuthenticated: false,
   fetchingStatus: IFetchingStatus.idle,
+  logoutFetchingStatus: IFetchingStatus.idle,
 }
 
 export const fetchLogin = createAsyncThunk('fetchLogin', (credentials: ICredentials) => {
@@ -47,7 +49,7 @@ const authorization = createSlice({
       // TODO: добавить еще кейс для оффлайн логаута чтобы удалить токен если нет интернета
       // тут можно удалять все токены с бэка, а для оффлайн логаута удалять только на фронте
       deleteAccessTokenFromCookie()
-      state.fetchingStatus = IFetchingStatus.fulfilled
+      state.logoutFetchingStatus = IFetchingStatus.fulfilled
       state.isAuthenticated = false
     })
     // обновление токенов

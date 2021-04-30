@@ -9,17 +9,18 @@ import { Registration } from 'pages/Registration/Registration'
 import { LoginForm } from 'pages/Authorization/Login'
 import { fetchUser } from 'pages/Profile/userSlice'
 import { fetchUpdateTokens } from 'pages/Authorization/authSlice'
+import { IFetchingStatus } from 'constants/enums'
 
-// TODO вынести в константы?
-const period = 10 * 60 * 1000 // 10 минут
+const tokenUpdatePeriod = 10 * 60 * 1000 // 10 минут
 
 export function AppTemplate() {
-  const { isAuthenticated } = useSelector((state: RootState) => state.authorization)
+  const { isAuthenticated, logoutFetchingStatus } = useSelector(
+    (state: RootState) => state.authorization,
+  )
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    // TODO сделать чтобы при логауте не отправлялся запрос на обновление токенов
     dispatch(fetchUpdateTokens())
   }, [])
 
@@ -30,7 +31,11 @@ export function AppTemplate() {
 
     const interval = setInterval(() => {
       dispatch(fetchUpdateTokens())
-    }, period)
+    }, tokenUpdatePeriod)
+
+    if (logoutFetchingStatus === IFetchingStatus.fulfilled) {
+      clearInterval(interval)
+    }
 
     return () => clearInterval(interval)
   }, [isAuthenticated])
