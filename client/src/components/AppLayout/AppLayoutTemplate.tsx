@@ -2,44 +2,44 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Layout, Menu, Avatar } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
-import classNames from 'classnames'
 
 import { User } from '../User'
 import { routes } from './appRoutes'
 import { MenuSideBarItem } from './AppLayoutBehavior'
 import { MENU_SIDEBAR_ITEMS } from '../../constants/constants'
-import { ContentPath } from 'constants/enums'
 import './AppLayout.scss'
 import { RootState } from 'redux/authToolkitRedux/StoreSlices'
+import { Link, useLocation } from 'react-router-dom'
 
 const { Header, Sider, Content } = Layout
 
 interface IProps {
   collapsed: boolean
-  defaultSelectedKey: string[]
-  onMenuItemClick: any
   setCollapsed: any
   onHandleLogout(): void
 }
 
 export const AppLayoutTemplate = ({
   collapsed,
-  defaultSelectedKey,
-  onMenuItemClick,
   setCollapsed,
   onHandleLogout,
 }: IProps): JSX.Element => {
-  const layout_container_class = classNames('layout-container', {
-    //  TODO theme пропсом передавать
-    ['layout-container_theme-height']:
-      !Array.isArray(defaultSelectedKey) && defaultSelectedKey !== ContentPath.Feed,
-  })
+  const location = useLocation()
+  const activeItem = MENU_SIDEBAR_ITEMS.find((item) => location.pathname.includes(item.key))
+  const activeItems = activeItem ? [activeItem.key] : undefined
+
+  // Закомментил тк едет верстка в ленте и при переадресации после добавления мема
+  // const layout_container_class = classNames('layout-container', {
+  //   //  TODO theme пропсом передавать
+  //   ['layout-container_theme-height']:
+  //     !Array.isArray(defaultSelectedKey) && defaultSelectedKey !== ContentPath.Feed,
+  // })
 
   const { email } = useSelector((state: RootState) => state.user.currentUser)
 
   const ROOT_CLASS = 'layout-container'
   return (
-    <Layout className={layout_container_class}>
+    <Layout>
       <Sider
         className={`${ROOT_CLASS}__sidebar`}
         collapsible
@@ -47,15 +47,10 @@ export const AppLayoutTemplate = ({
         onCollapse={setCollapsed}
       >
         <div className={`${ROOT_CLASS}__logo`} />
-        <Menu
-          theme="dark"
-          mode="inline"
-          selectedKeys={defaultSelectedKey}
-          onClick={onMenuItemClick}
-        >
+        <Menu theme="dark" mode="inline" selectedKeys={activeItems}>
           {MENU_SIDEBAR_ITEMS.map((item: MenuSideBarItem) => (
             <Menu.Item key={item.key} icon={<UserOutlined />}>
-              {item.title}
+              <Link to={item.key}>{item.title}</Link>
             </Menu.Item>
           ))}
         </Menu>
