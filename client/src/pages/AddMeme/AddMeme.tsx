@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { serialize } from 'object-to-formdata'
 
 import { Form, Upload, Row, Col, Input, Button, Typography } from 'antd'
 import { InboxOutlined, PlusOutlined } from '@ant-design/icons'
 
 import { RcFile } from 'antd/lib/upload'
-import { fetchUploadMemes } from './uploadSlice'
+import { fetchUploadMemes, resetUploadState } from './uploadSlice'
+import { RootState } from 'redux/authToolkitRedux/StoreSlices'
+import { IFetchingStatus } from 'constants/enums'
+import { UploadSuccessfull } from './UploadSuccessfull'
 
 const { Title } = Typography
 const { Dragger } = Upload
@@ -20,6 +23,14 @@ export const AddMeme = () => {
   const [isValid, setIsValid] = useState(false)
   const [fileList, setFileList] = useState<any>([{ fileList: [] }])
   const dispatch = useDispatch()
+
+  // TODO поправить тип
+  //@ts-ignore
+  useEffect(() => {
+    return () => dispatch(resetUploadState())
+  }, [])
+
+  const { fetchingStatus } = useSelector((state: RootState) => state.upload)
 
   const onChangeForm = () => {
     form
@@ -67,8 +78,15 @@ export const AddMeme = () => {
     dispatch(fetchUploadMemes(serializedData))
   }
 
+  const ROOT_CLASS = 'upload'
+
   //TODO добавить теги с категориями
   //TODO добавить сообщение об успешной и неуспешной загрузке
+
+  // TODO добавить #success в адресной строчке
+  if (fetchingStatus === IFetchingStatus.fulfilled) {
+    return <UploadSuccessfull />
+  }
 
   return (
     <Form
@@ -77,6 +95,7 @@ export const AddMeme = () => {
       initialValues={{
         memelist: [{ description: '', dragger: { file: null, fileList: [] } }],
       }}
+      className={ROOT_CLASS}
     >
       <Title>Загрузить мем</Title>
       <Form.List name="memelist">

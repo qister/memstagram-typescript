@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Route, Switch, Redirect, BrowserRouter as Router } from 'react-router-dom'
+import { Route, Switch, BrowserRouter as Router } from 'react-router-dom'
 
 import { RootState } from '../../redux/authToolkitRedux/StoreSlices'
 import { AppLayout } from 'components/AppLayout'
@@ -37,8 +37,7 @@ export function AppTemplate() {
 
   const routes = isAuthenticated ? (
     <>
-      <Route path="/" component={AppLayout} />
-      <Redirect to="/feed" />
+      <Route component={AppLayout} />
     </>
   ) : (
     <>

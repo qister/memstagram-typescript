@@ -7,7 +7,7 @@ import { MemeCard } from 'components/MemeCard/MemeCard'
 import { RootState } from 'redux/authToolkitRedux/StoreSlices'
 
 import './Feed.scss'
-import { fetchMemeList } from './feedSlice'
+import { fetchMemeList, resetFeedState } from './feedSlice'
 
 // Если функционала InfiniteScroll не хватит, можно написать свой через рефы
 export const Feed = () => {
@@ -16,9 +16,13 @@ export const Feed = () => {
   const dispatch = useDispatch()
 
   const loadMemes = () => dispatch(fetchMemeList())
+  const clearStore = () => dispatch(resetFeedState())
 
+  // TODO поправить типы, тс ругается на clearStore
+  //@ts-ignore
   useEffect(() => {
     loadMemes()
+    return clearStore
   }, [])
 
   const ROOT_CLASS = 'feed'
