@@ -16,13 +16,12 @@ export const Feed = () => {
   const dispatch = useDispatch()
 
   const loadMemes = () => dispatch(fetchMemeList())
-  const clearStore = () => dispatch(resetFeedState())
 
-  // TODO поправить типы, тс ругается на clearStore
-  //@ts-ignore
   useEffect(() => {
     loadMemes()
-    return clearStore
+    return () => {
+      dispatch(resetFeedState())
+    }
   }, [])
 
   const ROOT_CLASS = 'feed'

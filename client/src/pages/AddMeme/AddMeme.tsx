@@ -24,10 +24,10 @@ export const AddMeme = () => {
   const [fileList, setFileList] = useState<any>([{ fileList: [] }])
   const dispatch = useDispatch()
 
-  // TODO поправить тип
-  //@ts-ignore
   useEffect(() => {
-    return () => dispatch(resetUploadState())
+    return () => {
+      dispatch(resetUploadState())
+    }
   }, [])
 
   const { fetchingStatus } = useSelector((state: RootState) => state.upload)
