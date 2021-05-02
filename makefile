@@ -1,6 +1,6 @@
 # make 
 run:
-	cd server;\
+	cd server-nestjs;\
 		npm run dev;
 
 client-install:
@@ -11,12 +11,16 @@ server-install:
 	cd server;\
 		npm i --legacy-peer-deps;
 
+server-nestjs-install:
+	cd server-nestjs;\
+		npm i --legacy-peer-deps;
+
 root-install:
 	npm i --legacy-peer-deps;
 
 install-all:
 	make root-install
-	make server-install
+	make server-nestjs-install
 	make client-install
 
 app-init:

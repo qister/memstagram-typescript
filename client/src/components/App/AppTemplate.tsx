@@ -21,6 +21,7 @@ export function AppTemplate() {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    // setTimeout(() => dispatch(fetchUpdateTokens()), 5000)
     dispatch(fetchUpdateTokens())
   }, [])
 

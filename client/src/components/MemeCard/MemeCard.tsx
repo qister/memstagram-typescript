@@ -19,8 +19,9 @@ export const MemeCard = ({ meme: { _id, author, liked, imgUrl } }: IProps) => {
   const toggleLike = () => {
     dispatch(fetchLikeMeme({ _id }))
   }
-
-  const imgLink = 'http://localhost:4000/' + imgUrl.slice(7)
+  // TODO вынести порт или префикс целиком в конфиг
+  // TODO убирать public не слайсом, а через find или регулярку
+  const imgLink = 'http://localhost:4001/' + imgUrl.slice(7)
 
   const ROOT_CLASS = 'card-meme'
   return (

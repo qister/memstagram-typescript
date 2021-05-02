@@ -8,9 +8,9 @@ interface IFetchLoginResult {
 }
 
 export const getLogin = (credentials: ICredentials) =>
-  axios.post<IFetchLoginResult>('/api/auth/login', credentials)
+  axios.post<IFetchLoginResult>('/api/v1/auth/login', credentials)
 
-export const getLogout = () => axios.delete('/api/auth/logout')
+export const getLogout = () => axios.delete('/api/v1/auth/logout')
 
 interface IUpdateTokensResult {
   tokens: {
@@ -19,4 +19,4 @@ interface IUpdateTokensResult {
 }
 
 export const updateTokens = () =>
-  axiosInstance.post<IUpdateTokensResult>('/api/auth/refresh_tokens')
+  axiosInstance.post<IUpdateTokensResult>('/api/v1/auth/refresh_tokens')
