@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { serialize } from 'object-to-formdata'
 
-import { Form, Upload, Row, Col, Input, Button, Typography } from 'antd'
+import { Form, Upload, Row, Col, Input, Button, Typography, Select } from 'antd'
 import { InboxOutlined, PlusOutlined } from '@ant-design/icons'
 
 import { RcFile } from 'antd/lib/upload'
@@ -13,10 +13,18 @@ import { UploadSuccessfull } from './UploadSuccessfull'
 
 const { Title } = Typography
 const { Dragger } = Upload
+const { Option } = Select
 
 const validateIsFileSelected = (fileList: any[]) => (form: any) => ({
   validator: () => (fileList.length ? Promise.resolve() : Promise.reject('Добавьте мем')),
 })
+
+const categories = [
+  { label: 'Политика', value: 'politics' },
+  { label: 'Музыка', value: 'music' },
+  { label: 'Школа', value: 'school' },
+  { label: 'Сюр', value: 'surrealistic' },
+]
 
 export const AddMeme = () => {
   const [form] = Form.useForm()
@@ -61,28 +69,30 @@ export const AddMeme = () => {
   }
 
   const onSubmit = () => {
-    const data = form.getFieldsValue()
+    const data: {
+      memelist: { categories: string[]; description: string }[]
+    } = form.getFieldsValue()
+
     const { memelist } = data
 
     const dataToSerialize = {
-      memelist: memelist.map((meme: any, index: number) => {
-        return {
-          description: meme.description,
-          file: fileList[index].fileList[0],
-        }
-      }),
+      memelist: memelist.map(({ categories, description }) => ({
+        description,
+        categories,
+      })),
     }
 
-    const serializedData = serialize(dataToSerialize)
-
+    const serializedData = serialize(dataToSerialize, { indices: true })
+    //TODO посмотреть как лучше добавлять несколько файлов, см по поиску "TODO написать гвард чтоб узнавать количество файлов и мапить тут массив с названиями"
+    memelist.forEach((_, index) => {
+      serializedData.append('attachments[]', fileList[index].fileList[0])
+    })
     dispatch(fetchUploadMemes(serializedData))
   }
 
   const ROOT_CLASS = 'upload'
 
-  //TODO добавить теги с категориями
   //TODO добавить сообщение об успешной и неуспешной загрузке
-
   // TODO добавить #success в адресной строчке
   if (fetchingStatus === IFetchingStatus.fulfilled) {
     return <UploadSuccessfull />
@@ -111,7 +121,29 @@ export const AddMeme = () => {
                     label="Подпись"
                     rules={[{ required: true, message: 'Краткое описание, пож' }]}
                   >
-                    <Input type="text" placeholder="Тест2" onChange={onChangeForm} />
+                    <Input type="text" placeholder="Описание" onChange={onChangeForm} />
+                  </Form.Item>
+                </Col>
+
+                <Col span={24}>
+                  <Form.Item
+                    {...field}
+                    name={[field.name, 'categories']}
+                    fieldKey={[field.fieldKey, 'categories']}
+                    label="Категории"
+                  >
+                    <Select
+                      mode="multiple"
+                      allowClear
+                      placeholder="Выберите категории"
+                      onChange={onChangeForm}
+                    >
+                      {categories.map((c) => (
+                        <Option key={c.value} value={c.value}>
+                          {c.label}
+                        </Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </Col>
                 <Col span={24}>
