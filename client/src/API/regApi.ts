@@ -7,4 +7,8 @@ interface IGetRegistrationResult {
   user: { email: string }
 }
 export const getRegistration = (credentials: ICredentials) =>
-  axiosInstance.post<IGetRegistrationResult>('/api/auth/register', credentials)
+  axiosInstance.post<IGetRegistrationResult>(
+    // '/api/auth/register',
+    '/api/v1/auth/registration',
+    credentials,
+  )

@@ -16,21 +16,36 @@ interface IGetMemesReult {
 }
 
 export const getMemeList = (page = 1) =>
-  axiosInstance.get<IGetMemesReult>(`/api/meme/getlist?page=${page}&limit=2`)
+  axiosInstance.get<IGetMemesReult>(
+    // `/api/meme/getlist?page=${page}&limit=2`
+    `/api/v1/memes/list?page=${page}&limit=3`,
+  )
 
 export const getUserMemes = () =>
-  axiosInstance.get<{ memes: IMeme[]; total: number }>(`/api/meme/user_memes`)
+  axiosInstance.get<{ memes: IMeme[]; total: number }>(
+    // `/api/meme/user_memes`
+    `/api/v1/users/user_memes`,
+  )
 
 export const likeMeme = (_id: string) =>
-  axiosInstance.post<{ meme: IMeme }>('/api/meme/likememe', { _id })
+  axiosInstance.post<{ meme: IMeme }>(
+    // '/api/meme/likememe',
+    '/api/v1/memes/like',
+    { _id },
+  )
 
 interface IUploadMemeResult {
   memes: IMeme[]
 }
 
 export const uploadMeme = (data: FormData) =>
-  axiosInstance.post<IUploadMemeResult>('/api/meme/addpic', data, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
+  axiosInstance.post<IUploadMemeResult>(
+    // '/api/meme/addpic'
+    'api/v1/memes/upload',
+    data,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     },
-  })
+  )
