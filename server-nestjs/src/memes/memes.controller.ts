@@ -61,8 +61,9 @@ export class MemesController {
   @UseGuards(JwtAuthGuard)
   @Post('/upload')
   @HttpCode(HttpStatus.CREATED)
+  // TODO написать гвард чтоб узнавать количество файлов и мапить тут массив с названиями
   @UseInterceptors(
-    FilesInterceptor('memelist[][file]', 10, {
+    FilesInterceptor('attachments[]', 10, {
       storage: diskStorage({
         destination: './public/memes',
         filename: function (req, file, cb) {
@@ -73,17 +74,14 @@ export class MemesController {
   )
   async create(
     @UploadedFiles() files: Array<Express.Multer.File>,
-    @Body()
-    body: {
-      'memelist[][description]': string | string[];
-    },
+    @Body() body: { memelist: { description: string; categories: string[] }[] },
     @UserId() userId: MongooseSchema.Types.ObjectId,
   ) {
-    const description = body['memelist[][description]'];
+    const { memelist } = body;
     const memes = await this.memesService.create({
       userId,
       files,
-      description,
+      memelist,
     });
 
     return { memes };

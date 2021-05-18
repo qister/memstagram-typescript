@@ -104,19 +104,16 @@ export class MemesService {
   async create({
     userId,
     files,
-    description,
+    memelist,
   }: {
     userId: MongooseSchema.Types.ObjectId;
     files: Array<Express.Multer.File>;
-    description: string | string[];
+    memelist: { description: string; categories: string[] }[];
   }) {
-    // загружен один мем или несколько
-    // если вынести typeof description === 'string' в отдельную переменную то тайпскрипт перестает понимать тип
-    const descriptionList =
-      typeof description === 'string' ? [description] : [...description];
-    const memeArray = descriptionList.map((description, index) => ({
+    const memeArray = memelist.map(({ description, categories }, index) => ({
       authorId: userId,
       description,
+      categories,
       imgUrl: files[index].path,
       likedBy: [],
       created: new Date(),

@@ -155,6 +155,11 @@ export class AuthService {
         throw new HttpException('Token expired!', HttpStatus.BAD_REQUEST);
       } else if (e instanceof JsonWebTokenError) {
         throw new HttpException('Invalid token!', HttpStatus.BAD_REQUEST);
+      } else {
+        throw new HttpException(
+          'Unable to refresh tokens',
+          HttpStatus.BAD_REQUEST,
+        );
       }
     }
   }

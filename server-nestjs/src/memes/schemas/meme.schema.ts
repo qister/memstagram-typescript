@@ -11,6 +11,9 @@ export class Meme {
   @Prop()
   description: string;
 
+  @Prop([String])
+  categories: string[];
+
   @Prop()
   imgUrl: string;
 
