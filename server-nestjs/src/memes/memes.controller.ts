@@ -9,15 +9,18 @@ import {
   UploadedFiles,
   UseGuards,
   UseInterceptors,
-} from '@nestjs/common';
-import { FilesInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { Schema as MongooseSchema } from 'mongoose';
+} from '@nestjs/common'
+import { FilesInterceptor } from '@nestjs/platform-express'
+import { diskStorage } from 'multer'
+import { Schema as MongooseSchema } from 'mongoose'
 
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { UsersService } from 'src/users/users.service';
-import { MemesService } from './memes.service';
-import { UserId } from 'src/users/user.decorator';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
+import { UsersService } from 'src/users/users.service'
+import { MemesService } from './memes.service'
+import { UserId } from 'src/users/user.decorator'
+
+
+
 
 @Controller('memes')
 export class MemesController {
@@ -43,11 +46,11 @@ export class MemesController {
     @Query('limit') limit: number,
     @UserId() userId: MongooseSchema.Types.ObjectId,
   ) {
-    const user = await this.usersService.getById(userId);
-    const pageNum = Number(page);
-    const limitNum = Number(limit);
-    const startIndex = (pageNum - 1) * limitNum;
-    const endIndex = pageNum * limitNum;
+    const user = await this.usersService.getById(userId)
+    const pageNum = Number(page)
+    const limitNum = Number(limit)
+    const startIndex = (pageNum - 1) * limitNum
+    const endIndex = pageNum * limitNum
 
     return this.memesService.getFromTo({
       startIndex,
@@ -55,7 +58,7 @@ export class MemesController {
       page: pageNum,
       limit: limitNum,
       user,
-    });
+    })
   }
 
   @UseGuards(JwtAuthGuard)
@@ -67,7 +70,7 @@ export class MemesController {
       storage: diskStorage({
         destination: './public/memes',
         filename: function (req, file, cb) {
-          cb(null, Date.now() + '-' + file.originalname);
+          cb(null, Date.now() + '-' + file.originalname)
         },
       }),
     }),
@@ -77,14 +80,14 @@ export class MemesController {
     @Body() body: { memelist: { description: string; categories: string[] }[] },
     @UserId() userId: MongooseSchema.Types.ObjectId,
   ) {
-    const { memelist } = body;
+    const { memelist } = body
     const memes = await this.memesService.create({
       userId,
       files,
       memelist,
-    });
+    })
 
-    return { memes };
+    return { memes }
   }
 
   @UseGuards(JwtAuthGuard)
@@ -92,12 +95,12 @@ export class MemesController {
   async like(
     @Body()
     body: {
-      _id: MongooseSchema.Types.ObjectId;
+      _id: MongooseSchema.Types.ObjectId
     },
     @UserId() userId: MongooseSchema.Types.ObjectId,
   ) {
-    const memeId = body._id;
+    const memeId = body._id
 
-    return await this.memesService.like(memeId, userId);
+    return await this.memesService.like(memeId, userId)
   }
 }

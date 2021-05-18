@@ -1,11 +1,11 @@
-import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { JwtModule } from '@nestjs/jwt';
+import { Module } from '@nestjs/common'
+import { MongooseModule } from '@nestjs/mongoose'
+import { JwtModule } from '@nestjs/jwt'
 
-import { Meme, MemeSchema } from './schemas/meme.schema';
-import { UsersModule } from 'src/users/users.module';
-import { MemesController } from './memes.controller';
-import { MemesService } from './memes.service';
+import { Meme, MemeSchema } from './schemas/meme.schema'
+import { UsersModule } from 'src/users/users.module'
+import { MemesController } from './memes.controller'
+import { MemesService } from './memes.service'
 
 @Module({
   providers: [MemesService],
