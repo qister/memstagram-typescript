@@ -19,9 +19,6 @@ import { UsersService } from 'src/users/users.service'
 import { MemesService } from './memes.service'
 import { UserId } from 'src/users/user.decorator'
 
-
-
-
 @Controller('memes')
 export class MemesController {
   constructor(
