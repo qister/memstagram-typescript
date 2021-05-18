@@ -1,11 +1,11 @@
-import { forwardRef, Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
-import { MongooseModule } from '@nestjs/mongoose';
+import { forwardRef, Module } from '@nestjs/common'
+import { JwtModule } from '@nestjs/jwt'
+import { MongooseModule } from '@nestjs/mongoose'
 
-import { UsersModule } from 'src/users/users.module';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
-import { Token, TokenSchema } from './schemas/token.schema';
+import { UsersModule } from 'src/users/users.module'
+import { AuthController } from './auth.controller'
+import { AuthService } from './auth.service'
+import { Token, TokenSchema } from './schemas/token.schema'
 
 @Module({
   controllers: [AuthController],

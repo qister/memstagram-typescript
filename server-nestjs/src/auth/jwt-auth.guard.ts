@@ -3,9 +3,9 @@ import {
   ExecutionContext,
   Injectable,
   UnauthorizedException,
-} from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { JwtService } from '@nestjs/jwt';
+} from '@nestjs/common'
+import { Observable } from 'rxjs'
+import { JwtService } from '@nestjs/jwt'
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
@@ -14,29 +14,29 @@ export class JwtAuthGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const req = context.switchToHttp().getRequest();
+    const req = context.switchToHttp().getRequest()
     try {
-      const authHeader = req.headers.authorization;
+      const authHeader = req.headers.authorization
 
-      const bearer = authHeader.split(' ')[0];
-      const token = authHeader.split(' ')[1];
+      const bearer = authHeader.split(' ')[0]
+      const token = authHeader.split(' ')[1]
 
       if (bearer !== 'Bearer' || !token) {
         throw new UnauthorizedException({
           message: 'Пользователь не авторизован',
-        });
+        })
       }
 
       const { userId } = this.jwtService.verify(token, {
         secret: `${process.env.ACCESS_TOKEN_SECRET}`,
-      });
-      req.userId = userId;
+      })
+      req.userId = userId
 
-      return true;
+      return true
     } catch (error) {
       throw new UnauthorizedException({
         message: 'Пользователь не авторизован',
-      });
+      })
     }
   }
 }

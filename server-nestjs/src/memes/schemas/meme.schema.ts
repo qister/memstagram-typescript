@@ -1,27 +1,27 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
+import { Document, Schema as MongooseSchema } from 'mongoose'
 
-export type MemeDocument = Meme & Document;
+export type MemeDocument = Meme & Document
 
 @Schema()
 export class Meme {
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' })
-  authorId: MongooseSchema.Types.ObjectId;
+  authorId: MongooseSchema.Types.ObjectId
 
   @Prop()
-  description: string;
+  description: string
 
   @Prop([String])
-  categories: string[];
+  categories: string[]
 
   @Prop()
-  imgUrl: string;
+  imgUrl: string
 
   @Prop()
-  created: Date;
+  created: Date
 
   @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'User' }] })
-  likedBy: MongooseSchema.Types.ObjectId[];
+  likedBy: MongooseSchema.Types.ObjectId[]
 }
 
-export const MemeSchema = SchemaFactory.createForClass(Meme);
+export const MemeSchema = SchemaFactory.createForClass(Meme)

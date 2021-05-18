@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint-all": "cd client && npm run lint && cd ../server && npm run lint",
+    "lint-all": "cd client && npm run lint && cd ../server-nestjs && npm run lint",
     "prepare": "husky install"
   },
   "repository": {
