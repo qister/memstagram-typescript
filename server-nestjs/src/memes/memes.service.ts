@@ -27,11 +27,15 @@ export class MemesService {
       //TODO вынести это в отдельную константу и везде использовать
       memeBefore.likedBy.some((id) => id.toString() === userId.toString())
     ) {
-      const updatedMeme = await this.memeModel.findByIdAndUpdate(memeId, {
-        likedBy: memeBefore.likedBy.filter(
-          (id) => id.toString() !== userId.toString(),
-        ),
-      })
+      const updatedMeme = await this.memeModel.findByIdAndUpdate(
+        memeId,
+        {
+          likedBy: memeBefore.likedBy.filter(
+            (id) => id.toString() !== userId.toString(),
+          ),
+        },
+        { new: true },
+      )
 
       if (!updatedMeme) {
         throw new HttpException('Unable to find meme', HttpStatus.BAD_REQUEST)
@@ -39,11 +43,20 @@ export class MemesService {
 
       return { meme: { ...updatedMeme.toObject(), liked: false } }
     } else {
-      const updatedMeme = await this.memeModel.findByIdAndUpdate(memeId, {
-        likedBy: [...memeBefore.likedBy, userId],
-      })
+      const updatedMeme = await this.memeModel.findByIdAndUpdate(
+        memeId,
+        {
+          likedBy: [...memeBefore.likedBy, userId],
+        },
+        { new: true },
+      )
 
-      return { meme: { ...updatedMeme.toObject(), liked: true } }
+      return {
+        meme: {
+          ...updatedMeme.toObject(),
+          liked: true,
+        },
+      }
     }
   }
 
@@ -120,9 +133,9 @@ export class MemesService {
     }))
 
     try {
-      await this.memeModel.insertMany(memeArray)
+      const newMemes = await this.memeModel.insertMany(memeArray)
 
-      return memeArray
+      return newMemes
     } catch (error) {
       throw new HttpException('Unable to save memes', HttpStatus.BAD_REQUEST)
     }

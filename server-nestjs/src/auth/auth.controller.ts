@@ -9,6 +9,7 @@ import {
   Res,
 } from '@nestjs/common'
 import { Request, Response } from 'express'
+import { ApiOperation, ApiResponse } from '@nestjs/swagger'
 
 import { AuthService } from './auth.service'
 import { CreateUserDto } from './../users/dto/create-user.dto'
@@ -19,6 +20,18 @@ const refreshTokenLifeSpan = 1000 * 60 * 60 * 24 * 30 // 30 дней
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @ApiOperation({ summary: 'Логин' })
+  @ApiResponse({
+    status: 201,
+    schema: {
+      example: {
+        tokens: {
+          access_token:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZmExYzIwNDQ2ZDFiMTExZDZhZGQ2YWUiLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNjIxNjg0ODg1LCJleHAiOjE2MjE2ODU3ODV9.G8Ihcj2MiKdAV5Ntu_Bq2FxLGOgOmtX__W_ngCsMMmg',
+        },
+      },
+    },
+  })
   @Post('/login')
   async login(
     @Res({ passthrough: true }) response: Response,
@@ -38,11 +51,34 @@ export class AuthController {
     }
   }
 
+  @ApiOperation({ summary: 'Регистрация' })
+  @ApiResponse({
+    status: 201,
+    schema: {
+      example: {
+        user: {
+          email: 'test@test.com',
+        },
+      },
+    },
+  })
   @Post('/registration')
   registration(@Body() userDto: CreateUserDto) {
     return this.authService.registration(userDto)
   }
 
+  @ApiOperation({ summary: 'Обновление токенов' })
+  @ApiResponse({
+    status: 201,
+    schema: {
+      example: {
+        tokens: {
+          access_token:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZmExYzIwNDQ2ZDFiMTExZDZhZGQ2YWUiLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNjIxNjg0ODg1LCJleHAiOjE2MjE2ODU3ODV9.G8Ihcj2MiKdAV5Ntu_Bq2FxLGOgOmtX__W_ngCsMMmg',
+        },
+      },
+    },
+  })
   @Post('/refresh_tokens')
   async refreshTokens(
     @Req() request: Request,
@@ -62,6 +98,7 @@ export class AuthController {
     }
   }
 
+  @ApiOperation({ summary: 'Логаут' })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete('/logout')
   async logout(
