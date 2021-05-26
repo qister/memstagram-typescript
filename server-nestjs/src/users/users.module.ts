@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { forwardRef, Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
 import { MongooseModule } from '@nestjs/mongoose'
 
@@ -17,7 +17,7 @@ import { UsersService } from './users.service'
       { name: User.name, schema: UserSchema },
       { name: Meme.name, schema: MemeSchema },
     ]),
-    AuthModule,
+    forwardRef(() => AuthModule),
   ],
   exports: [UsersService],
 })

@@ -19,18 +19,22 @@ export class UsersService {
     if (!user) {
       throw new HttpException('Юзер не найден', HttpStatus.BAD_REQUEST)
     }
+    const userObj = user.toObject()
 
-    return user
+    return userObj
   }
 
   async getByEmail(email: string) {
-    return this.userModel.findOne({ email })
+    const user = await this.userModel.findOne({ email })
+
+    if (user) return user.toObject()
+    return null
   }
 
   async create(userDto: CreateUserDto) {
-    const newUser = new this.userModel(userDto)
-
-    return newUser.save()
+    const user = new this.userModel(userDto)
+    const newUser = await user.save()
+    return newUser.toObject()
   }
 
   async getUserMemes(userId: MongooseSchema.Types.ObjectId) {

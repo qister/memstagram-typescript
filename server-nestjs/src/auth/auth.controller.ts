@@ -63,8 +63,10 @@ export class AuthController {
     },
   })
   @Post('/registration')
-  registration(@Body() userDto: CreateUserDto) {
-    return this.authService.registration(userDto)
+  async registration(@Body() userDto: CreateUserDto) {
+    const user = await this.authService.registration(userDto)
+
+    return user
   }
 
   @ApiOperation({ summary: 'Обновление токенов' })

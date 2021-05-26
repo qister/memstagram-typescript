@@ -2,7 +2,6 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { LeanDocument, Model, Schema as MongooseSchema } from 'mongoose'
 
-import { UserDocument } from './../users/schemas/user.schema'
 import { Meme, MemeDocument } from './schemas/meme.schema'
 
 @Injectable()
@@ -65,13 +64,13 @@ export class MemesService {
     endIndex,
     page,
     limit,
-    user,
+    userId,
   }: {
     startIndex: number
     endIndex: number
     page: number
     limit: number
-    user: UserDocument
+    userId: MongooseSchema.Types.ObjectId
   }) {
     const results: {
       next?: { page: number; limit: number }
@@ -105,7 +104,7 @@ export class MemesService {
 
     const memes = memesFromDb.map((meme) => meme.toObject())
     const memesWithLikes = memes.map((meme) => {
-      return meme.likedBy.some((id) => id.toString() === user._id.toString())
+      return meme.likedBy.some((id) => id.toString() === userId.toString())
         ? { ...meme, liked: true }
         : { ...meme, liked: false }
     })
