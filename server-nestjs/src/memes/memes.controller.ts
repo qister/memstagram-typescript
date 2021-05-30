@@ -21,18 +21,14 @@ import {
   ApiResponse,
 } from '@nestjs/swagger'
 
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
-import { UsersService } from 'src/users/users.service'
+import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 import { MemesService } from './memes.service'
-import { UserId } from 'src/users/user.decorator'
+import { UserId } from '../users/user.decorator'
 import { FilesUploadDto } from './dto/file-upload.dto'
 
 @Controller('memes')
 export class MemesController {
-  constructor(
-    private readonly memesService: MemesService,
-    private readonly usersService: UsersService,
-  ) {}
+  constructor(private readonly memesService: MemesService) {}
 
   // @Get()
   // getAll() {
@@ -96,7 +92,6 @@ export class MemesController {
     @Query('limit') limit: string,
     @UserId() userId: MongooseSchema.Types.ObjectId,
   ) {
-    const user = await this.usersService.getById(userId)
     const pageNum = Number(page)
     const limitNum = Number(limit)
     const startIndex = (pageNum - 1) * limitNum
@@ -107,7 +102,7 @@ export class MemesController {
       endIndex,
       page: pageNum,
       limit: limitNum,
-      user,
+      userId,
     })
   }
 

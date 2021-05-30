@@ -10,7 +10,6 @@ import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken'
 
-import { UserDocument } from './../users/schemas/user.schema'
 import { CreateUserDto } from 'src/users/dto/create-user.dto'
 import { Token, TokenDocument } from './schemas/token.schema'
 import { UsersService } from './../users/users.service'
@@ -48,10 +47,10 @@ export class AuthService {
     })
 
     // можно возвращать сразу токен чтобы сразу логиниться
-    return { user: { email: user.email } }
+    return { user }
   }
 
-  private async validateUser(userDto: CreateUserDto): Promise<UserDocument> {
+  private async validateUser(userDto: CreateUserDto) {
     try {
       const user = await this.usersService.getByEmail(userDto.email)
 
