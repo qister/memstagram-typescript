@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { Form, Input, Button, Checkbox, Typography } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import './Login.scss'
 import { fetchLogin } from './authSlice'
+import { RootState } from 'redux/authToolkitRedux/StoreSlices'
+import { IFetchingStatus } from 'constants/enums'
 
 const { Link } = Typography
 
@@ -15,6 +17,7 @@ export const LoginForm = () => {
   const [isValid, setIsValid] = useState(false)
 
   const dispatch = useDispatch()
+  const { fetchingStatus } = useSelector((state: RootState) => state.authorization)
 
   const onChangeForm = () => {
     form
@@ -39,6 +42,7 @@ export const LoginForm = () => {
       >
         <Form.Item name="email" rules={[{ required: true, message: 'Please input your email!' }]}>
           <Input
+            type="email"
             prefix={<UserOutlined className="site-form-item-icon" />}
             placeholder="email"
             onChange={onChangeForm}
@@ -50,8 +54,9 @@ export const LoginForm = () => {
         >
           <Input
             prefix={<LockOutlined className="site-form-item-icon" />}
+            autoComplete="on"
             type="password"
-            placeholder="Password"
+            placeholder="password"
             onChange={onChangeForm}
           />
         </Form.Item>
@@ -70,6 +75,7 @@ export const LoginForm = () => {
             className="login-form-button"
             disabled={!isValid}
             onClick={onSubmit}
+            loading={fetchingStatus === IFetchingStatus.pending}
           >
             Log in
           </Button>

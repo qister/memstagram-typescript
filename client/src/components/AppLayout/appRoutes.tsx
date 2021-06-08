@@ -1,6 +1,5 @@
 import { Feed } from 'components/Feed/Feed'
 import { AddMeme } from 'pages/AddMeme/AddMeme'
-import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 
 import { Profile } from '../../pages/Profile'
@@ -9,18 +8,9 @@ import { ContentPath } from 'constants/enums'
 
 export const routes = (
   <Switch>
-    <Route path={ContentPath.Feed} exact>
-      <Feed />
-    </Route>
-    <Route path={ContentPath.Profile} exact>
-      <Profile />
-    </Route>
-    <Route path={ContentPath.Statistics} exact>
-      <Statistics />
-    </Route>
-    <Route path={ContentPath.Add} exact>
-      <AddMeme />
-    </Route>
-    <Route component={Feed} />
+    <Route path={ContentPath.Feed} component={Feed} exact />
+    <Route path={ContentPath.Profile} component={Profile} exact />
+    <Route path={ContentPath.Statistics} component={Statistics} exact />
+    <Route path={ContentPath.Add} component={AddMeme} exact />
   </Switch>
 )
