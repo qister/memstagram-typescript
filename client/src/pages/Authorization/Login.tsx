@@ -1,14 +1,13 @@
-import React, { useState } from 'react'
-import { Form, Input, Button, Checkbox, Typography } from 'antd'
+import { useState } from 'react'
+import { Form, Input, Button, Checkbox } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import './Login.scss'
 import { fetchLogin } from './authSlice'
 import { RootState } from 'redux/authToolkitRedux/StoreSlices'
 import { IFetchingStatus } from 'constants/enums'
-
-const { Link } = Typography
 
 const ROOT_CLASS = 'login'
 
@@ -65,7 +64,7 @@ export const LoginForm = () => {
             <Checkbox onChange={onChangeForm}>Remember me</Checkbox>
           </Form.Item>
           {/* TODO добавить восстановление пароля */}
-          <Link href="">Forgot password</Link>
+          <Link to="/forgot_pass">Forgot password</Link>
         </Form.Item>
 
         <Form.Item>
@@ -79,7 +78,7 @@ export const LoginForm = () => {
           >
             Log in
           </Button>
-          Or <Link href="/register">register now</Link>
+          Or <Link to="/register">register now</Link>
         </Form.Item>
       </Form>
     </div>
