@@ -1,8 +1,7 @@
-import React from 'react'
 import { Card, Avatar } from 'antd'
 import { useDispatch } from 'react-redux'
 
-import { Icon } from '../../UI/Icon'
+import { HeartIcon } from './HeartIcon/HeartIcon'
 import './MemeCard.scss'
 import { IMeme } from 'constants/interfaces'
 import { fetchLikeMeme } from 'components/Feed/feedSlice'
@@ -35,7 +34,7 @@ export const MemeCard = ({ meme: { _id, author, liked, imgUrl } }: IProps) => {
         avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
         title={author}
       />
-      <Icon onClickLike={toggleLike} liked={liked} />
+      <HeartIcon onClick={toggleLike} liked={liked} />
     </Card>
   )
 }
