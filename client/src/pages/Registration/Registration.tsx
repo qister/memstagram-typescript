@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Form, Input, Tooltip, Button } from 'antd'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 

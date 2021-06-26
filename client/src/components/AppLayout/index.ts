@@ -1,1 +1,1 @@
-export { AppLayoutBehavior as AppLayout } from './AppLayoutBehavior'
+export { AppLayout } from './AppLayout'
