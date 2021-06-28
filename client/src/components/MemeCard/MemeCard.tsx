@@ -22,14 +22,9 @@ export const MemeCard = ({ meme: { _id, author, liked, imgUrl } }: IProps) => {
   // TODO убирать public не слайсом, а через find или регулярку
   const imgLink = 'http://localhost:4001/' + imgUrl.slice(7)
 
-  const ROOT_CLASS = 'card-meme'
+  const ROOT_CLASS = 'meme-card'
   return (
-    <Card
-      className={ROOT_CLASS}
-      cover={
-        <img alt="example" src={imgLink} style={{ maxHeight: `${window.innerHeight * 0.8}px` }} />
-      }
-    >
+    <Card className={ROOT_CLASS} cover={<img alt="example" src={imgLink} />}>
       <Meta
         avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
         title={author}
