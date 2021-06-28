@@ -63,9 +63,11 @@ export const AppLayout: FC<IProps> = () => {
         <Content
           className={`${ROOT_CLASS}-wrapper__content`}
           style={{
+            // Добавить в основной стиль
             margin: '24px 16px',
             padding: 24,
             minHeight: 280,
+            // Поправить высоту чтобы занимала весь экран
           }}
         >
           <div className="app">{routes}</div>
