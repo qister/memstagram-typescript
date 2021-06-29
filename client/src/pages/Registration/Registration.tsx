@@ -4,7 +4,10 @@ import { QuestionCircleOutlined } from '@ant-design/icons'
 
 import './Registration.scss'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchRegistration } from 'redux/authToolkitRedux/StoreSlices/registration'
+import {
+  fetchRegistration,
+  resetRegistrationState,
+} from 'redux/authToolkitRedux/StoreSlices/registration'
 import { RootState } from 'redux/authToolkitRedux/StoreSlices'
 import { IFetchingStatus } from 'constants/enums'
 import { useHistory } from 'react-router'
@@ -24,13 +27,15 @@ export const Registration = () => {
   const [isValid, setIsValid] = useState(false)
   const dispatch = useDispatch()
   const history = useHistory()
-
   const { fetchingStatus } = useSelector((state: RootState) => state.registration)
 
-  // TODO: вынести это в редюсер и убрать отсюда, надо глянуть как с роутингом внутри стора работать
   useEffect(() => {
     if (fetchingStatus === IFetchingStatus.fulfilled) {
       history.push('/login')
+    }
+
+    return () => {
+      dispatch(resetRegistrationState())
     }
   }, [fetchingStatus])
 

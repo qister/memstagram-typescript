@@ -24,7 +24,11 @@ export const fetchRegistration = createAsyncThunk(
 const registration = createSlice({
   name: 'registration',
   initialState,
-  reducers: {},
+  reducers: {
+    reset: (state) => {
+      Object.assign(state, initialState)
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchRegistration.pending, (state) => {
       state.fetchingStatus = IFetchingStatus.pending
@@ -40,6 +44,9 @@ const registration = createSlice({
   },
 })
 
-const { reducer } = registration
+const {
+  reducer,
+  actions: { reset },
+} = registration
 
-export { reducer as registration }
+export { reducer as registration, reset as resetRegistrationState }
