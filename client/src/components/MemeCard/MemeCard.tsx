@@ -14,15 +14,10 @@ interface IProps {
 
 export const MemeCard = ({ meme: { _id, author, liked, imgUrl } }: IProps) => {
   const dispatch = useDispatch()
-
-  const toggleLike = () => {
-    dispatch(fetchLikeMeme({ _id }))
-  }
-  // TODO вынести порт или префикс целиком в конфиг
-  // TODO убирать public не слайсом, а через find или регулярку
-  const imgLink = 'http://localhost:4001/' + imgUrl.slice(7)
-
+  const toggleLike = () => dispatch(fetchLikeMeme({ _id }))
+  const imgLink = `${process.env.REACT_APP_SERVER_URL}/${imgUrl.replace('public/', '')}` // Удаляем 'public/' из url для корректной работы
   const ROOT_CLASS = 'meme-card'
+
   return (
     <Card className={ROOT_CLASS} cover={<img alt="example" src={imgLink} />}>
       <Meta
