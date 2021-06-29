@@ -1,45 +1,23 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Route, Switch, BrowserRouter as Router, Redirect } from 'react-router-dom'
+import { Route, Switch, Redirect, useLocation } from 'react-router-dom'
 
 import { RootState } from '../../redux/authToolkitRedux/StoreSlices'
 import { AppLayout } from 'components/AppLayout'
 import '../../styles/App.scss'
 import { Registration } from 'pages/Registration/Registration'
 import { LoginForm } from 'pages/Authorization/Login'
-import { fetchUser } from 'pages/Profile/userSlice'
-import { fetchUpdateTokens } from 'pages/Authorization/authSlice'
-import { IFetchingStatus } from 'constants/enums'
+import { fetchUpdateTokens, setEntryPathname } from 'pages/Authorization/authSlice'
 
-const tokenUpdatePeriod = 10 * 60 * 1000 // 10 минут
-
-export function AppTemplate() {
-  const { isAuthenticated, logoutFetchingStatus } = useSelector(
-    (state: RootState) => state.authorization,
-  )
-
+export const AppTemplate = () => {
+  const { isAuthenticated } = useSelector((state: RootState) => state.authorization)
   const dispatch = useDispatch()
+  const location = useLocation()
 
   useEffect(() => {
-    // setTimeout(() => dispatch(fetchUpdateTokens()), 5000)
+    dispatch(setEntryPathname(location.pathname))
     dispatch(fetchUpdateTokens())
   }, [])
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      dispatch(fetchUser())
-    }
-
-    const interval = setInterval(() => {
-      dispatch(fetchUpdateTokens())
-    }, tokenUpdatePeriod)
-
-    if (logoutFetchingStatus === IFetchingStatus.fulfilled) {
-      clearInterval(interval)
-    }
-
-    return () => clearInterval(interval)
-  }, [isAuthenticated])
 
   const routes = isAuthenticated ? (
     <Switch>
@@ -53,5 +31,5 @@ export function AppTemplate() {
     </Switch>
   )
 
-  return <Router>{routes}</Router>
+  return routes
 }

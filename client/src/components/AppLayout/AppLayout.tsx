@@ -1,4 +1,4 @@
-import { useState, FC } from 'react'
+import { useState, FC, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Layout, Menu } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
@@ -8,16 +8,34 @@ import { routes } from './appRoutes'
 import { MENU_SIDEBAR_ITEMS } from '../../constants/constants'
 import './AppLayout.scss'
 import { RootState } from 'redux/authToolkitRedux/StoreSlices'
-import { Link, useLocation } from 'react-router-dom'
-import { fetchLogout } from 'pages/Authorization/authSlice'
+import { Link, useHistory, useLocation } from 'react-router-dom'
+import { fetchLogout, fetchUpdateTokens } from 'pages/Authorization/authSlice'
+import { fetchUser } from 'pages/Profile/userSlice'
 
 const { Header, Sider, Content } = Layout
 
 interface IProps {}
 
+const tokenUpdatePeriod = 10 * 60 * 1000 // 10 минут
+
 export const AppLayout: FC<IProps> = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
   const [collapsed, setCollapsed] = useState(false)
+  const { isAuthenticated, entryPathname } = useSelector((state: RootState) => state.authorization)
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(fetchUser())
+      history.push(entryPathname)
+    }
+
+    const interval = setInterval(() => {
+      dispatch(fetchUpdateTokens())
+    }, tokenUpdatePeriod)
+
+    return () => clearInterval(interval)
+  }, [isAuthenticated])
 
   const onHandleLogout = () => {
     dispatch(fetchLogout())
