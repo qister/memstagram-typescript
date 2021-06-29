@@ -9,12 +9,14 @@ export interface ICredentials {
 }
 
 export interface IAuthorizationState {
+  entryPathname: string
   isAuthenticated: boolean
   fetchingStatus: IFetchingStatus
   logoutFetchingStatus: IFetchingStatus
 }
 
 const initialState: IAuthorizationState = {
+  entryPathname: '/feed',
   isAuthenticated: false,
   fetchingStatus: IFetchingStatus.idle,
   logoutFetchingStatus: IFetchingStatus.idle,
@@ -31,7 +33,11 @@ export const fetchUpdateTokens = createAsyncThunk('fetchUpdateTokens', updateTok
 const authorization = createSlice({
   name: 'authorization',
   initialState,
-  reducers: {},
+  reducers: {
+    setEntryPathname: (state, action) => {
+      state.entryPathname = action.payload
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchLogin.pending, (state) => {
       state.fetchingStatus = IFetchingStatus.pending
@@ -68,3 +74,5 @@ const authorization = createSlice({
 const { reducer } = authorization
 
 export { reducer as authorization }
+
+export const { setEntryPathname } = authorization.actions
