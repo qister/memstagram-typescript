@@ -71,8 +71,9 @@ const authorization = createSlice({
   },
 })
 
-const { reducer } = authorization
+const {
+  reducer,
+  actions: { setEntryPathname },
+} = authorization
 
-export { reducer as authorization }
-
-export const { setEntryPathname } = authorization.actions
+export { reducer as authorization, setEntryPathname }

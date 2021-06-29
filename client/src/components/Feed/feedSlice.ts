@@ -88,5 +88,4 @@ const {
   actions: { reset },
 } = feed
 
-export { reducer as feed }
-export { reset as resetFeedState }
+export { reducer as feed, reset as resetFeedState }
