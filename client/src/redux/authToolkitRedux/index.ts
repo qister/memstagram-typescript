@@ -22,3 +22,5 @@ export function configureStore() {
 
   return createStore(reducers, {}, composedEnhancers)
 }
+
+export const store = configureStore()

@@ -1,10 +1,11 @@
-import { render, screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
 import '@testing-library/jest-dom/extend-expect'
-import { App } from '.'
-import { createMemoryHistory } from 'history'
+
+import { App } from './App'
+import { renderWithRouter } from 'utils/testUtils'
 
 const handlers = [
   rest.post('/api/v1/auth/login', (req, res, ctx) => {
@@ -109,19 +110,7 @@ Object.defineProperty(window, 'matchMedia', {
   },
 })
 
-// //@ts-ignore
-// const renderWithReduxAndRouter = (
-//   //@ts-ignore
-//   component,
-//   //@ts-ignore
-// ) => {
-//   return {
-//     ...render(<Provider store={store}>{component}</Provider>),
-//     store,
-//   }
-// }
-
-// jest.setTimeout(30000)
+jest.setTimeout(30000)
 
 describe('Приложение целиком', () => {
   beforeAll(() => server.listen())
@@ -129,18 +118,21 @@ describe('Приложение целиком', () => {
   afterAll(() => server.close())
 
   it('После успешного логина показывается страница с лентой', async () => {
-    const history = createMemoryHistory()
-    render(<App />)
+    const { history } = renderWithRouter(<App />, { initialRoute: '/' })
     const emailField = screen.getByPlaceholderText(/email/i)
     await userEvent.type(emailField, 'email@test.com', { delay: 20 })
     expect(screen.getByRole('button')).toBeDisabled()
-
+    await waitFor(() => expect(history.location.pathname).toEqual('/login'))
     const passwordField = screen.getByPlaceholderText(/password/i)
     await userEvent.type(passwordField, 'password', { delay: 20 }) // Если пароль - один символ, то все ок, если больше то валидация не проходит, если не указать delay
 
     const loginbutton = await screen.findByRole('button')
     expect(loginbutton).toBeEnabled()
+
     userEvent.click(loginbutton)
-    await screen.findByText('Лента')
+    await waitFor(() => expect(loginbutton).toBeDisabled())
+    // TODO добавить проверку на вызов апи
+    await waitFor(() => expect(history.location.pathname).toEqual('/feed'))
+    expect(screen.getByText('Лента')).toBeInTheDocument()
   })
 })

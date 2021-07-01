@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 
-import { store } from 'components/App/AppBehavior'
+import { store } from 'redux/authToolkitRedux'
 import { registration } from './registration'
 import { user } from 'pages/Profile/userSlice'
 import { feed } from 'components/Feed/feedSlice'

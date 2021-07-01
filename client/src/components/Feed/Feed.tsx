@@ -11,18 +11,23 @@ import { fetchMemeList, resetFeedState } from './feedSlice'
 
 // Если функционала InfiniteScroll не хватит, можно написать свой через рефы
 export const Feed = () => {
-  const { memeList, total } = useSelector((state: RootState) => state.feed)
-
+  const {
+    feed: { memeList, total },
+    authorization: { isTokensUpdated },
+  } = useSelector((state: RootState) => state)
   const dispatch = useDispatch()
-
   const loadMemes = () => dispatch(fetchMemeList())
 
   useEffect(() => {
-    loadMemes()
+    //TODO посмотреть как можно сначала дождаться обновления токенов чтобы только потом отправлять запрос на мемы
+    if (isTokensUpdated) {
+      loadMemes()
+    }
+
     return () => {
       dispatch(resetFeedState())
     }
-  }, [])
+  }, [isTokensUpdated])
 
   const ROOT_CLASS = 'feed'
 

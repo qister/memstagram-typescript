@@ -1,7 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getLogin, getLogout, updateTokens } from 'API/authApi'
 import { IFetchingStatus } from 'constants/enums'
-import { deleteAccessTokenFromCookie, setAccessTokenToCookie } from 'utils/auth'
+import {
+  deleteAccessTokenFromCookie,
+  getAccessTokenFromCookie,
+  setAccessTokenToCookie,
+} from 'utils/auth'
 
 export interface ICredentials {
   email: string
@@ -9,22 +13,24 @@ export interface ICredentials {
 }
 
 export interface IAuthorizationState {
-  entryPathname: string
+  entryLocation: string | null
   isAuthenticated: boolean
   fetchingStatus: IFetchingStatus
   logoutFetchingStatus: IFetchingStatus
+  isTokensUpdated: boolean
 }
 
 const initialState: IAuthorizationState = {
-  entryPathname: '/feed',
-  isAuthenticated: false,
+  entryLocation: null,
+  isAuthenticated: Boolean(getAccessTokenFromCookie()),
   fetchingStatus: IFetchingStatus.idle,
   logoutFetchingStatus: IFetchingStatus.idle,
+  isTokensUpdated: false,
 }
 
-export const fetchLogin = createAsyncThunk('fetchLogin', (credentials: ICredentials) => {
-  return getLogin(credentials)
-})
+export const fetchLogin = createAsyncThunk('fetchLogin', (credentials: ICredentials) =>
+  getLogin(credentials),
+)
 
 export const fetchLogout = createAsyncThunk('fetchLogout', getLogout)
 
@@ -34,8 +40,11 @@ const authorization = createSlice({
   name: 'authorization',
   initialState,
   reducers: {
-    setEntryPathname: (state, action) => {
-      state.entryPathname = action.payload
+    setEntryLocation: (state, action) => {
+      state.entryLocation = action.payload
+    },
+    clearEntryLocation: (state) => {
+      state.entryLocation = null
     },
   },
   extraReducers: (builder) => {
@@ -47,6 +56,7 @@ const authorization = createSlice({
       const { access_token } = action.payload.data.tokens
       setAccessTokenToCookie(access_token)
       state.isAuthenticated = true
+      state.isTokensUpdated = true
     })
     builder.addCase(fetchLogin.rejected, (state) => {
       state.fetchingStatus = IFetchingStatus.rejected
@@ -62,10 +72,11 @@ const authorization = createSlice({
     builder.addCase(fetchUpdateTokens.fulfilled, (state, action) => {
       const { access_token } = action.payload.data.tokens
       setAccessTokenToCookie(access_token)
-      state.isAuthenticated = true
+      state.isTokensUpdated = true
     })
     builder.addCase(fetchUpdateTokens.rejected, (state, action) => {
       // TODO настроить обработку ошибки
+      deleteAccessTokenFromCookie()
       state.isAuthenticated = false
     })
   },
@@ -73,7 +84,7 @@ const authorization = createSlice({
 
 const {
   reducer,
-  actions: { setEntryPathname },
+  actions: { setEntryLocation, clearEntryLocation },
 } = authorization
 
-export { reducer as authorization, setEntryPathname }
+export { reducer as authorization, setEntryLocation, clearEntryLocation }
