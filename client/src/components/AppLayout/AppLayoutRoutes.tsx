@@ -6,12 +6,12 @@ import { Profile } from '../../pages/Profile'
 import { Statistics } from '../../pages/Statistics'
 import { ContentPath } from 'constants/enums'
 
-export const routes = (
+export const AppLayoutRoutes = () => (
   <Switch>
-    <Redirect from="/login" to={ContentPath.Feed} />
     <Route path={ContentPath.Feed} component={Feed} exact />
     <Route path={ContentPath.Profile} component={Profile} exact />
     <Route path={ContentPath.Statistics} component={Statistics} exact />
     <Route path={ContentPath.Add} component={AddMeme} exact />
+    <Redirect to={ContentPath.Feed} />
   </Switch>
 )

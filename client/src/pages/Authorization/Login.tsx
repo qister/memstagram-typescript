@@ -31,6 +31,8 @@ export const LoginForm = () => {
     dispatch(fetchLogin({ email, password }))
   }
 
+  const isLoading = fetchingStatus === IFetchingStatus.pending
+
   return (
     <div className={ROOT_CLASS}>
       <Form
@@ -72,9 +74,9 @@ export const LoginForm = () => {
             type="primary"
             htmlType="submit"
             className="login-form-button"
-            disabled={!isValid}
             onClick={onSubmit}
-            loading={fetchingStatus === IFetchingStatus.pending}
+            loading={isLoading} // При loading={true} кнопка дизейблится через стили, но атрибут disabled не добавляется
+            disabled={!isValid || isLoading} // Поэтому тут она дополнительно дизейблится через || isLoading
           >
             Log in
           </Button>

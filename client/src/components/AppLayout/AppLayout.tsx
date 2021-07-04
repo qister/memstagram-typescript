@@ -4,12 +4,12 @@ import { Layout, Menu } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 
 import { User } from './User'
-import { routes } from './appRoutes'
+import { AppLayoutRoutes } from './AppLayoutRoutes'
 import { MENU_SIDEBAR_ITEMS } from '../../constants/constants'
 import './AppLayout.scss'
 import { RootState } from 'redux/authToolkitRedux/StoreSlices'
-import { Link, useHistory, useLocation } from 'react-router-dom'
-import { fetchLogout, fetchUpdateTokens } from 'pages/Authorization/authSlice'
+import { Link, useLocation } from 'react-router-dom'
+import { clearEntryLocation, fetchLogout, fetchUpdateTokens } from 'pages/Authorization/authSlice'
 import { fetchUser } from 'pages/Profile/userSlice'
 
 const { Header, Sider, Content } = Layout
@@ -20,14 +20,22 @@ const tokenUpdatePeriod = 10 * 60 * 1000 // 10 минут
 
 export const AppLayout: FC<IProps> = () => {
   const dispatch = useDispatch()
-  const history = useHistory()
   const [collapsed, setCollapsed] = useState(false)
-  const { isAuthenticated, entryPathname } = useSelector((state: RootState) => state.authorization)
+  const { entryLocation, isAuthenticated, isTokensUpdated } = useSelector(
+    (state: RootState) => state.authorization,
+  )
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (!isTokensUpdated) {
+      dispatch(fetchUpdateTokens())
+    }
+
+    if (isTokensUpdated) {
       dispatch(fetchUser())
-      history.push(entryPathname)
+    }
+
+    if (entryLocation) {
+      dispatch(clearEntryLocation())
     }
 
     const interval = setInterval(() => {
@@ -35,7 +43,7 @@ export const AppLayout: FC<IProps> = () => {
     }, tokenUpdatePeriod)
 
     return () => clearInterval(interval)
-  }, [isAuthenticated])
+  }, [isTokensUpdated])
 
   const onHandleLogout = () => {
     dispatch(fetchLogout())
@@ -88,7 +96,9 @@ export const AppLayout: FC<IProps> = () => {
             // Поправить высоту чтобы занимала весь экран
           }}
         >
-          <div className="app">{routes}</div>
+          <div className="app">
+            <AppLayoutRoutes />
+          </div>
         </Content>
       </Layout>
     </Layout>
