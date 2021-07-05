@@ -13,21 +13,18 @@ import { fetchMemeList, resetFeedState } from './feedSlice'
 export const Feed = () => {
   const {
     feed: { memeList, total },
-    authorization: { isTokensUpdated },
+    authorization: { isTokenUpdated },
   } = useSelector((state: RootState) => state)
   const dispatch = useDispatch()
   const loadMemes = () => dispatch(fetchMemeList())
 
   useEffect(() => {
-    //TODO посмотреть как можно сначала дождаться обновления токенов чтобы только потом отправлять запрос на мемы
-    if (isTokensUpdated) {
-      loadMemes()
-    }
+    loadMemes()
 
     return () => {
       dispatch(resetFeedState())
     }
-  }, [isTokensUpdated])
+  }, [isTokenUpdated])
 
   const ROOT_CLASS = 'feed'
 

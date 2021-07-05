@@ -17,7 +17,7 @@ export interface IAuthorizationState {
   isAuthenticated: boolean
   fetchingStatus: IFetchingStatus
   logoutFetchingStatus: IFetchingStatus
-  isTokensUpdated: boolean
+  isTokenUpdated: boolean
 }
 
 const initialState: IAuthorizationState = {
@@ -25,7 +25,7 @@ const initialState: IAuthorizationState = {
   isAuthenticated: Boolean(getAccessTokenFromCookie()),
   fetchingStatus: IFetchingStatus.idle,
   logoutFetchingStatus: IFetchingStatus.idle,
-  isTokensUpdated: false,
+  isTokenUpdated: false,
 }
 
 export const fetchLogin = createAsyncThunk('fetchLogin', (credentials: ICredentials) =>
@@ -56,7 +56,7 @@ const authorization = createSlice({
       const { access_token } = action.payload.data.tokens
       setAccessTokenToCookie(access_token)
       state.isAuthenticated = true
-      state.isTokensUpdated = true
+      state.isTokenUpdated = true
     })
     builder.addCase(fetchLogin.rejected, (state) => {
       state.fetchingStatus = IFetchingStatus.rejected
@@ -72,7 +72,7 @@ const authorization = createSlice({
     builder.addCase(fetchUpdateTokens.fulfilled, (state, action) => {
       const { access_token } = action.payload.data.tokens
       setAccessTokenToCookie(access_token)
-      state.isTokensUpdated = true
+      state.isTokenUpdated = true
     })
     builder.addCase(fetchUpdateTokens.rejected, (state, action) => {
       // TODO настроить обработку ошибки
