@@ -1,6 +1,6 @@
 import { useState, FC, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Layout, Menu } from 'antd'
+import { Layout, Menu, Spin } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 
 import { User } from './User'
@@ -21,16 +21,19 @@ const tokenUpdatePeriod = 10 * 60 * 1000 // 10 минут
 export const AppLayout: FC<IProps> = () => {
   const dispatch = useDispatch()
   const [collapsed, setCollapsed] = useState(false)
-  const { entryLocation, isAuthenticated, isTokensUpdated } = useSelector(
-    (state: RootState) => state.authorization,
-  )
+  const {
+    authorization: { entryLocation, isTokenUpdated },
+    user: {
+      currentUser: { email },
+    },
+  } = useSelector((state: RootState) => state)
 
   useEffect(() => {
-    if (!isTokensUpdated) {
+    if (!isTokenUpdated) {
       dispatch(fetchUpdateTokens())
     }
 
-    if (isTokensUpdated) {
+    if (isTokenUpdated) {
       dispatch(fetchUser())
     }
 
@@ -43,7 +46,7 @@ export const AppLayout: FC<IProps> = () => {
     }, tokenUpdatePeriod)
 
     return () => clearInterval(interval)
-  }, [isTokensUpdated])
+  }, [isTokenUpdated])
 
   const onHandleLogout = () => {
     dispatch(fetchLogout())
@@ -59,7 +62,7 @@ export const AppLayout: FC<IProps> = () => {
   //     !Array.isArray(defaultSelectedKey) && defaultSelectedKey !== ContentPath.Feed,
   // })
 
-  const { email } = useSelector((state: RootState) => state.user.currentUser)
+  const innerComponent = isTokenUpdated ? <AppLayoutRoutes /> : <Spin />
 
   const ROOT_CLASS = 'layout-container'
   return (
@@ -96,9 +99,7 @@ export const AppLayout: FC<IProps> = () => {
             // Поправить высоту чтобы занимала весь экран
           }}
         >
-          <div className="app">
-            <AppLayoutRoutes />
-          </div>
+          <div className="app">{innerComponent}</div>
         </Content>
       </Layout>
     </Layout>
