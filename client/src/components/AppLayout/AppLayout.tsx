@@ -10,7 +10,7 @@ import './AppLayout.scss'
 import { RootState } from 'redux/authToolkitRedux/StoreSlices'
 import { Link, useLocation } from 'react-router-dom'
 import { clearEntryLocation, fetchLogout, fetchUpdateTokens } from 'pages/Authorization/authSlice'
-import { fetchUser } from 'pages/Profile/userSlice'
+import { fetchUser } from 'components/Profile/userSlice'
 
 const { Header, Sider, Content } = Layout
 

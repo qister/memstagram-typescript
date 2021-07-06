@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Spin } from 'antd'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
-import { MemeCard } from 'components/MemeCard/MemeCard'
+import { MemeCard } from 'components/Feed/MemeCard/MemeCard'
 import { RootState } from 'redux/authToolkitRedux/StoreSlices'
 
 import './Feed.scss'

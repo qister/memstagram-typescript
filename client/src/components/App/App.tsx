@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Route, Switch, Redirect, useLocation, useHistory } from 'react-router-dom'
+import { Route, Switch, Redirect, useLocation } from 'react-router-dom'
 
 import { RootState } from '../../redux/authToolkitRedux/StoreSlices'
-import { AppLayout } from 'components/AppLayout'
+import { AppLayout } from 'components/AppLayout/AppLayout'
 import '../../styles/App.scss'
 import { Registration } from 'pages/Registration/Registration'
 import { LoginForm } from 'pages/Authorization/Login'
-import { fetchUpdateTokens, setEntryLocation } from 'pages/Authorization/authSlice'
+import { setEntryLocation } from 'pages/Authorization/authSlice'
 
 export const App = () => {
   const { isAuthenticated } = useSelector((state: RootState) => state.authorization)

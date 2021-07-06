@@ -7,7 +7,7 @@ import './Profile.scss'
 import { RootState } from 'redux/authToolkitRedux/StoreSlices'
 import { fetchUserMemes } from './userSlice'
 
-export const ProfileTemplate = () => {
+export const Profile = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
