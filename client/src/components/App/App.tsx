@@ -4,7 +4,6 @@ import { Route, Switch, Redirect, useLocation } from 'react-router-dom'
 
 import { RootState } from '../../redux/authToolkitRedux/StoreSlices'
 import { AppLayout } from 'components/AppLayout/AppLayout'
-import '../../styles/App.scss'
 import { Registration } from 'pages/Registration/Registration'
 import { LoginForm } from 'pages/Authorization/Login'
 import { setEntryLocation } from 'pages/Authorization/authSlice'

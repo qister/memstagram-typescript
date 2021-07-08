@@ -8,12 +8,12 @@ import { RootState } from 'redux/authToolkitRedux/StoreSlices'
 
 import './Feed.scss'
 import { fetchMemeList, resetFeedState } from './feedSlice'
+import { IFetchingStatus } from 'constants/enums'
 
 // Если функционала InfiniteScroll не хватит, можно написать свой через рефы
 export const Feed = () => {
   const {
-    feed: { memeList, total },
-    authorization: { isTokenUpdated },
+    feed: { memeList, total, fetchingStatus },
   } = useSelector((state: RootState) => state)
   const dispatch = useDispatch()
   const loadMemes = () => dispatch(fetchMemeList())
@@ -24,7 +24,7 @@ export const Feed = () => {
     return () => {
       dispatch(resetFeedState())
     }
-  }, [isTokenUpdated])
+  }, [])
 
   const ROOT_CLASS = 'feed'
 
@@ -33,12 +33,15 @@ export const Feed = () => {
       dataLength={memeList.length}
       next={loadMemes}
       hasMore={memeList.length < total}
-      loader={<Spin />}
+      loader={false} //Лоадер перенесен ниже тк тут его не получается отцентрировать
       className={ROOT_CLASS}
     >
-      {memeList.map((meme, index) => (
-        <MemeCard key={index} meme={meme} />
-      ))}
+      <div className={`${ROOT_CLASS}_content`}>
+        {memeList.map((meme, index) => (
+          <MemeCard key={index} meme={meme} />
+        ))}
+        {fetchingStatus === IFetchingStatus.pending && <Spin />}
+      </div>
     </InfiniteScroll>
   )
 }
