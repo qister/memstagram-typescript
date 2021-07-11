@@ -7,12 +7,15 @@ import { App } from './components/App/App'
 import 'antd/dist/antd.css'
 import './styles/index.css'
 import { store } from 'redux/authToolkitRedux'
+import { ErrorBoundary } from 'utils/ErrorBoundary'
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Router>
-      <App />
-    </Router>
-  </Provider>,
+  <ErrorBoundary>
+    <Provider store={store}>
+      <Router>
+        <App />
+      </Router>
+    </Provider>
+  </ErrorBoundary>,
   document.getElementById('root'),
 )
