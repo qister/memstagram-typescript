@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import axios from 'axios'
 
 import { getUserMemes } from 'API/memesAPI'
 import { getUser } from 'API/userApi'
 
 import { IFetchingStatus } from 'constants/enums'
 import { IMeme } from 'constants/interfaces'
+import { errorNotificate } from 'utils/errorNotificate'
 
 export interface UserState {
   // TODO добавить IUser
@@ -23,8 +25,22 @@ const initialState: UserState = {
   error: null,
 }
 
-export const fetchUserMemes = createAsyncThunk('fetchUserMemes', getUserMemes)
-export const fetchUser = createAsyncThunk('fetchUser', getUser)
+export const fetchUserMemes = createAsyncThunk('fetchUserMemes', async (_, { rejectWithValue }) => {
+  try {
+    return await getUserMemes()
+  } catch (error) {
+    if (axios.isAxiosError(error)) errorNotificate(error)
+    return rejectWithValue(error)
+  }
+})
+export const fetchUser = createAsyncThunk('fetchUser', async (_, { rejectWithValue }) => {
+  try {
+    return await getUser()
+  } catch (error) {
+    if (axios.isAxiosError(error)) errorNotificate(error)
+    return rejectWithValue(error)
+  }
+})
 
 const user = createSlice({
   name: 'user',

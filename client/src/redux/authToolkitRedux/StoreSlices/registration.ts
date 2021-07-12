@@ -1,6 +1,9 @@
+import axios from 'axios'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getRegistration } from 'API/regApi'
+
 import { IFetchingStatus } from 'constants/enums'
+import { getRegistration } from 'API/regApi'
+import { errorNotificate } from 'utils/errorNotificate'
 
 export interface ICredentials {
   email: string
@@ -9,7 +12,6 @@ export interface ICredentials {
 
 export interface IRegistrationState {
   fetchingStatus: IFetchingStatus
-  error?: any
 }
 
 const initialState: IRegistrationState = {
@@ -18,7 +20,14 @@ const initialState: IRegistrationState = {
 
 export const fetchRegistration = createAsyncThunk(
   'fetchRegistration',
-  (credentials: ICredentials) => getRegistration(credentials),
+  async (credentials: ICredentials, { rejectWithValue }) => {
+    try {
+      return await getRegistration(credentials)
+    } catch (error) {
+      if (axios.isAxiosError(error)) errorNotificate(error)
+      return rejectWithValue(error)
+    }
+  },
 )
 
 const registration = createSlice({
@@ -36,10 +45,6 @@ const registration = createSlice({
     builder.addCase(fetchRegistration.fulfilled, (state, action) => {
       state.fetchingStatus = IFetchingStatus.fulfilled
       // TODO: тут надо сделать переадресацию на страницу логина
-    })
-    builder.addCase(fetchRegistration.rejected, (state, action) => {
-      state.fetchingStatus = IFetchingStatus.rejected
-      state.error = action.error
     })
   },
 })
