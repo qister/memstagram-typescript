@@ -1,9 +1,11 @@
+import axios from 'axios'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { getMemeList, likeMeme } from 'API/memesAPI'
 import { IFetchingStatus } from 'constants/enums'
 import { IMeme } from 'constants/interfaces'
 import { RootState } from 'redux/authToolkitRedux/StoreSlices'
+import { errorNotificate } from 'utils/errorNotificate'
 
 export interface FeedState {
   memeList: Array<IMeme>
@@ -21,16 +23,33 @@ const initialState: FeedState = {
   total: 0,
 }
 
-export const fetchMemeList = createAsyncThunk('fetchMemeList', (_, { getState }) => {
-  const {
-    feed: { nextPage },
-  } = getState() as RootState
-  return getMemeList(nextPage)
-})
+export const fetchMemeList = createAsyncThunk(
+  'fetchMemeList',
+  async (_, { getState, rejectWithValue }) => {
+    const {
+      feed: { nextPage },
+    } = getState() as RootState
 
-export const fetchLikeMeme = createAsyncThunk('fetchLikeMeme', ({ _id }: { _id: string }) => {
-  return likeMeme(_id)
-})
+    try {
+      return await getMemeList(nextPage)
+    } catch (error) {
+      if (axios.isAxiosError(error)) errorNotificate(error)
+      return rejectWithValue(error)
+    }
+  },
+)
+
+export const fetchLikeMeme = createAsyncThunk(
+  'fetchLikeMeme',
+  async ({ _id }: { _id: string }, { rejectWithValue }) => {
+    try {
+      return await likeMeme(_id)
+    } catch (error) {
+      if (axios.isAxiosError(error)) errorNotificate(error)
+      return rejectWithValue(error)
+    }
+  },
+)
 
 const feed = createSlice({
   name: 'feed',
@@ -53,9 +72,6 @@ const feed = createSlice({
         // TODO поправить пагинацию и убрать ? тк сейчас next.page приходит не всегда
         state.nextPage = next?.page
       })
-      .addCase(fetchMemeList.rejected, (state) => {
-        state.fetchingStatus = IFetchingStatus.rejected
-      })
       .addCase(fetchLikeMeme.pending, (state) => {
         state.fetchingStatus = IFetchingStatus.pending
       })
@@ -77,9 +93,6 @@ const feed = createSlice({
           )
         },
       )
-      .addCase(fetchLikeMeme.rejected, (state) => {
-        state.fetchingStatus = IFetchingStatus.rejected
-      })
   },
 })
 

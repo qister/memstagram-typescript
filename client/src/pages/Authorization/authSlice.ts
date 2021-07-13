@@ -1,4 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import axios from 'axios'
+
 import { getLogin, getLogout, updateTokens } from 'API/authApi'
 import { IFetchingStatus } from 'constants/enums'
 import {
@@ -6,6 +8,7 @@ import {
   getAccessTokenFromCookie,
   setAccessTokenToCookie,
 } from 'utils/auth'
+import { errorNotificate } from 'utils/errorNotificate'
 
 export interface ICredentials {
   email: string
@@ -28,13 +31,38 @@ const initialState: IAuthorizationState = {
   isTokenUpdated: false,
 }
 
-export const fetchLogin = createAsyncThunk('fetchLogin', (credentials: ICredentials) =>
-  getLogin(credentials),
+export const fetchLogin = createAsyncThunk(
+  'fetchLogin',
+  async (credentials: ICredentials, { rejectWithValue }) => {
+    try {
+      return await getLogin(credentials)
+    } catch (error) {
+      if (axios.isAxiosError(error)) errorNotificate(error)
+      return rejectWithValue(error)
+    }
+  },
 )
 
-export const fetchLogout = createAsyncThunk('fetchLogout', getLogout)
+export const fetchLogout = createAsyncThunk('fetchLogout', async (_, { rejectWithValue }) => {
+  try {
+    return await getLogout()
+  } catch (error) {
+    if (axios.isAxiosError(error)) errorNotificate(error)
+    return rejectWithValue(error)
+  }
+})
 
-export const fetchUpdateTokens = createAsyncThunk('fetchUpdateTokens', updateTokens)
+export const fetchUpdateTokens = createAsyncThunk(
+  'fetchUpdateTokens',
+  async (_, { rejectWithValue }) => {
+    try {
+      return await updateTokens()
+    } catch (error) {
+      if (axios.isAxiosError(error)) errorNotificate(error)
+      return rejectWithValue(error)
+    }
+  },
+)
 
 const authorization = createSlice({
   name: 'authorization',
