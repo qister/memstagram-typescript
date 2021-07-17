@@ -16,10 +16,9 @@ export const MemeCard = ({ meme: { _id, author, liked, imgUrl } }: IProps) => {
   const dispatch = useDispatch()
   const toggleLike = () => dispatch(fetchLikeMeme({ _id }))
   const imgLink = `${process.env.REACT_APP_SERVER_URL}/${imgUrl.replace('public/', '')}` // Удаляем 'public/' из url для корректной работы
-  const ROOT_CLASS = 'meme-card'
 
   return (
-    <Card className={ROOT_CLASS} cover={<img alt="example" src={imgLink} />}>
+    <Card cover={<img alt="example" src={imgLink} />}>
       <Meta
         avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
         title={author}
