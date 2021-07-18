@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Spin } from 'antd'
+import { Divider, Spin } from 'antd'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
 import { MemeCard } from 'components/Feed/MemeCard/MemeCard'
@@ -37,9 +37,14 @@ export const Feed = () => {
       className={ROOT_CLASS}
     >
       <div className={`${ROOT_CLASS}_content`}>
-        {memeList.map((meme, index) => (
-          <MemeCard key={index} meme={meme} />
-        ))}
+        <div style={{ width: '60%' }}>
+          {memeList.map((meme, index) => (
+            <>
+              <MemeCard key={index} meme={meme} />
+              {index !== total - 1 && <Divider dashed />}
+            </>
+          ))}
+        </div>
         {fetchingStatus === IFetchingStatus.pending && <Spin />}
       </div>
     </InfiniteScroll>
