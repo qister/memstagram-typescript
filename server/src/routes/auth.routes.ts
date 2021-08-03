@@ -1,4 +1,5 @@
 import { Router, Request, Response } from 'express'
+import multer from 'multer'
 
 import { Token } from '../models/Token'
 import { User } from '../models/User'
@@ -41,8 +42,29 @@ const updateTokens = (userId: string) => {
 
 ////////////////////////
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/images/avatars')
+  },
+
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname)
+  },
+})
+
+const fileFilter = (req: any, file: any, cb: any) => {
+  if (file.mimetype == 'image/jpeg' || file.mimetype == 'image/png') {
+    cb(null, true)
+  } else {
+    cb(null, false)
+  }
+}
+
+const upload = multer({ storage, fileFilter })
+
 router.post(
   '/register',
+  upload.single('file'),
   [
     check('email', 'Некорректный email').isEmail(),
     check('password', 'Минимальная длина пароля 6 символов').isLength({
@@ -67,11 +89,17 @@ router.post(
       }
 
       const hashedPassword = await bcrypt.hash(password, 12)
-      const user = new User({ email, password: hashedPassword })
+
+      const user = new User({
+        email,
+        password: hashedPassword,
+        nickname,
+        avatar: file.path,
+      })
 
       await user.save()
 
-      res.status(201).json({ user: { email } })
+      res.status(201).json({ user: { email } }) // зачем тут почту возвращать, мб просто message, что зареганы успешно
     } catch (e) {
       console.log(e)
       res.status(500).json({ message: 'что-то пошло не так, попробуйте снова' })
