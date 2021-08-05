@@ -11,10 +11,8 @@
     "antd": "4.15.1",
     "axios": "0.21.1",
     "classnames": "2.3.1",
-    "less": "4.1.1",
     "materialize-css": "1.0.0",
-    "node": "14.15.0",
-    "node-sass": "4.14.1",
+    "node-sass": "6.0.1",
     "object-to-formdata": "^4.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
@@ -25,7 +23,6 @@
     "redux": "4.0.5",
     "redux-devtools-extension": "2.13.9",
     "redux-thunk": "2.3.0",
-    "reqwest": "2.0.5",
     "typescript": "4.2.4"
   },
   "scripts": {
@@ -39,7 +36,6 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "proxy": "http://localhost:4001",
   "browserslist": {
     "production": [
       ">0.2%",
@@ -72,8 +68,6 @@
     "eslint-plugin-sonarjs": "^0.6.0",
     "msw": "^0.29.0",
     "prettier": "^2.2.1",
-    "redux-logger": "3.0.6",
-    "sass": "1.32.8",
-    "sonarjs": "^1.0.0"
+    "redux-logger": "3.0.6"
   }
 }

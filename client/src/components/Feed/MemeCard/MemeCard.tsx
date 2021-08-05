@@ -5,6 +5,7 @@ import { HeartIcon } from './HeartIcon/HeartIcon'
 import './MemeCard.scss'
 import { IMeme } from 'constants/interfaces'
 import { fetchLikeMeme } from 'components/Feed/feedSlice'
+import { baseURL } from 'API/axios'
 
 const { Meta } = Card
 
@@ -15,7 +16,8 @@ interface IProps {
 export const MemeCard = ({ meme: { _id, author, liked, imgUrl } }: IProps) => {
   const dispatch = useDispatch()
   const toggleLike = () => dispatch(fetchLikeMeme({ _id }))
-  const imgLink = `${process.env.REACT_APP_SERVER_URL}/${imgUrl.replace('public/', '')}` // Удаляем 'public/' из url для корректной работы
+  // TODO удалять /public на бэке
+  const imgLink = `${baseURL}/${imgUrl.replace('public/', '')}` // Удаляем 'public/' из url для корректной работы
 
   return (
     <Card cover={<img alt="example" src={imgLink} />}>
