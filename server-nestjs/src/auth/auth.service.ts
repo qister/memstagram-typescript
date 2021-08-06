@@ -30,7 +30,9 @@ export class AuthService {
     return { tokens }
   }
 
-  async registration(userDto: CreateUserDto) {
+  async registration(userDto: CreateUserDto, avatarPath: string) {
+    console.log('AuthService registration userDto', userDto)
+
     const candidate = await this.usersService.getByEmail(userDto.email)
 
     if (candidate) {
@@ -44,6 +46,7 @@ export class AuthService {
     const user = await this.usersService.create({
       ...userDto,
       password: hashedPassword,
+      avatar: avatarPath,
     })
 
     // можно возвращать сразу токен чтобы сразу логиниться

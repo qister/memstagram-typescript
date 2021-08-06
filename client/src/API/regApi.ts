@@ -6,9 +6,14 @@ import { axiosInstance } from './axios'
 interface IGetRegistrationResult {
   user: { email: string }
 }
-export const getRegistration = (credentials: ICredentials) =>
+export const getRegistration = (data: FormData) =>
   axiosInstance.post<IGetRegistrationResult>(
     // '/api/auth/register',
     '/api/v1/auth/registration',
-    credentials,
+    data,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    },
   )

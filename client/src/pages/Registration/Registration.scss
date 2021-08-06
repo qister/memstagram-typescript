@@ -1,8 +1,45 @@
 .registration {
-    height: inherit;
+    width: 50%;
+    margin: 5rem auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
+.registration__steps {
+    margin-bottom: 50px !important;
+}
+
+.registration__steps-content {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.ant-form {
+    width: inherit;
+}
+
+.steps-action {
+    display: flex;
+    justify-content: center;
+}
+
+.avatar-uploader > .ant-upload {
+    width: 128px;
+    height: 128px;
+}
+
+.step {
+    width: 90%;
+}
+
+.step_theme-step_3 {
+    display: flex;
+    justify-content: space-around;
+}
+
+.step__field {
+    margin-bottom: 10px;
+}
