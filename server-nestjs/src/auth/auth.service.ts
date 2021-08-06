@@ -46,7 +46,7 @@ export class AuthService {
     const user = await this.usersService.create({
       ...userDto,
       password: hashedPassword,
-      avatar: `./${avatarPath}`,
+      avatar: avatarPath,
     })
 
     // можно возвращать сразу токен чтобы сразу логиниться
