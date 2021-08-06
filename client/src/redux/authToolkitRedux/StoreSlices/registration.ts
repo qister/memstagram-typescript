@@ -20,9 +20,9 @@ const initialState: IRegistrationState = {
 
 export const fetchRegistration = createAsyncThunk(
   'fetchRegistration',
-  async (credentials: ICredentials, { rejectWithValue }) => {
+  async (data: FormData, { rejectWithValue }) => {
     try {
-      return await getRegistration(credentials)
+      return await getRegistration(data)
     } catch (error) {
       if (axios.isAxiosError(error)) errorNotificate(error)
       return rejectWithValue(error)

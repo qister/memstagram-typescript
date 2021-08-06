@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Steps, Typography, Form } from 'antd'
+import { serialize } from 'object-to-formdata'
 
 import { Step1 } from './Steps/Step1'
 import { Step2 } from './Steps/Step2'
@@ -94,10 +95,10 @@ export const Registration = () => {
       email,
       password,
       nickname,
-      file,
+      avatar: file,
     }
-
-    dispatch(fetchRegistration(data))
+    const serializedData = serialize(data)
+    dispatch(fetchRegistration(serializedData))
   }
 
   const ROOT_CLASS = 'registration'
