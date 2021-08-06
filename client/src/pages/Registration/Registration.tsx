@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Steps, Typography, Form } from 'antd'
 import { serialize } from 'object-to-formdata'
+import { createBrowserHistory } from 'history'
 
+import { RootState } from '../../redux/authToolkitRedux/StoreSlices'
 import { Step1 } from './Steps/Step1'
 import { Step2 } from './Steps/Step2'
 import { Step3 } from './Steps/Step3'
@@ -12,6 +14,7 @@ import './Registration.scss'
 
 const { Step } = Steps
 const { Title } = Typography
+const history = createBrowserHistory()
 
 const steps = [
   {
@@ -50,8 +53,13 @@ export const Registration = () => {
   const [form] = Form.useForm()
   const [fileList, setFileList] = useState<any>([])
 
-  console.log('Register fileList', fileList)
-  console.log('Register form', form.getFieldsValue())
+  const { fetchingStatus } = useSelector((state: RootState) => state.registration)
+
+  useEffect(() => {
+    if (fetchingStatus === 'fulfilled') {
+      history.push('/login')
+    }
+  }, [fetchingStatus])
 
   const toggleFile = (newFileList: any) => {
     setFileList(newFileList)
