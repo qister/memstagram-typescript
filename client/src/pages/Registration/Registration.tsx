@@ -1,150 +1,154 @@
-import { useEffect, useState } from 'react'
-import { Form, Input, Tooltip, Button } from 'antd'
-import { QuestionCircleOutlined } from '@ant-design/icons'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { Steps, Typography, Form } from 'antd'
 
+import { Step1 } from './Steps/Step1'
+import { Step2 } from './Steps/Step2'
+import { Step3 } from './Steps/Step3'
+import { ActionBar } from './ActionBar'
+import { fetchRegistration } from 'redux/authToolkitRedux/StoreSlices/registration'
 import './Registration.scss'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-  fetchRegistration,
-  resetRegistrationState,
-} from 'redux/authToolkitRedux/StoreSlices/registration'
-import { RootState } from 'redux/authToolkitRedux/StoreSlices'
-import { IFetchingStatus } from 'constants/enums'
-import { useHistory } from 'react-router'
+
+const { Step } = Steps
+const { Title } = Typography
+
+const steps = [
+  {
+    title: 'First',
+  },
+  {
+    title: 'Second',
+  },
+  {
+    title: 'Last',
+  },
+]
 
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
 }
+
 const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 }
 
-const ROOT_CLASS = 'registration'
+export interface IStep {
+  form?: any
+  hidden: boolean
+  theme?: string
+  fileList?: any
+  onChangeForm?: () => void
+  toggleFile?: any
+}
 
 export const Registration = () => {
-  const [form] = Form.useForm()
-  const [isValid, setIsValid] = useState(false)
   const dispatch = useDispatch()
-  const history = useHistory()
-  const { fetchingStatus } = useSelector((state: RootState) => state.registration)
 
-  useEffect(() => {
-    if (fetchingStatus === IFetchingStatus.fulfilled) {
-      history.push('/login')
-    }
+  const [current, setCurrent] = useState(0)
+  const [form] = Form.useForm()
+  const [fileList, setFileList] = useState<any>([])
 
-    return () => {
-      dispatch(resetRegistrationState())
-    }
-  }, [fetchingStatus])
+  console.log('Register fileList', fileList)
+  console.log('Register form', form.getFieldsValue())
 
-  const onSubmit = async () => {
-    const { email, password } = form.getFieldsValue()
-    dispatch(fetchRegistration({ email, password }))
+  const toggleFile = (newFileList: any) => {
+    setFileList(newFileList)
   }
 
-  const onChangeForm = () => {
-    form
-      .validateFields()
-      .then(() => setIsValid(true))
-      .catch(() => setIsValid(false))
+  const onNextClick = () => {
+    if (current === 0) {
+      form
+        .validateFields(['email', 'password', 'confirm'])
+        .then((data) => {
+          console.log('validate data', data)
+
+          setCurrent(current + 1)
+        })
+        .catch(() => {
+          return
+        })
+    }
+
+    if (current === 1) {
+      form
+        .validateFields(['nickname'])
+        .then(() => setCurrent(current + 1))
+        .catch(() => {
+          return
+        })
+    }
   }
 
+  const onPrevStepClick = () => {
+    setCurrent(current - 1)
+  }
+
+  const onRegister = () => {
+    const { email, password, nickname } = form.getFieldsValue()
+    const file = fileList[0].originFileObj
+
+    console.log('onRegister file', file)
+
+    const data = {
+      email,
+      password,
+      nickname,
+      file,
+    }
+
+    dispatch(fetchRegistration(data))
+  }
+
+  const ROOT_CLASS = 'registration'
   return (
     <div className={ROOT_CLASS}>
-      <Form
-        {...layout}
-        form={form}
-        name="register"
-        initialValues={{
-          residence: ['zhejiang', 'hangzhou', 'xihu'],
-          prefix: '86',
-        }}
-        scrollToFirstError
-      >
-        <Form.Item
-          name="email"
-          label="E-mail"
-          rules={[
-            {
-              type: 'email',
-              message: 'The input is not valid E-mail!',
-            },
-            {
-              required: true,
-              message: 'Please input your E-mail!',
-            },
-          ]}
+      <div className={`${ROOT_CLASS}__header`}>
+        <Title>Регистрация</Title>
+      </div>
+      <Steps current={current} className={`${ROOT_CLASS}__steps`}>
+        {steps.map((item) => (
+          <Step
+            key={item.title}
+            // TODO дописать, чтобы можно было переходить на предыдущий шаг
+            onClick={onNextClick}
+          />
+        ))}
+      </Steps>
+      <div className={`${ROOT_CLASS}__steps-content`}>
+        <Form
+          {...layout}
+          name="register"
+          form={form}
+          initialValues={{
+            prefix: '7',
+          }}
+          scrollToFirstError
         >
-          <Input onChange={onChangeForm} />
-        </Form.Item>
-
-        <Form.Item
-          name="password"
-          label="Password"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your password!',
-            },
-          ]}
-          hasFeedback
-        >
-          <Input.Password onChange={onChangeForm} />
-        </Form.Item>
-
-        <Form.Item
-          name="confirm"
-          label="Confirm Password"
-          dependencies={['password']}
-          hasFeedback
-          rules={[
-            {
-              required: true,
-              message: 'Please confirm your password!',
-            },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue('password') === value) {
-                  return Promise.resolve()
-                }
-                return Promise.reject(new Error('The two passwords that you entered do not match!'))
-              },
-            }),
-          ]}
-        >
-          <Input.Password onChange={onChangeForm} />
-        </Form.Item>
-
-        <Form.Item
-          name="nickname"
-          label={
-            <span>
-              Nickname&nbsp;
-              <Tooltip title="What do you want others to call you?">
-                <QuestionCircleOutlined />
-              </Tooltip>
-            </span>
-          }
-          // TODO: добавить лайф проверку ника на уникальность
-          // rules={[
-          //   {
-          //     required: true,
-          //     message: 'Please input your nickname!',
-          //     whitespace: true,
-          //   },
-          // ]}
-        >
-          <Input onChange={onChangeForm} />
-        </Form.Item>
-
-        <Form.Item {...tailLayout}>
-          <Button type="primary" htmlType="submit" onClick={onSubmit} disabled={!isValid}>
-            Register
-          </Button>
-        </Form.Item>
-      </Form>
+          <Step1
+            // onChangeForm={onChangeForm}
+            hidden={current !== 0}
+          />
+          <Step2
+            // onChangeForm={onChangeForm}
+            hidden={current !== 1}
+          />
+          <Step3
+            hidden={current !== 2}
+            form={form}
+            theme="step_3"
+            fileList={fileList}
+            toggleFile={toggleFile}
+          />
+          <ActionBar
+            tailLayout={tailLayout}
+            current={current}
+            onNextStepClick={onNextClick}
+            onPrevStepClick={onPrevStepClick}
+            onRegister={onRegister}
+          />
+        </Form>
+      </div>
     </div>
   )
 }

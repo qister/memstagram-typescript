@@ -7,7 +7,11 @@ import {
   Post,
   Req,
   Res,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common'
+import { FileInterceptor } from '@nestjs/platform-express'
+import { diskStorage } from 'multer'
 import { Request, Response } from 'express'
 import { ApiOperation, ApiResponse } from '@nestjs/swagger'
 
@@ -63,7 +67,22 @@ export class AuthController {
     },
   })
   @Post('/registration')
-  async registration(@Body() userDto: CreateUserDto) {
+  @UseInterceptors(
+    FileInterceptor('avatar', {
+      storage: diskStorage({
+        destination: './public/avatars',
+        filename: function (req, file, cb) {
+          cb(null, Date.now() + '-' + file.originalname)
+        },
+      }),
+    }),
+  )
+  async registration(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() userDto: CreateUserDto,
+  ) {
+    console.log('Controller registration file', file)
+
     const user = await this.authService.registration(userDto)
 
     return user

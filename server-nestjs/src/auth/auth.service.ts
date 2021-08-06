@@ -31,6 +31,8 @@ export class AuthService {
   }
 
   async registration(userDto: CreateUserDto) {
+    console.log('AuthService registration userDto', userDto)
+
     const candidate = await this.usersService.getByEmail(userDto.email)
 
     if (candidate) {
