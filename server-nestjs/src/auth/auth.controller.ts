@@ -83,7 +83,9 @@ export class AuthController {
   ) {
     console.log('Controller registration file', file)
 
-    const user = await this.authService.registration(userDto)
+    const user = await this.authService.registration(userDto, file.path)
+
+    console.log('Controller registration user', user)
 
     return user
   }

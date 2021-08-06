@@ -10,6 +10,6 @@ export class CreateUserDto {
   @ApiProperty({ example: 'testnickname', description: 'никнэйм' })
   readonly nickname: string
 
-  @ApiProperty({ description: 'файл' })
-  readonly file: Express.Multer.File
+  @ApiProperty({ description: 'аватар' })
+  readonly avatar: string
 }
