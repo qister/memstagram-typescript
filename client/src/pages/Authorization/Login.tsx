@@ -3,6 +3,7 @@ import { Form, Input, Button, Checkbox } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { push } from 'connected-react-router'
 
 import './Login.scss'
 import { fetchLogin } from './authSlice'
@@ -11,7 +12,7 @@ import { IFetchingStatus } from 'constants/enums'
 
 const ROOT_CLASS = 'login'
 
-export const LoginForm = () => {
+export const LoginForm = (props: any) => {
   const [form] = Form.useForm()
   const [isValid, setIsValid] = useState(false)
 
@@ -31,7 +32,13 @@ export const LoginForm = () => {
     dispatch(fetchLogin({ email, password }))
   }
 
+  const onRegister = () => {
+    dispatch(push('/register'))
+  }
+
   const isLoading = fetchingStatus === IFetchingStatus.pending
+
+  console.log('Login props', props)
 
   return (
     <div className={ROOT_CLASS}>

@@ -8,7 +8,9 @@ import { Registration } from 'pages/Registration/Registration'
 import { LoginForm } from 'pages/Authorization/Login'
 import { setEntryLocation } from 'pages/Authorization/authSlice'
 
-export const App = () => {
+export const App = (props: any) => {
+  console.log('App props', props)
+
   const { isAuthenticated } = useSelector((state: RootState) => state.authorization)
   const dispatch = useDispatch()
   const location = useLocation()
@@ -23,7 +25,7 @@ export const App = () => {
     </Switch>
   ) : (
     <Switch>
-      <Route path="/login" component={LoginForm} exact />
+      <Route path="/login" render={() => <LoginForm />} exact />
       <Route path="/register" component={Registration} exact />
       <Redirect to="/login" />
     </Switch>

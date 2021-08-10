@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { ConnectedRouter } from 'connected-react-router'
+import { createBrowserHistory } from 'history'
 
 import { App } from './components/App/App'
 
@@ -9,12 +10,14 @@ import './styles/index.css'
 import { store } from 'redux/authToolkitRedux'
 import { ErrorBoundary } from 'utils/ErrorBoundary'
 
+const history = createBrowserHistory()
+
 ReactDOM.render(
   <ErrorBoundary>
     <Provider store={store}>
-      <Router>
+      <ConnectedRouter history={history}>
         <App />
-      </Router>
+      </ConnectedRouter>
     </Provider>
   </ErrorBoundary>,
   document.getElementById('root'),
