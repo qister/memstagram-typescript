@@ -2,15 +2,16 @@ import { useState, FC, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Layout, Menu, Spin } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
+import { Link, useLocation } from 'react-router-dom'
 
 import { User } from './User'
 import { AppLayoutRoutes } from './AppLayoutRoutes'
 import { MENU_SIDEBAR_ITEMS } from '../../constants/constants'
-import './AppLayout.scss'
 import { RootState } from 'redux/authToolkitRedux/StoreSlices'
-import { Link, useLocation } from 'react-router-dom'
 import { clearEntryLocation, fetchLogout, fetchUpdateTokens } from 'pages/Authorization/authSlice'
 import { fetchUser } from 'components/Profile/userSlice'
+
+import './AppLayout.scss'
 
 const { Header, Sider, Content } = Layout
 

@@ -8,6 +8,8 @@ import { Registration } from 'pages/Registration/Registration'
 import { LoginForm } from 'pages/Authorization/Login'
 import { setEntryLocation } from 'pages/Authorization/authSlice'
 
+import './App.scss'
+
 export const App = () => {
   const { isAuthenticated } = useSelector((state: RootState) => state.authorization)
   const dispatch = useDispatch()

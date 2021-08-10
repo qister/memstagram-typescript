@@ -1,8 +1,18 @@
 import axios from 'axios'
 import { getAccessTokenFromCookie } from 'utils/auth'
 
+const { NODE_ENV, REACT_APP_PROD_SERVER_URL, REACT_APP_DEV_SERVER_URL } = process.env
+// TODO вынести эти переменные(ссылки) на сервер и убрать из локального конфига
+export const baseURL =
+  NODE_ENV === 'production'
+    ? REACT_APP_PROD_SERVER_URL
+    : NODE_ENV === 'test'
+    ? ''
+    : REACT_APP_DEV_SERVER_URL
+
 export const axiosInstance = axios.create({
   timeout: 3000,
+  baseURL,
 })
 
 axiosInstance.interceptors.request.use(

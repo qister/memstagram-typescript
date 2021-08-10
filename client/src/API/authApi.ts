@@ -1,5 +1,3 @@
-import axios from 'axios'
-
 import { ICredentials } from 'pages/Authorization/authSlice'
 import { axiosInstance } from './axios'
 
@@ -8,9 +6,9 @@ interface IFetchLoginResult {
 }
 
 export const getLogin = (credentials: ICredentials) =>
-  axios.post<IFetchLoginResult>('/api/v1/auth/login', credentials)
+  axiosInstance.post<IFetchLoginResult>('/api/v1/auth/login', credentials)
 
-export const getLogout = () => axios.delete('/api/v1/auth/logout')
+export const getLogout = () => axiosInstance.delete('/api/v1/auth/logout')
 
 interface IUpdateTokensResult {
   tokens: {
