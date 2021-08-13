@@ -13,6 +13,7 @@ export const baseURL =
 export const axiosInstance = axios.create({
   timeout: 3000,
   baseURL,
+  withCredentials: true,
 })
 
 axiosInstance.interceptors.request.use(
