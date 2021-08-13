@@ -14,6 +14,7 @@ async function bootstrap() {
     'http://localhost:3000',
   ]
   app.enableCors({
+    credentials: true,
     origin: (origin, callback) => {
       if (!origin || whitelist.includes(origin)) {
         callback(null, true)

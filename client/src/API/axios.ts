@@ -11,8 +11,10 @@ export const baseURL =
     : REACT_APP_DEV_SERVER_URL
 
 export const axiosInstance = axios.create({
-  timeout: 3000,
+  // TODO уменьший таймаут как будет нормальный сервер
+  timeout: 100000,
   baseURL,
+  withCredentials: true,
 })
 
 axiosInstance.interceptors.request.use(

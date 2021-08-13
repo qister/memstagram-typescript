@@ -42,6 +42,8 @@ export class AuthController {
     response.cookie('refresh_token', tokens.refreshToken, {
       httpOnly: true,
       maxAge: refreshTokenLifeSpan,
+      sameSite: 'none',
+      secure: true,
     })
 
     return {
@@ -91,6 +93,8 @@ export class AuthController {
     response.cookie('refresh_token', tokens.refreshToken, {
       httpOnly: true,
       maxAge: refreshTokenLifeSpan,
+      sameSite: 'none',
+      secure: true,
     })
 
     return {

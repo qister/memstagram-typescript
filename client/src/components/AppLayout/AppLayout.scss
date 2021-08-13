@@ -45,7 +45,7 @@
 .layout-container__sidebar {
   overflow: auto;
   height: 100vh;
-  position: sticky;
+  position: sticky !important;
   top: 0;
   left: 0;
   z-index: 2;
