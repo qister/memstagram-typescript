@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Form, Input, Button, Checkbox } from 'antd'
+import { Form, Input, Button, Checkbox, Row } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -29,6 +29,11 @@ export const LoginForm = () => {
     const { email, password } = form.getFieldsValue()
 
     dispatch(fetchLogin({ email, password }))
+  }
+
+  const onTryDemo = () => {
+    form.setFieldsValue({ email: 'test@test.com', password: '123123' })
+    onSubmit()
   }
 
   const isLoading = fetchingStatus === IFetchingStatus.pending
@@ -61,13 +66,14 @@ export const LoginForm = () => {
             onChange={onChangeForm}
           />
         </Form.Item>
-        <Form.Item>
+        {/* TODO вернуть когда можно будет запоминать сессию и восстанавливать пароль */}
+        {/* <Form.Item>
           <Form.Item name="remember" valuePropName="checked" noStyle>
             <Checkbox onChange={onChangeForm}>Remember me</Checkbox>
           </Form.Item>
-          {/* TODO добавить восстановление пароля */}
+          
           <Link to="/forgot_pass">Forgot password</Link>
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item>
           <Button
@@ -80,7 +86,15 @@ export const LoginForm = () => {
           >
             Log in
           </Button>
-          Or <Link to="/register">register now</Link>
+
+          <Row justify="space-between">
+            <Button type="link" htmlType="button">
+              <Link to="/register">Register now</Link>
+            </Button>
+            <Button type="link" htmlType="button" onClick={onTryDemo}>
+              Try demo
+            </Button>
+          </Row>
         </Form.Item>
       </Form>
     </div>
