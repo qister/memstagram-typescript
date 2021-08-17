@@ -59,7 +59,7 @@ describe('Форма логина', () => {
   it('Кнопка залогиниться задизейблена если не прошла валидация', async () => {
     renderWithRouter(<LoginForm />, { initialRoute: '/login', componentPath: '/login' })
     const emailField = screen.getByPlaceholderText(/email/i)
-    const loginButton = screen.getByRole('button')
+    const loginButton = screen.getByRole('button', { name: 'Log in' })
     const passwordField = screen.getByPlaceholderText(/password/i)
 
     await userEvent.type(emailField, 'test@test.com', { delay: 20 })
@@ -72,7 +72,7 @@ describe('Форма логина', () => {
   it('Отправка запроса на логин', async () => {
     renderWithRouter(<LoginForm />, { initialRoute: '/login', componentPath: '/login' })
     const emailField = screen.getByPlaceholderText(/email/i)
-    const loginButton = screen.getByRole('button')
+    const loginButton = screen.getByRole('button', { name: 'Log in' })
     const passwordField = screen.getByPlaceholderText(/password/i)
 
     await userEvent.type(emailField, 'test@test.com', { delay: 20 })

@@ -121,12 +121,12 @@ describe('Приложение целиком', () => {
     const { history } = renderWithRouter(<App />, { initialRoute: '/' })
     const emailField = screen.getByPlaceholderText(/email/i)
     await userEvent.type(emailField, 'email@test.com', { delay: 20 })
-    expect(screen.getByRole('button')).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Log in' })).toBeDisabled()
     await waitFor(() => expect(history.location.pathname).toEqual('/login'))
     const passwordField = screen.getByPlaceholderText(/password/i)
     await userEvent.type(passwordField, 'password', { delay: 20 }) // Если пароль - один символ, то все ок, если больше то валидация не проходит, если не указать delay
 
-    const loginbutton = await screen.findByRole('button')
+    const loginbutton = await screen.findByRole('button', { name: 'Log in' })
     expect(loginbutton).toBeEnabled()
 
     userEvent.click(loginbutton)
