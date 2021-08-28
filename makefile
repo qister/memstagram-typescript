@@ -7,10 +7,6 @@ client-install:
 	cd client;\
 		npm i --legacy-peer-deps;
 
-server-install:
-	cd server;\
-		npm i --legacy-peer-deps;
-
 server-nestjs-install:
 	cd server-nestjs;\
 		npm i --legacy-peer-deps;
