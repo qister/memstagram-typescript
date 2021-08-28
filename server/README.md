@@ -1,1 +1,0 @@
-# memstagram-typescript
