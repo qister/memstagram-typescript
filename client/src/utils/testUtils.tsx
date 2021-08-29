@@ -3,7 +3,7 @@ import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { Route, Router } from 'react-router-dom'
 
-import { store } from 'redux/authToolkitRedux'
+import { store } from 'redux/store'
 
 export const renderWithRouter = (
   component: React.ReactElement,

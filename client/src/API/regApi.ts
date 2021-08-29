@@ -1,4 +1,4 @@
-import { ICredentials } from '../redux/authToolkitRedux/StoreSlices/registration'
+import { ICredentials } from 'pages/Registration/registrationSlice'
 import { axiosInstance } from './axios'
 
 // TODO после успешной регистрации сетить сетить имейл в логин и перенаправлять на страницу логина

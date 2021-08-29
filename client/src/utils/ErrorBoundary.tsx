@@ -1,4 +1,3 @@
-import { WarningTwoTone } from '@ant-design/icons'
 import { Collapse, Result } from 'antd'
 import React from 'react'
 

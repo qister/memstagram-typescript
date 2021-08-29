@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 import './Login.scss'
 import { fetchLogin } from './authSlice'
-import { RootState } from 'redux/authToolkitRedux/StoreSlices'
+import { RootState } from 'redux/store'
 import { IFetchingStatus } from 'constants/enums'
 
 const ROOT_CLASS = 'login'

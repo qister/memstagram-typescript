@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Switch, Redirect, useLocation } from 'react-router-dom'
 
-import { RootState } from '../../redux/authToolkitRedux/StoreSlices'
+import { RootState } from 'redux/store'
 import { AppLayout } from 'components/AppLayout/AppLayout'
 import { Registration } from 'pages/Registration/Registration'
 import { LoginForm } from 'pages/Authorization/Login'

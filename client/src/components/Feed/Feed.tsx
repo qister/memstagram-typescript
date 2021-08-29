@@ -4,7 +4,7 @@ import { Divider, Spin } from 'antd'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
 import { MemeCard } from 'components/Feed/MemeCard/MemeCard'
-import { RootState } from 'redux/authToolkitRedux/StoreSlices'
+import { RootState } from 'redux/store'
 
 import './Feed.scss'
 import { fetchMemeList, resetFeedState } from './feedSlice'
