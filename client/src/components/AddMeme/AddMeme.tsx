@@ -7,7 +7,7 @@ import { InboxOutlined, PlusOutlined } from '@ant-design/icons'
 
 import { RcFile } from 'antd/lib/upload'
 import { fetchUploadMemes, resetUploadState } from './uploadSlice'
-import { RootState } from 'redux/authToolkitRedux/StoreSlices'
+import { RootState } from 'redux/store'
 import { IFetchingStatus } from 'constants/enums'
 import { UploadSuccessfull } from './UploadSuccessfull'
 

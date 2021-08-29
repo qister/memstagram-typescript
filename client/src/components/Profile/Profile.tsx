@@ -4,7 +4,7 @@ import { Avatar } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 
 import './Profile.scss'
-import { RootState } from 'redux/authToolkitRedux/StoreSlices'
+import { RootState } from 'redux/store'
 import { fetchUserMemes } from './userSlice'
 
 export const Profile = () => {

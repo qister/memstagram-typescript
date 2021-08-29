@@ -1,9 +1,9 @@
 import { applyMiddleware, createStore } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 
-import { reducers } from './StoreSlices'
+import { reducers } from './reducers'
 
-export const configureStore = () => {
+const configureStore = () => {
   const middlewares = [thunkMiddleware]
   const middlewareEnhancer = applyMiddleware(...middlewares)
 
@@ -11,3 +11,5 @@ export const configureStore = () => {
 }
 
 export const store = configureStore()
+
+export type RootState = ReturnType<typeof store.getState>

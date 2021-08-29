@@ -7,7 +7,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { User } from './User'
 import { AppLayoutRoutes } from './AppLayoutRoutes'
 import { MENU_SIDEBAR_ITEMS } from '../../constants/constants'
-import { RootState } from 'redux/authToolkitRedux/StoreSlices'
+import { RootState } from 'redux/store'
 import { clearEntryLocation, fetchLogout, fetchUpdateTokens } from 'pages/Authorization/authSlice'
 import { fetchUser } from 'components/Profile/userSlice'
 

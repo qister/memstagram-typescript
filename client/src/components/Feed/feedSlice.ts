@@ -4,7 +4,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getMemeList, likeMeme } from 'API/memesAPI'
 import { IFetchingStatus } from 'constants/enums'
 import { IMeme } from 'constants/interfaces'
-import { RootState } from 'redux/authToolkitRedux/StoreSlices'
+import { RootState } from 'redux/store'
 import { errorNotificate } from 'utils/errorNotificate'
 
 export interface FeedState {

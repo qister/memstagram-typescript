@@ -3,12 +3,10 @@ import { Form, Input, Tooltip, Button } from 'antd'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 
 import './Registration.scss'
+
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  fetchRegistration,
-  resetRegistrationState,
-} from 'redux/authToolkitRedux/StoreSlices/registration'
-import { RootState } from 'redux/authToolkitRedux/StoreSlices'
+import { fetchRegistration, resetRegistrationState } from './registrationSlice'
+import { RootState } from 'redux/store'
 import { IFetchingStatus } from 'constants/enums'
 import { useHistory } from 'react-router'
 
