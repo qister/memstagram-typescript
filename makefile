@@ -22,3 +22,12 @@ install-all:
 app-init:
 	make install-all
 	make run
+
+image-build:
+	docker-compose up --build
+
+image-run:
+	docker-compose up -d
+
+image-down:
+	docker-compose down

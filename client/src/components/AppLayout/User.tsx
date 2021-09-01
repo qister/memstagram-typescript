@@ -23,7 +23,7 @@ export const User: FC<any> = ({ user, onLogout }) => {
 
   return (
     <>
-      <p className="username">{user.name}</p>
+      <p className="username">{`${user.name}`}</p>
       <Dropdown overlay={menu} trigger={['click', 'hover']}>
         <Avatar icon={<UserOutlined />} />
       </Dropdown>
