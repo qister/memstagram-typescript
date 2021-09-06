@@ -1,0 +1,27 @@
+services:
+    server:
+        build: server-nestjs
+        command: npm run start:dev
+        ports:
+            - 4001:4001
+        environment: 
+            PORT: 4001
+        volumes:
+            - ./server-nestjs:/src/
+            - server_nodemodules:/src/node_modules
+    client:
+        build: client
+        command: npm run start
+        ports:
+            - 3000:3000
+        environment: 
+            PORT: 3000
+        volumes:
+            - ./client:/src/
+            - client_nodemodules:/src/node_modules
+        depends_on: 
+            - server
+
+volumes:
+    client_nodemodules: {}
+    server_nodemodules: {}
