@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { HeartIcon } from './HeartIcon/HeartIcon'
 import './MemeCard.scss'
 import { IMeme } from 'constants/interfaces'
-import { fetchLikeMeme } from 'components/Feed/feedSlice'
+import { fetchLikeMeme } from 'pages/Feed/feedSlice'
 import { baseURL } from 'API/axios'
 
 const { Meta } = Card

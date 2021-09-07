@@ -1,9 +1,9 @@
-import { Feed } from 'components/Feed/Feed'
-import { AddMeme } from 'components/AddMeme/AddMeme'
+import { Feed } from 'pages/Feed/Feed'
+import { AddMeme } from 'pages/AddMeme/AddMeme'
 import { Switch, Route, Redirect } from 'react-router-dom'
 
-import { Profile } from '../Profile/Profile'
-import { Statistics } from '../Statistics'
+import { Profile } from 'pages/Profile/Profile'
+import { Statistics } from 'pages/Statistics/Statistics'
 import { ContentPath } from 'constants/enums'
 
 export const AppLayoutRoutes = () => (
