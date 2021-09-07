@@ -9,7 +9,7 @@ import { AppLayoutRoutes } from './AppLayoutRoutes'
 import { MENU_SIDEBAR_ITEMS } from '../../constants/constants'
 import { RootState } from 'redux/store'
 import { clearEntryLocation, fetchLogout, fetchUpdateTokens } from 'pages/Authorization/authSlice'
-import { fetchUser } from 'components/Profile/userSlice'
+import { fetchUser } from 'pages/Profile/userSlice'
 
 import './AppLayout.scss'
 
