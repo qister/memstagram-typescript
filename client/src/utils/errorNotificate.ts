@@ -5,7 +5,6 @@ export const errorNotificate = (error: AxiosError) => {
   console.log(234, error)
   const responseStatus = error?.response?.status
   let errorMsg = ''
-  console.log(123, responseStatus)
 
   if (responseStatus) {
     //TODO Добавить переводы

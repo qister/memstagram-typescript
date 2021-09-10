@@ -16,7 +16,8 @@ export interface ICredentials {
 }
 
 export interface IAuthorizationState {
-  entryLocation: string | null
+  entryLocation?: string
+  loginCredentials?: ICredentials
   isAuthenticated: boolean
   fetchingStatus: IFetchingStatus
   logoutFetchingStatus: IFetchingStatus
@@ -24,7 +25,6 @@ export interface IAuthorizationState {
 }
 
 const initialState: IAuthorizationState = {
-  entryLocation: null,
   isAuthenticated: Boolean(getAccessTokenFromCookie()),
   fetchingStatus: IFetchingStatus.idle,
   logoutFetchingStatus: IFetchingStatus.idle,
@@ -33,9 +33,11 @@ const initialState: IAuthorizationState = {
 
 export const fetchLogin = createAsyncThunk(
   'fetchLogin',
-  async (credentials: ICredentials, { rejectWithValue }) => {
+  async (credentials: ICredentials, { rejectWithValue, dispatch }) => {
     try {
-      return await getLogin(credentials)
+      const res = await getLogin(credentials)
+      dispatch(clearLoginFormCredentials())
+      return res
     } catch (error) {
       if (axios.isAxiosError(error)) errorNotificate(error)
       return rejectWithValue(error)
@@ -72,7 +74,13 @@ const authorization = createSlice({
       state.entryLocation = action.payload
     },
     clearEntryLocation: (state) => {
-      state.entryLocation = null
+      state.entryLocation = undefined
+    },
+    setLoginFormCredentials: (state, action) => {
+      state.loginCredentials = action.payload
+    },
+    clearLoginFormCredentials: (state) => {
+      state.loginCredentials = undefined
     },
   },
   extraReducers: (builder) => {
@@ -102,8 +110,7 @@ const authorization = createSlice({
       setAccessTokenToCookie(access_token)
       state.isTokenUpdated = true
     })
-    builder.addCase(fetchUpdateTokens.rejected, (state, action) => {
-      // TODO настроить обработку ошибки
+    builder.addCase(fetchUpdateTokens.rejected, (state) => {
       deleteAccessTokenFromCookie()
       state.isAuthenticated = false
     })
@@ -112,7 +119,18 @@ const authorization = createSlice({
 
 const {
   reducer,
-  actions: { setEntryLocation, clearEntryLocation },
+  actions: {
+    setEntryLocation,
+    clearEntryLocation,
+    setLoginFormCredentials,
+    clearLoginFormCredentials,
+  },
 } = authorization
 
-export { reducer as authorization, setEntryLocation, clearEntryLocation }
+export {
+  reducer as authorization,
+  setEntryLocation,
+  clearEntryLocation,
+  setLoginFormCredentials,
+  clearLoginFormCredentials,
+}

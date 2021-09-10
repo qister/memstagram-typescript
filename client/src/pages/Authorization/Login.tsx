@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Form, Input, Button, Checkbox, Row } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,7 +16,6 @@ export const LoginForm = () => {
   const [isValid, setIsValid] = useState(false)
 
   const dispatch = useDispatch()
-  const { fetchingStatus } = useSelector((state: RootState) => state.authorization)
 
   const onChangeForm = () => {
     form
@@ -25,9 +24,19 @@ export const LoginForm = () => {
       .catch(() => setIsValid(false))
   }
 
+  const { fetchingStatus, loginCredentials } = useSelector(
+    (state: RootState) => state.authorization,
+  )
+
+  useEffect(() => {
+    if (loginCredentials) {
+      form.setFieldsValue(loginCredentials)
+      onChangeForm()
+    }
+  }, [])
+
   const onSubmit = () => {
     const { email, password } = form.getFieldsValue()
-
     dispatch(fetchLogin({ email, password }))
   }
 

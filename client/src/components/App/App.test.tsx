@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, cleanup } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
@@ -6,6 +6,16 @@ import '@testing-library/jest-dom/extend-expect'
 
 import { App } from './App'
 import { renderWithRouter } from 'utils/testUtils'
+
+// Правка чтобы не было ворнингов в консоли во время валидации формы
+import Schema from 'async-validator'
+//@ts-ignore
+Schema.warning = function () {}
+
+const testCredentials = {
+  email: 'test@test.test',
+  password: 'testtest',
+}
 
 const handlers = [
   rest.post('/api/v1/auth/login', (req, res, ctx) => {
@@ -96,6 +106,20 @@ const handlers = [
       }),
     )
   }),
+  rest.post('/api/v1/auth/registration', (req, res, ctx) => {
+    console.log('registration', req.body)
+
+    return res(
+      ctx.json({
+        user: {
+          _id: '613be162feae4900fe86b9fd',
+          email: 'ttt@t.com',
+          password: '$2b$05$xiEdgvcQCoIsJmp4uShPiOvD7baeM99mrP.cCH8.2cGva/9wi53..',
+          __v: 0,
+        },
+      }),
+    )
+  }),
 ]
 
 const server = setupServer(...handlers)
@@ -117,14 +141,14 @@ describe('Приложение целиком', () => {
   afterEach(() => server.resetHandlers()) // нужно или нет?
   afterAll(() => server.close())
 
-  it('После успешного логина показывается страница с лентой', async () => {
+  test('После успешного логина показывается страница с лентой', async () => {
     const { history } = renderWithRouter(<App />, { initialRoute: '/' })
     const emailField = screen.getByPlaceholderText(/email/i)
-    await userEvent.type(emailField, 'email@test.com', { delay: 20 })
+    await userEvent.type(emailField, testCredentials.email, { delay: 20 })
     expect(screen.getByRole('button', { name: 'Log in' })).toBeDisabled()
     await waitFor(() => expect(history.location.pathname).toEqual('/login'))
     const passwordField = screen.getByPlaceholderText(/password/i)
-    await userEvent.type(passwordField, 'password', { delay: 20 }) // Если пароль - один символ, то все ок, если больше то валидация не проходит, если не указать delay
+    await userEvent.type(passwordField, testCredentials.password, { delay: 20 }) // Если пароль - один символ, то все ок, если больше то валидация не проходит, если не указать delay
 
     const loginbutton = await screen.findByRole('button', { name: 'Log in' })
     expect(loginbutton).toBeEnabled()
@@ -134,5 +158,25 @@ describe('Приложение целиком', () => {
     // TODO добавить проверку на вызов апи
     await waitFor(() => expect(history.location.pathname).toEqual('/feed'))
     expect(screen.getByText('Лента')).toBeInTheDocument()
+  })
+
+  test('После успешной регистрации данные попадают в форму логина', async () => {
+    const { history } = renderWithRouter(<App />, { initialRoute: '/register' })
+    userEvent.type(screen.getByPlaceholderText('email'), testCredentials.email)
+    userEvent.type(screen.getByPlaceholderText('password'), testCredentials.password)
+    await userEvent.type(
+      screen.getByPlaceholderText('confirm password'),
+      testCredentials.password,
+      {
+        delay: 20,
+      },
+    )
+
+    userEvent.click(screen.getByRole('button', { name: 'Register' }))
+    await waitFor(() => expect(history.location.pathname).toEqual('/login'))
+
+    expect(screen.getByPlaceholderText(/email/i)).toHaveValue(testCredentials.email)
+    expect(screen.getByPlaceholderText(/password/i)).toHaveValue(testCredentials.password)
+    expect(screen.getByRole('button', { name: 'Log in' })).toBeEnabled()
   })
 })

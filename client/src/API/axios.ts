@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 import { getAccessTokenFromCookie } from 'utils/auth'
 
 const { NODE_ENV, REACT_APP_PROD_SERVER_URL, REACT_APP_DEV_SERVER_URL } = process.env

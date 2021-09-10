@@ -16,8 +16,7 @@ interface IProps {
 export const MemeCard = ({ meme: { _id, author, liked, imgUrl } }: IProps) => {
   const dispatch = useDispatch()
   const toggleLike = () => dispatch(fetchLikeMeme({ _id }))
-  // TODO удалять /public на бэке
-  const imgLink = `${baseURL}/${imgUrl.replace('public/', '')}` // Удаляем 'public/' из url для корректной работы
+  const imgLink = `${baseURL}/${imgUrl}`
 
   return (
     <Card cover={<img alt="example" src={imgLink} />}>

@@ -55,14 +55,6 @@ export const AppLayout: FC<IProps> = () => {
   const location = useLocation()
   const activeItem = MENU_SIDEBAR_ITEMS.find((item) => location.pathname.includes(item.key))
   const activeItems = activeItem ? [activeItem.key] : undefined
-
-  // Закомментил тк едет верстка в ленте и при переадресации после добавления мема
-  // const layout_container_class = classNames('layout-container', {
-  //   //  TODO theme пропсом передавать
-  //   ['layout-container_theme-height']:
-  //     !Array.isArray(defaultSelectedKey) && defaultSelectedKey !== ContentPath.Feed,
-  // })
-
   const innerComponent = isTokenUpdated ? <AppLayoutRoutes /> : <Spin />
 
   const ROOT_CLASS = 'layout-container'

@@ -3,7 +3,7 @@ import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { Route, Router } from 'react-router-dom'
 
-import { store } from 'redux/store'
+import { createStore } from 'redux/store'
 
 export const renderWithRouter = (
   component: React.ReactElement,
@@ -16,7 +16,7 @@ export const renderWithRouter = (
   return {
     ...render(component, {
       wrapper: ({ children }) => (
-        <Provider store={store}>
+        <Provider store={createStore()}>
           <Router history={history}>
             {componentPath ? <Route path={componentPath}>{children}</Route> : children}
           </Router>

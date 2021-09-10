@@ -39,10 +39,10 @@ export const Feed = () => {
       <div className={`${ROOT_CLASS}_content`}>
         <div style={{ width: '60%' }}>
           {memeList.map((meme, index) => (
-            <>
-              <MemeCard key={index} meme={meme} />
+            <div key={index}>
+              <MemeCard meme={meme} />
               {index !== total - 1 && <Divider dashed />}
-            </>
+            </div>
           ))}
         </div>
         {fetchingStatus === IFetchingStatus.pending && <Spin />}

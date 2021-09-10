@@ -1,15 +1,26 @@
-import { applyMiddleware, createStore } from 'redux'
-import thunkMiddleware from 'redux-thunk'
+import { configureStore } from '@reduxjs/toolkit'
 
-import { reducers } from './reducers'
+import { user } from 'pages/Profile/userSlice'
+import { feed } from 'pages/Feed/feedSlice'
+import { upload } from 'pages/AddMeme/uploadSlice'
+import { authorization } from 'pages/Authorization/authSlice'
+import { registration } from 'pages/Registration/registrationSlice'
 
-const configureStore = () => {
-  const middlewares = [thunkMiddleware]
-  const middlewareEnhancer = applyMiddleware(...middlewares)
+export const createStore = () =>
+  configureStore({
+    reducer: {
+      authorization,
+      registration,
+      user,
+      feed,
+      upload,
+    },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }),
+  })
 
-  return createStore(reducers, {}, middlewareEnhancer)
-}
+const rootState = createStore().getState
 
-export const store = configureStore()
-
-export type RootState = ReturnType<typeof store.getState>
+export type RootState = ReturnType<typeof rootState>

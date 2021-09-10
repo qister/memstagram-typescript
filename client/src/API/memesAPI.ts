@@ -15,7 +15,7 @@ interface IGetMemesReult {
   memes: IMeme[]
 }
 
-export const getMemeList = (page = 1) =>
+export const getMemeList = (page: number) =>
   axiosInstance.get<IGetMemesReult>(`/api/v1/memes/list?page=${page}&limit=3`)
 
 export const getUserMemes = () =>

@@ -4,6 +4,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { IFetchingStatus } from 'constants/enums'
 import { getRegistration } from 'API/regApi'
 import { errorNotificate } from 'utils/errorNotificate'
+import { setLoginFormCredentials } from 'pages/Authorization/authSlice'
+import { successNotificate } from 'utils/successNotificate'
 
 export interface ICredentials {
   email: string
@@ -20,9 +22,13 @@ const initialState: IRegistrationState = {
 
 export const fetchRegistration = createAsyncThunk(
   'fetchRegistration',
-  async (credentials: ICredentials, { rejectWithValue }) => {
+  async (credentials: ICredentials, { rejectWithValue, dispatch }) => {
     try {
-      return await getRegistration(credentials)
+      await getRegistration(credentials)
+      dispatch(setLoginFormCredentials(credentials))
+
+      // setTimeout чтобы подождать пока реакт отрендерит форму логина и уже потом показать уведомление
+      setTimeout(() => successNotificate('Вы зарегистрировались'), 0)
     } catch (error) {
       if (axios.isAxiosError(error)) errorNotificate(error)
       return rejectWithValue(error)
@@ -42,9 +48,8 @@ const registration = createSlice({
     builder.addCase(fetchRegistration.pending, (state) => {
       state.fetchingStatus = IFetchingStatus.pending
     })
-    builder.addCase(fetchRegistration.fulfilled, (state, action) => {
+    builder.addCase(fetchRegistration.fulfilled, (state) => {
       state.fetchingStatus = IFetchingStatus.fulfilled
-      // TODO: тут надо сделать переадресацию на страницу логина
     })
   },
 })
