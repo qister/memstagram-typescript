@@ -75,7 +75,7 @@ export const Registration = () => {
             },
           ]}
         >
-          <Input onChange={onChangeForm} />
+          <Input onChange={onChangeForm} placeholder="email" />
         </Form.Item>
 
         <Form.Item
@@ -89,7 +89,7 @@ export const Registration = () => {
           ]}
           hasFeedback
         >
-          <Input.Password onChange={onChangeForm} />
+          <Input.Password onChange={onChangeForm} placeholder="password" />
         </Form.Item>
 
         <Form.Item
@@ -112,7 +112,7 @@ export const Registration = () => {
             }),
           ]}
         >
-          <Input.Password onChange={onChangeForm} />
+          <Input.Password onChange={onChangeForm} placeholder="confirm password" />
         </Form.Item>
 
         <Form.Item

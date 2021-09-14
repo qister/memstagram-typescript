@@ -103,12 +103,45 @@ export class MemesService {
       .exec()
 
     const memes = memesFromDb.map((meme) => meme.toObject())
+
+    // TODO разобраться с типизацией композиции и оставить ее, убрав функции memesWithLikes и memesWithCorrectUrls
+
+    // const convertMemesToObjects = (memes) =>
+    //   memes.map((meme) => meme.toObject())
+
+    // const addUserLikes = (memes: LeanDocument<MemeDocument>[]) => {
+    //   return memes.map((meme) =>
+    //     meme.likedBy.some((id) => id.toString() === userId.toString())
+    //       ? { ...meme, liked: true }
+    //       : { ...meme, liked: false },
+    //   )
+    // }
+
+    // const getRightUrl = (memes: LeanDocument<MemeDocument>[]) => {
+    //   return memes.map((meme) => ({
+    //     ...meme,
+    //     imgUrl: meme.imgUrl.replace('/public', ''),
+    //   }))
+    // }
+
+    // const memes = customCompose(
+    //   getRightUrl,
+    //   addUserLikes,
+    //   convertMemesToObjects,
+    // )(memesFromDb)
+
     const memesWithLikes = memes.map((meme) => {
       return meme.likedBy.some((id) => id.toString() === userId.toString())
         ? { ...meme, liked: true }
         : { ...meme, liked: false }
     })
-    results.memes = memesWithLikes
+
+    const memesWithCorrectUrls = memesWithLikes.map((meme) => ({
+      ...meme,
+      imgUrl: meme.imgUrl.replace('public/', ''),
+    }))
+
+    results.memes = memesWithCorrectUrls
 
     return results
   }

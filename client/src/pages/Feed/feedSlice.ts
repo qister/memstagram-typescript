@@ -27,7 +27,7 @@ export const fetchMemeList = createAsyncThunk(
   'fetchMemeList',
   async (_, { getState, rejectWithValue }) => {
     const {
-      feed: { nextPage },
+      feed: { nextPage = 1 },
     } = getState() as RootState
 
     try {
