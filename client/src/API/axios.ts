@@ -12,7 +12,7 @@ export const baseURL =
     : REACT_APP_DEV_SERVER_URL
 
 export const axiosInstance = axios.create({
-  // TODO уменьший таймаут как будет нормальный сервер
+  // TODO уменьшить таймаут как будет нормальный сервер
   timeout: 100000,
   baseURL,
   withCredentials: true,

@@ -1,21 +1,18 @@
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { Divider, Spin } from 'antd'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
 import { MemeCard } from 'pages/Feed/MemeCard/MemeCard'
-import { RootState } from 'redux/store'
 
 import './Feed.scss'
 import { fetchMemeList, resetFeedState } from './feedSlice'
 import { IFetchingStatus } from 'constants/enums'
+import { useAppDispatch, useAppSelector } from 'hooks'
 
 // Если функционала InfiniteScroll не хватит, можно написать свой через рефы
 export const Feed = () => {
-  const {
-    feed: { memeList, total, fetchingStatus },
-  } = useSelector((state: RootState) => state)
-  const dispatch = useDispatch()
+  const { memeList, total, fetchingStatus } = useAppSelector((state) => state.feed)
+  const dispatch = useAppDispatch()
   const loadMemes = () => dispatch(fetchMemeList())
 
   useEffect(() => {

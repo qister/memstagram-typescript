@@ -8,5 +8,5 @@ export class CreateUserDto {
   readonly password: string
 
   @ApiProperty({ example: 'myNickname', description: 'никнейм' })
-  readonly nickname: string
+  readonly nickname?: string
 }

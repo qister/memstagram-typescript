@@ -10,6 +10,7 @@ import { successNotificate } from 'utils/successNotificate'
 export interface ICredentials {
   email: string
   password: string
+  nickname?: string
 }
 
 export interface IRegistrationState {

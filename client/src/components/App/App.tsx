@@ -1,18 +1,17 @@
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { Route, Switch, Redirect, useLocation } from 'react-router-dom'
 
-import { RootState } from 'redux/store'
 import { AppLayout } from 'components/AppLayout/AppLayout'
 import { Registration } from 'pages/Registration/Registration'
 import { LoginForm } from 'pages/Authorization/Login'
 import { setEntryLocation } from 'pages/Authorization/authSlice'
+import { useAppDispatch, useAppSelector } from 'hooks'
 
 import './App.scss'
 
 export const App = () => {
-  const { isAuthenticated } = useSelector((state: RootState) => state.authorization)
-  const dispatch = useDispatch()
+  const { isAuthenticated } = useAppSelector((state) => state.authorization)
+  const dispatch = useAppDispatch()
   const location = useLocation()
 
   useEffect(() => {
