@@ -1,14 +1,13 @@
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { Avatar } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 
 import './Profile.scss'
-import { RootState } from 'redux/store'
 import { fetchUserMemes } from './userSlice'
+import { useAppDispatch, useAppSelector } from 'hooks'
 
 export const Profile = () => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     dispatch(fetchUserMemes())
@@ -18,7 +17,7 @@ export const Profile = () => {
     currentUser: { email },
     totalUserMemesCount,
     userMemes,
-  } = useSelector((state: RootState) => state.user)
+  } = useAppSelector((state) => state.user)
 
   const getMemeUrl = (url: string) => {
     return 'http://localhost:4000/' + url.slice(7)
@@ -39,7 +38,7 @@ export const Profile = () => {
       </div>
       {/* TODO: сделать динамическое изменение размера картинок в гриде в зависимости от количества, можно воспользоваться антовскими гридами */}
       <div className={`${ROOT_CLASS}__memes-grid`}>
-        {userMemes.map((userMeme: any) => (
+        {userMemes.map((userMeme) => (
           <div className={`${ROOT_CLASS}__meme-img`}>
             <img src={getMemeUrl(userMeme.imgUrl)} alt={userMeme.description} />
           </div>

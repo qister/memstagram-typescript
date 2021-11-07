@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Form, Input, Button, Checkbox, Row } from 'antd'
+import { Form, Input, Button, Row } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
-import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import './Login.scss'
 import { fetchLogin } from './authSlice'
-import { RootState } from 'redux/store'
 import { IFetchingStatus } from 'constants/enums'
+import { useAppDispatch, useAppSelector } from 'hooks'
 
 const ROOT_CLASS = 'login'
 
@@ -15,7 +14,7 @@ export const LoginForm = () => {
   const [form] = Form.useForm()
   const [isValid, setIsValid] = useState(false)
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const onChangeForm = () => {
     form
@@ -24,9 +23,7 @@ export const LoginForm = () => {
       .catch(() => setIsValid(false))
   }
 
-  const { fetchingStatus, loginCredentials } = useSelector(
-    (state: RootState) => state.authorization,
-  )
+  const { fetchingStatus, loginCredentials } = useAppSelector((state) => state.authorization)
 
   useEffect(() => {
     if (loginCredentials) {

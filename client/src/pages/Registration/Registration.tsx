@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Form, Input, Tooltip, Button } from 'antd'
 import { QuestionCircleOutlined } from '@ant-design/icons'
+import { useHistory } from 'react-router'
 
 import './Registration.scss'
 
-import { useDispatch, useSelector } from 'react-redux'
 import { fetchRegistration, resetRegistrationState } from './registrationSlice'
-import { RootState } from 'redux/store'
 import { IFetchingStatus } from 'constants/enums'
-import { useHistory } from 'react-router'
+import { useAppDispatch, useAppSelector } from 'hooks'
 
 const layout = {
   labelCol: { span: 8 },
@@ -23,9 +22,9 @@ const ROOT_CLASS = 'registration'
 export const Registration = () => {
   const [form] = Form.useForm()
   const [isValid, setIsValid] = useState(false)
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const history = useHistory()
-  const { fetchingStatus } = useSelector((state: RootState) => state.registration)
+  const { fetchingStatus } = useAppSelector((state) => state.registration)
 
   useEffect(() => {
     if (fetchingStatus === IFetchingStatus.fulfilled) {
@@ -38,8 +37,9 @@ export const Registration = () => {
   }, [fetchingStatus])
 
   const onSubmit = async () => {
-    const { email, password } = form.getFieldsValue()
-    dispatch(fetchRegistration({ email, password }))
+    const { email, password, nickname } = form.getFieldsValue()
+
+    dispatch(fetchRegistration({ email, password, nickname }))
   }
 
   const onChangeForm = () => {

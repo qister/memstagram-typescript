@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { serialize } from 'object-to-formdata'
 
 import { Form, Upload, Row, Col, Input, Button, Typography, Select } from 'antd'
@@ -7,9 +6,9 @@ import { InboxOutlined, PlusOutlined } from '@ant-design/icons'
 
 import { RcFile } from 'antd/lib/upload'
 import { fetchUploadMemes, resetUploadState } from './uploadSlice'
-import { RootState } from 'redux/store'
 import { IFetchingStatus } from 'constants/enums'
 import { UploadSuccessfull } from './UploadSuccessfull'
+import { useAppDispatch, useAppSelector } from 'hooks'
 
 const { Title } = Typography
 const { Dragger } = Upload
@@ -30,7 +29,7 @@ export const AddMeme = () => {
   const [form] = Form.useForm()
   const [isValid, setIsValid] = useState(false)
   const [fileList, setFileList] = useState<any>([{ fileList: [] }])
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     return () => {
@@ -38,7 +37,7 @@ export const AddMeme = () => {
     }
   }, [])
 
-  const { fetchingStatus } = useSelector((state: RootState) => state.upload)
+  const { fetchingStatus } = useAppSelector((state) => state.upload)
 
   const onChangeForm = () => {
     form

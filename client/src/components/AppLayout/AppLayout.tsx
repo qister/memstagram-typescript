@@ -1,5 +1,4 @@
 import { useState, FC, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { Layout, Menu, Spin } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 import { Link, useLocation } from 'react-router-dom'
@@ -7,27 +6,25 @@ import { Link, useLocation } from 'react-router-dom'
 import { User } from './User'
 import { AppLayoutRoutes } from './AppLayoutRoutes'
 import { MENU_SIDEBAR_ITEMS } from '../../constants/constants'
-import { RootState } from 'redux/store'
 import { clearEntryLocation, fetchLogout, fetchUpdateTokens } from 'pages/Authorization/authSlice'
 import { fetchUser } from 'pages/Profile/userSlice'
+import { useAppDispatch, useAppSelector } from 'hooks'
 
 import './AppLayout.scss'
 
 const { Header, Sider, Content } = Layout
 
-interface IProps {}
-
 const tokenUpdatePeriod = 10 * 60 * 1000 // 10 минут
 
-export const AppLayout: FC<IProps> = () => {
-  const dispatch = useDispatch()
+export const AppLayout: FC = () => {
+  const dispatch = useAppDispatch()
   const [collapsed, setCollapsed] = useState(false)
   const {
     authorization: { entryLocation, isTokenUpdated },
     user: {
-      currentUser: { email },
+      currentUser: { email, nickname },
     },
-  } = useSelector((state: RootState) => state)
+  } = useAppSelector((state) => state)
 
   useEffect(() => {
     if (!isTokenUpdated) {
@@ -79,7 +76,7 @@ export const AppLayout: FC<IProps> = () => {
         <Header className={`${ROOT_CLASS}-wrapper__header`}>
           <div className={`${ROOT_CLASS}-wrapper__header-user`}>
             {/* TODO поменять на ник */}
-            <User user={{ name: email }} onLogout={onHandleLogout} />
+            <User username={nickname ?? email} onLogout={onHandleLogout} />
           </div>
         </Header>
         <Content

@@ -1,11 +1,11 @@
 import { Card, Avatar } from 'antd'
-import { useDispatch } from 'react-redux'
 
 import { HeartIcon } from './HeartIcon/HeartIcon'
 import './MemeCard.scss'
 import { IMeme } from 'constants/interfaces'
 import { fetchLikeMeme } from 'pages/Feed/feedSlice'
 import { baseURL } from 'API/axios'
+import { useAppDispatch } from 'hooks'
 
 const { Meta } = Card
 
@@ -14,7 +14,7 @@ interface IProps {
 }
 
 export const MemeCard = ({ meme: { _id, author, liked, imgUrl } }: IProps) => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const toggleLike = () => dispatch(fetchLikeMeme({ _id }))
   const imgLink = `${baseURL}/${imgUrl}`
 

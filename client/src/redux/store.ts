@@ -21,6 +21,7 @@ export const createStore = () =>
       }),
   })
 
-const rootState = createStore().getState
+const rootStore = createStore()
 
-export type RootState = ReturnType<typeof rootState>
+export type RootState = ReturnType<typeof rootStore.getState>
+export type AppDispatch = typeof rootStore.dispatch
