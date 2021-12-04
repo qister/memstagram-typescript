@@ -15,5 +15,6 @@ import { MemesService } from './memes.service'
     MongooseModule.forFeature([{ name: Meme.name, schema: MemeSchema }]),
     UsersModule,
   ],
+  exports: [MemesService],
 })
 export class MemesModule {}

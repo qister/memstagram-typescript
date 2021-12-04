@@ -2,6 +2,7 @@ import { Controller, Get, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger'
 import { Schema as MongooseSchema } from 'mongoose'
 
+import { MemesService } from 'src/memes/memes.service'
 import { Meme } from '../memes/schemas/meme.schema'
 import { JwtAuthGuard } from './../auth/jwt-auth.guard'
 import { User } from './schemas/user.schema'
@@ -10,7 +11,10 @@ import { UsersService } from './users.service'
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly memesService: MemesService,
+  ) {}
 
   @ApiOperation({ summary: 'Получение информации о пользователе' })
   // TODO посмотреть как можно указать тип UserDocument тк сейчас в примере свагера не видно что возвращается _id
@@ -31,7 +35,8 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get('/user_memes')
   async getUserMemes(@UserId() userId: MongooseSchema.Types.ObjectId) {
-    const userMemes = await this.usersService.getUserMemes(userId)
+    // TODO: Вынести в юзера? Посмотреть как лучше
+    const userMemes = await this.memesService.getUserMemes(userId)
 
     return userMemes
   }

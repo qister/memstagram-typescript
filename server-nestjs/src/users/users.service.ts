@@ -3,16 +3,11 @@ import { InjectModel } from '@nestjs/mongoose'
 import { Model, Schema as MongooseSchema } from 'mongoose'
 
 import { User, UserDocument } from './schemas/user.schema'
-import { MemeDocument } from 'src/memes/schemas/meme.schema'
-import { Meme } from './../memes/schemas/meme.schema'
 import { CreateUserDto } from './dto/create-user.dto'
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectModel(User.name) private userModel: Model<UserDocument>,
-    @InjectModel(Meme.name) private memeModel: Model<MemeDocument>,
-  ) {}
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async getById(id: MongooseSchema.Types.ObjectId) {
     const user = await this.userModel.findById(id)
@@ -34,16 +29,7 @@ export class UsersService {
   async create(userDto: CreateUserDto) {
     const user = new this.userModel(userDto)
     const newUser = await user.save()
+
     return newUser.toObject()
-  }
-
-  async getUserMemes(userId: MongooseSchema.Types.ObjectId) {
-    const total = await this.memeModel
-      .find({ authorId: userId })
-      .countDocuments()
-      .exec()
-    const userMemes = await this.memeModel.find({ authorId: userId })
-
-    return { memes: userMemes, total }
   }
 }

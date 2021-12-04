@@ -18,7 +18,7 @@ export const App = () => {
     dispatch(setEntryLocation(location.pathname))
   }, [])
 
-  const routes = isAuthenticated ? (
+  return isAuthenticated ? (
     <Switch>
       <Route component={AppLayout} />
     </Switch>
@@ -29,6 +29,4 @@ export const App = () => {
       <Redirect to="/login" />
     </Switch>
   )
-
-  return routes
 }
