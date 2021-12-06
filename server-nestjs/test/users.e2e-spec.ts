@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { INestApplication } from '@nestjs/common'
+import { forwardRef, INestApplication } from '@nestjs/common'
 import * as request from 'supertest'
 import { JwtModule } from '@nestjs/jwt'
 import { MongooseModule } from '@nestjs/mongoose'
@@ -13,6 +13,7 @@ import {
 import { User, UserSchema } from '../src/users/schemas/user.schema'
 import { Meme, MemeSchema } from '../src/memes/schemas/meme.schema'
 import { UsersService } from '../src/users/users.service'
+import { MemesModule } from '../src/memes/memes.module'
 
 describe('UsersController (e2e)', () => {
   let app: INestApplication
@@ -24,6 +25,7 @@ describe('UsersController (e2e)', () => {
       imports: [
         AuthModule,
         UsersModule,
+        forwardRef(() => MemesModule),
         JwtModule.register({}),
         rootMongooseTestModule(),
         MongooseModule.forFeature([

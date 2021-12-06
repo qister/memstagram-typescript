@@ -172,4 +172,21 @@ export class MemesService {
       throw new HttpException('Unable to save memes', HttpStatus.BAD_REQUEST)
     }
   }
+
+  async getUserMemes(userId: MongooseSchema.Types.ObjectId) {
+    const total = await this.memeModel
+      .find({ authorId: userId })
+      .countDocuments()
+      .exec()
+    const userMemes = await this.memeModel.find({ authorId: userId })
+    const memesWithCorrectUrls = userMemes
+      .map((meme) => meme.toObject())
+      .map((meme) => ({
+        ...meme,
+        // мб убирать из ссылки public/ при загрузке мема, тк такое удаление уже во втором месте
+        imgUrl: meme.imgUrl.replace('public/', ''),
+      }))
+
+    return { memes: memesWithCorrectUrls, total }
+  }
 }

@@ -33,9 +33,9 @@ describe('AuthController', () => {
   })
 
   afterEach(async () => {
-    await closeInMongodConnection()
     // Чтобы сбросить приложение и закрыть коннект с БД
-    module.close()
+    await module.close()
+    await closeInMongodConnection()
   })
 
   it('should be defined', () => {

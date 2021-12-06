@@ -1,0 +1,14 @@
+.memes_gallery {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.memes_gallery__card {
+  width: 250px; 
+  margin: 4px !important;
+}
+
+.memes_gallery__card_cover {
+  height: 250px;
+  object-fit: fill;
+}

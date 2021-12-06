@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { forwardRef, Module } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
 import { JwtModule } from '@nestjs/jwt'
 
@@ -13,7 +13,8 @@ import { MemesService } from './memes.service'
   imports: [
     JwtModule.register({}),
     MongooseModule.forFeature([{ name: Meme.name, schema: MemeSchema }]),
-    UsersModule,
+    forwardRef(() => UsersModule),
   ],
+  exports: [MemesService],
 })
 export class MemesModule {}

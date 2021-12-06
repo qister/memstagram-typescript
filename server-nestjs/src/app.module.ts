@@ -15,7 +15,6 @@ import { AuthModule } from './auth/auth.module'
     ConfigModule.forRoot({ envFilePath: `.${process.env.NODE_ENV}.env` }),
     MongooseModule.forRoot(
       'mongodb+srv://qister:1q2w3e4r@cluster0-zntym.mongodb.net/memes',
-      { useFindAndModify: false, useCreateIndex: true },
     ),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
