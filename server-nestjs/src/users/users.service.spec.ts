@@ -34,9 +34,9 @@ describe('UsersService', () => {
   })
 
   afterEach(async () => {
-    await closeInMongodConnection()
     // Чтобы сбросить приложение и закрыть коннект с БД
-    module.close()
+    await module.close()
+    await closeInMongodConnection()
   })
 
   it('should be defined', () => {
@@ -74,11 +74,11 @@ describe('UsersService', () => {
   })
 
   it('Получение мемов пользователя', async () => {
-    jest.spyOn(usersService, 'getUserMemes')
+    jest.spyOn(memesService, 'getUserMemes')
 
     const user = await usersService.create(userDto)
     // TODO загружать мемы в базу и тестировать появились ли они там
-    const userMemes = await usersService.getUserMemes(user._id)
+    const userMemes = await memesService.getUserMemes(user._id)
 
     expect(userMemes).toEqual({ memes: [], total: 0 })
   })

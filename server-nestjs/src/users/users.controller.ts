@@ -2,7 +2,7 @@ import { Controller, Get, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger'
 import { Schema as MongooseSchema } from 'mongoose'
 
-import { MemesService } from 'src/memes/memes.service'
+import { MemesService } from '../memes/memes.service'
 import { Meme } from '../memes/schemas/meme.schema'
 import { JwtAuthGuard } from './../auth/jwt-auth.guard'
 import { User } from './schemas/user.schema'

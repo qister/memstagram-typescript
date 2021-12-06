@@ -2,7 +2,7 @@ import { forwardRef, Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
 import { MongooseModule } from '@nestjs/mongoose'
 
-import { MemesModule } from 'src/memes/memes.module'
+import { MemesModule } from '../memes/memes.module'
 import { AuthModule } from './../auth/auth.module'
 import { Meme, MemeSchema } from './../memes/schemas/meme.schema'
 import { User, UserSchema } from './schemas/user.schema'
