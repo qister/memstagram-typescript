@@ -15,7 +15,7 @@ export interface ICredentials {
   password: string
 }
 
-export interface IAuthorizationState {
+interface IAuthorizationState {
   entryLocation?: string
   loginCredentials?: ICredentials
   isAuthenticated: boolean

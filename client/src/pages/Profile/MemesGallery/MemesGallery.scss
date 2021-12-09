@@ -4,11 +4,26 @@
 }
 
 .memes_gallery__card {
-  width: 250px; 
-  margin: 4px !important;
+  height: 200px;
+  width: 200px;
+  background-size: 100% 100%;
+  position: relative;
+  margin: 5px;
+  border-radius: 3px;
+  transition: box-shadow .3s, border-color .3s, border-radius .3s;
 }
 
-.memes_gallery__card_cover {
-  height: 250px;
-  object-fit: fill;
+.memes_gallery__card:hover {
+  cursor: pointer;
+  box-shadow: 0 0 11px rgba(33,33,33,.2); 
+  border-radius: 5px;
+}
+
+.memes_gallery__card_description {
+  width: 100%;
+  text-align: center;
+  color: white;
+  background-color: rgba(0,0,0,.6);
+  position: absolute;
+  bottom: 15px;
 }

@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Card } from 'antd'
+import { HeartOutlined } from '@ant-design/icons'
 
 import './MemesGallery.scss'
 
@@ -12,24 +12,18 @@ interface IProps {
   memes: IMeme[]
 }
 
-export const MemesGallery: FC<IProps> = ({ memes }) => {
-  return (
-    <div className={ROOT_CLASS}>
-      {memes.map(({ imgUrl, description, likedBy }) => {
-        const imgLink = `${baseURL}/${imgUrl}`
-
-        return (
-          <Card
-            className={`${ROOT_CLASS}__card`}
-            key={imgLink}
-            cover={<img className={`${ROOT_CLASS}__card_cover`} alt={description} src={imgLink} />}
-            bordered={false}
-            hoverable
-          >
-            <span>{likedBy.length} likes</span>
-          </Card>
-        )
-      })}
-    </div>
-  )
-}
+export const MemesGallery: FC<IProps> = ({ memes }) => (
+  <div className={ROOT_CLASS}>
+    {memes.map(({ imgUrl, likedBy }) => (
+      <div
+        className={`${ROOT_CLASS}__card`}
+        key={imgUrl}
+        style={{ backgroundImage: `url('${baseURL}/${imgUrl}')` }}
+      >
+        <div className={`${ROOT_CLASS}__card_description`}>
+          <HeartOutlined /> <span>{likedBy.length}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+)
