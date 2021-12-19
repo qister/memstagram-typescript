@@ -10,7 +10,7 @@ import { errorNotificate } from 'utils/errorNotificate'
 export interface FeedState {
   memeList: Array<IMeme>
   fetchingStatus: IFetchingStatus
-  error: any
+  error?: any
   nextPage: number
   total: number
 }
@@ -18,7 +18,6 @@ export interface FeedState {
 const initialState: FeedState = {
   memeList: [],
   fetchingStatus: IFetchingStatus.idle,
-  error: null,
   nextPage: 1,
   total: 0,
 }
@@ -27,7 +26,7 @@ export const fetchMemeList = createAsyncThunk(
   'fetchMemeList',
   async (_, { getState, rejectWithValue }) => {
     const {
-      feed: { nextPage = 1 },
+      feed: { nextPage },
     } = getState() as RootState
 
     try {

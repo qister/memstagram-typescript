@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Avatar } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
+import { pluralize } from 'numeralize-ru'
 
 import './Profile.scss'
 
@@ -31,7 +32,10 @@ export const Profile = () => {
         </div>
         <div className={`${ROOT_CLASS}__info`}>
           <div>{email}</div>
-          <div>{totalUserMemesCount} Публикаций</div>
+          <div>
+            {totalUserMemesCount}{' '}
+            {pluralize(totalUserMemesCount, 'публикация', 'публикации', 'публикаций')}
+          </div>
         </div>
       </div>
       <MemesGallery memes={userMemes} />
