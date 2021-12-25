@@ -4,7 +4,7 @@ import { axiosInstance } from './axios'
 // TODO опреледиться что возвращается с бэка и правильно описать IMeme
 interface IGetMemesReult {
   total: number
-  next: {
+  next?: {
     page: number
     limit: number
   }
@@ -15,8 +15,10 @@ interface IGetMemesReult {
   memes: IMeme[]
 }
 
-export const getMemeList = (page: number) =>
-  axiosInstance.get<IGetMemesReult>(`/api/v1/memes/list?page=${page}&limit=3`)
+export const getMemeList = (page: number, limit = 3) =>
+  axiosInstance.get<IGetMemesReult>(`/api/v1/memes/list`, {
+    params: { page, limit },
+  })
 
 export const getUserMemes = () =>
   axiosInstance.get<{ memes: IMeme[]; total: number }>(`/api/v1/users/user_memes`)

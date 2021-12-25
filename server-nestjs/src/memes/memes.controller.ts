@@ -26,6 +26,9 @@ import { MemesService } from './memes.service'
 import { UserId } from '../users/user.decorator'
 import { FilesUploadDto } from './dto/file-upload.dto'
 
+const DEFAULT_PAGE_NUM = 1
+const DEFAULT_LIMIT = 3
+
 @Controller('memes')
 export class MemesController {
   constructor(private readonly memesService: MemesService) {}
@@ -92,8 +95,8 @@ export class MemesController {
     @Query('limit') limit: string,
     @UserId() userId: MongooseSchema.Types.ObjectId,
   ) {
-    const pageNum = Number(page)
-    const limitNum = Number(limit)
+    const pageNum = Number(page ?? DEFAULT_PAGE_NUM)
+    const limitNum = Number(limit ?? DEFAULT_LIMIT)
     const startIndex = (pageNum - 1) * limitNum
     const endIndex = pageNum * limitNum
 

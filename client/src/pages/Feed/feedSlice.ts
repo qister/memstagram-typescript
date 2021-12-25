@@ -10,8 +10,8 @@ import { errorNotificate } from 'utils/errorNotificate'
 export interface FeedState {
   memeList: Array<IMeme>
   fetchingStatus: IFetchingStatus
-  error?: any
-  nextPage: number
+  error?: unknown
+  nextPage?: number
   total: number
 }
 
@@ -26,7 +26,7 @@ export const fetchMemeList = createAsyncThunk(
   'fetchMemeList',
   async (_, { getState, rejectWithValue }) => {
     const {
-      feed: { nextPage },
+      feed: { nextPage = 1 },
     } = getState() as RootState
 
     try {
@@ -68,7 +68,6 @@ const feed = createSlice({
         state.fetchingStatus = IFetchingStatus.fulfilled
         state.memeList = [...state.memeList, ...memes]
         state.total = total
-        // TODO поправить пагинацию и убрать ? тк сейчас next.page приходит не всегда
         state.nextPage = next?.page
       })
       .addCase(fetchLikeMeme.pending, (state) => {
