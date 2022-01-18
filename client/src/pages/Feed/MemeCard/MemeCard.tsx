@@ -1,3 +1,4 @@
+import { FC } from 'react'
 import { Card, Avatar } from 'antd'
 
 import { HeartIcon } from './HeartIcon/HeartIcon'
@@ -13,7 +14,7 @@ interface IProps {
   meme: IMeme
 }
 
-export const MemeCard = ({ meme: { _id, author, liked, imgUrl } }: IProps) => {
+export const MemeCard: FC<IProps> = ({ meme: { _id, author, liked, imgUrl } }) => {
   const dispatch = useAppDispatch()
   const toggleLike = () => dispatch(fetchLikeMeme({ _id }))
   const imgLink = `${baseURL}/${imgUrl}`
