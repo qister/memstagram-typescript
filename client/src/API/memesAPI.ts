@@ -1,6 +1,8 @@
 import { IMeme } from 'constants/interfaces'
 import { axiosInstance } from './axios'
 
+export const DEFAULT_MEMES_LIMIT = 3
+
 // TODO опреледиться что возвращается с бэка и правильно описать IMeme
 interface IGetMemesReult {
   total: number
@@ -15,7 +17,7 @@ interface IGetMemesReult {
   memes: IMeme[]
 }
 
-export const getMemeList = (page: number, limit = 3) =>
+export const getMemeList = (page: number, limit = DEFAULT_MEMES_LIMIT) =>
   axiosInstance.get<IGetMemesReult>(`/api/v1/memes/list`, {
     params: { page, limit },
   })
