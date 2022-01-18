@@ -1,13 +1,16 @@
 {
   "name": "memstagram-typescript",
   "version": "1.0.0",
+  "engines": {
+    "node": "16.x"
+  },
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint-all": "cd client && npm run lint && cd ../server-nestjs && npm run lint",
     "prepare": "husky install",
-    "heroku-prebuild": "cd server-nestjs && npm i --legacy-peer-deps && npm run build",
+    "heroku-prebuild": "cd server-nestjs && npm i && npm run build",
     "start": "cd server-nestjs && npm run start:prod"
   },
   "repository": {

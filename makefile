@@ -5,14 +5,14 @@ run:
 
 client-install:
 	cd client;\
-		npm i --legacy-peer-deps;
+		npm i;
 
 server-nestjs-install:
 	cd server-nestjs;\
-		npm i --legacy-peer-deps;
+		npm i;
 
 root-install:
-	npm i --legacy-peer-deps;
+	npm i;
 
 install-all:
 	make root-install
