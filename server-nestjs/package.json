@@ -1,6 +1,9 @@
 {
   "name": "server-nestjs",
   "version": "0.0.1",
+  "engines": {
+    "node": "16.x"
+  },
   "description": "",
   "author": "",
   "private": true,
