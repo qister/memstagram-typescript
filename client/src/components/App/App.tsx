@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Route, Switch, Redirect, useLocation } from 'react-router-dom'
+import { Route, Routes, useLocation, Navigate } from 'react-router-dom'
 
 import { AppLayout } from 'components/AppLayout/AppLayout'
 import { Registration } from 'pages/Registration/Registration'
@@ -19,14 +19,14 @@ export const App = () => {
   }, [])
 
   return isAuthenticated ? (
-    <Switch>
-      <Route component={AppLayout} />
-    </Switch>
+    <Routes>
+      <Route path="*" element={<AppLayout />} />
+    </Routes>
   ) : (
-    <Switch>
-      <Route path="/login" component={LoginForm} exact />
-      <Route path="/register" component={Registration} exact />
-      <Redirect to="/login" />
-    </Switch>
+    <Routes>
+      <Route path="/login" element={<LoginForm />} />
+      <Route path="/register" element={<Registration />} />
+      <Route path="*" element={<Navigate to="/login" />} />
+    </Routes>
   )
 }

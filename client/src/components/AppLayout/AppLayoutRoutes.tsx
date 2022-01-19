@@ -1,4 +1,4 @@
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 
 import { Profile } from 'pages/Profile/Profile'
 import { Statistics } from 'pages/Statistics/Statistics'
@@ -8,14 +8,11 @@ import { Feed } from 'pages/Feed/Feed'
 import { VirtualFeed } from 'pages/Feed/VirtualFeed'
 
 export const AppLayoutRoutes = () => (
-  <Switch>
-    <Route path={ContentPath.Feed} exact>
-      <VirtualFeed />
-      {/* <Feed /> */}
-    </Route>
-    <Route path={ContentPath.Profile} component={Profile} exact />
-    <Route path={ContentPath.Statistics} component={Statistics} exact />
-    <Route path={ContentPath.Add} component={AddMeme} exact />
-    <Redirect to={ContentPath.Feed} />
-  </Switch>
+  <Routes>
+    <Route path={ContentPath.Feed} element={<VirtualFeed />} />
+    <Route path={ContentPath.Profile} element={<Profile />} />
+    <Route path={ContentPath.Statistics} element={<Statistics />} />
+    <Route path={ContentPath.Add} element={<AddMeme />} />
+    <Route path="*" element={<Navigate to={ContentPath.Feed} />} />
+  </Routes>
 )

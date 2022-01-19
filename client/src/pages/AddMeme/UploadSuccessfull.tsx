@@ -1,13 +1,13 @@
 import { Result, Button } from 'antd'
 import { SmileOutlined } from '@ant-design/icons'
-import { useHistory } from 'react-router'
 import { ContentPath } from 'constants/enums'
+import { useNavigate } from 'react-router-dom'
 
 export const UploadSuccessfull = () => {
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const goToFeed = () => {
-    history.push(ContentPath.Feed)
+    navigate(ContentPath.Feed)
   }
   return (
     <Result

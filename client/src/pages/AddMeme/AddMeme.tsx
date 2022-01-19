@@ -116,7 +116,7 @@ export const AddMeme = () => {
                   <Form.Item
                     {...field}
                     name={[field.name, 'description']}
-                    fieldKey={[field.fieldKey, 'description']}
+                    fieldKey={[field.key, 'description']}
                     label="Подпись"
                     rules={[{ required: true, message: 'Краткое описание, пож' }]}
                   >
@@ -128,7 +128,7 @@ export const AddMeme = () => {
                   <Form.Item
                     {...field}
                     name={[field.name, 'categories']}
-                    fieldKey={[field.fieldKey, 'categories']}
+                    fieldKey={[field.key, 'categories']}
                     label="Категории"
                   >
                     <Select
@@ -149,17 +149,17 @@ export const AddMeme = () => {
                   <Form.Item
                     {...field}
                     name={[field.name, 'dragger']}
-                    fieldKey={[field.fieldKey, 'dragger']}
+                    fieldKey={[field.key, 'dragger']}
                     label="Загрузить"
                     //TODO добавить валидацию на размер файла
-                    rules={[validateIsFileSelected(fileList[field.fieldKey].fileList)]}
+                    rules={[validateIsFileSelected(fileList[field.key].fileList)]}
                   >
                     <Dragger
                       name="files"
-                      beforeUpload={beforeUpload(field.fieldKey)}
+                      beforeUpload={beforeUpload(field.key)}
                       accept="image/jpeg, image/png"
-                      fileList={fileList[field.fieldKey]?.fileList ?? []}
-                      onRemove={onRemove(field.fieldKey)}
+                      fileList={fileList[field.key]?.fileList ?? []}
+                      onRemove={onRemove(field.key)}
                       onChange={onChangeForm}
                     >
                       <p className="ant-upload-drag-icon">
