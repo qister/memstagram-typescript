@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Form, Input, Tooltip, Button } from 'antd'
 import { QuestionCircleOutlined } from '@ant-design/icons'
-import { useHistory } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 
 import './Registration.scss'
 
@@ -23,12 +23,12 @@ export const Registration = () => {
   const [form] = Form.useForm()
   const [isValid, setIsValid] = useState(false)
   const dispatch = useAppDispatch()
-  const history = useHistory()
+  const navigate = useNavigate()
   const { fetchingStatus } = useAppSelector((state) => state.registration)
 
   useEffect(() => {
     if (fetchingStatus === IFetchingStatus.fulfilled) {
-      history.push('/login')
+      navigate('/login')
     }
 
     return () => {
