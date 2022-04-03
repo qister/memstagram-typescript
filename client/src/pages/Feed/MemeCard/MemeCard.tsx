@@ -2,21 +2,20 @@ import { FC } from 'react'
 import { Card, Avatar } from 'antd'
 
 import { HeartIcon } from './HeartIcon/HeartIcon'
-import './MemeCard.scss'
 import { IMeme } from 'constants/interfaces'
-import { fetchLikeMeme } from 'pages/Feed/feedSlice'
 import { baseURL } from 'API/axios'
-import { useAppDispatch } from 'hooks'
+
+import './MemeCard.scss'
 
 const { Meta } = Card
 
 interface IProps {
   meme: IMeme
+  onLike: (_id: string) => void
 }
 
-export const MemeCard: FC<IProps> = ({ meme: { _id, author, liked, imgUrl } }) => {
-  const dispatch = useAppDispatch()
-  const toggleLike = () => dispatch(fetchLikeMeme({ _id }))
+export const MemeCard: FC<IProps> = ({ meme: { _id, author, liked, imgUrl }, onLike }) => {
+  const toggleLike = () => onLike(_id)
   const imgLink = `${baseURL}/${imgUrl}`
 
   return (
