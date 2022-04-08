@@ -9,9 +9,7 @@ const BATCH_COMMENTS = 1
 export const useVirtualFeed = () => {
   const [page, setPage] = useState(1)
   const [memeList, setMemeList] = useState<IMeme[]>([])
-  const { isLoading, data, isSuccess } = useQuery(['feed', page], () => getMemeList(page), {
-    staleTime: Infinity,
-  })
+  const { isLoading, data, isSuccess } = useQuery(['feed', page], () => getMemeList(page))
   const like = useMutation((id: string) => likeMeme(id))
 
   const {
