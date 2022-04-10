@@ -18,8 +18,10 @@ export const renderWithRouter = (
 ) => {
   return {
     ...render(component, {
+      //@ts-ignore
       wrapper: ({ children }) => (
         <Provider store={createStore()}>
+          {/* @ts-ignore */}
           <QueryClientProvider client={queryClient}>
             <HistoryRouter history={history}>
               {componentPath ? (
