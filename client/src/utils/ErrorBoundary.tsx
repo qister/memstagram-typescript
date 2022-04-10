@@ -27,9 +27,12 @@ export class ErrorBoundary extends React.Component<IProps, IState> {
 
     if (hasError) {
       return (
+        //@ts-ignore
         <Result status="error" title="Что-то пошло не так" subTitle={message}>
           {stack && (
+            //@ts-ignore
             <Collapse bordered={false}>
+              {/* @ts-ignore */}
               <Collapse.Panel header="Показать ошибку" key="1">
                 <code>{stack}</code>
               </Collapse.Panel>

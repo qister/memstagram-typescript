@@ -14,6 +14,7 @@ const queryClient = new QueryClient()
 ReactDOM.render(
   <ErrorBoundary>
     <Provider store={createStore()}>
+      {/* @ts-ignore */}
       <QueryClientProvider client={queryClient}>
         <Router>
           <App />
