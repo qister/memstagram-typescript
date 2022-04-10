@@ -5,24 +5,26 @@ import { pluralize } from 'numeralize-ru'
 
 import './Profile.scss'
 
-import { fetchUserMemes } from './userSlice'
-import { useAppDispatch, useAppSelector } from 'hooks'
 import { MemesGallery } from './MemesGallery/MemesGallery'
+import { useUser } from 'API/userApi'
+import { useUserMemes } from 'API/memesAPI'
 
 const ROOT_CLASS = 'profile'
 
 export const Profile = () => {
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    dispatch(fetchUserMemes())
-  }, [])
+  const { data: userData } = useUser()
+  const { data: userMemesData } = useUserMemes()
 
   const {
-    currentUser: { email },
-    totalUserMemesCount,
-    userMemes,
-  } = useAppSelector((state) => state.user)
+    data: { memes, total },
+    // TODO посмотреть лучшие практики как указывать значение по умолчанию в реакт квери
+  } = userMemesData ?? { data: { memes: [], total: 0 } }
+
+  const {
+    data: {
+      user: { email },
+    },
+  } = userData ?? { data: { user: { email: '' } } }
 
   return (
     <div className={ROOT_CLASS}>
@@ -33,12 +35,11 @@ export const Profile = () => {
         <div className={`${ROOT_CLASS}__info`}>
           <div>{email}</div>
           <div>
-            {totalUserMemesCount}{' '}
-            {pluralize(totalUserMemesCount, 'публикация', 'публикации', 'публикаций')}
+            {total} {pluralize(total, 'публикация', 'публикации', 'публикаций')}
           </div>
         </div>
       </div>
-      <MemesGallery memes={userMemes} />
+      <MemesGallery memes={memes} />
     </div>
   )
 }

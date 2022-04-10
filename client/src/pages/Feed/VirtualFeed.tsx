@@ -2,14 +2,14 @@ import { FC, Fragment } from 'react'
 import useVirtual from 'react-cool-virtual'
 
 import { MemeCard } from './MemeCard/MemeCard'
-import { useVirtualFeed } from './useFeed'
+import { useFeed } from './useFeed'
 
 import './Feed.scss'
 
 const Loading = () => <div className="item">⏳ Loading...</div>
 
 export const VirtualFeed: FC = () => {
-  const { memeList, virtualConfig, total, onLike } = useVirtualFeed()
+  const { memeList, virtualConfig, total, onLike } = useFeed()
   const { outerRef, innerRef, items } = useVirtual(virtualConfig)
 
   const ROOT_CLASS = 'feed'
