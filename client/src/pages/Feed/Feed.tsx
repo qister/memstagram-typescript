@@ -1,15 +1,14 @@
-import { useEffect } from 'react'
 import { Divider, Spin } from 'antd'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
 import { MemeCard } from 'pages/Feed/MemeCard/MemeCard'
-import { useVirtualFeed } from './useFeed'
+import { useFeed } from './useFeed'
 
 import './Feed.scss'
 
 // Если функционала InfiniteScroll не хватит, можно написать свой через рефы
 export const Feed = () => {
-  const { memeList, isLoading, total, onLike, loadMemes } = useVirtualFeed()
+  const { memeList, isLoading, total, onLike, loadMemes } = useFeed()
 
   const ROOT_CLASS = 'feed'
 

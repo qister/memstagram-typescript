@@ -1,7 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import { user } from 'pages/Profile/userSlice'
-import { upload } from 'pages/AddMeme/uploadSlice'
 import { authorization } from 'pages/Authorization/authSlice'
 import { registration } from 'pages/Registration/registrationSlice'
 
@@ -10,8 +8,6 @@ export const createStore = () =>
     reducer: {
       authorization,
       registration,
-      user,
-      upload,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({

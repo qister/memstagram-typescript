@@ -7,8 +7,8 @@ import { User } from './User'
 import { AppLayoutRoutes } from './AppLayoutRoutes'
 import { MENU_SIDEBAR_ITEMS } from '../../constants/constants'
 import { clearEntryLocation, fetchLogout, fetchUpdateTokens } from 'pages/Authorization/authSlice'
-import { fetchUser } from 'pages/Profile/userSlice'
 import { useAppDispatch, useAppSelector } from 'hooks'
+import { useUser } from 'API/userApi'
 
 import './AppLayout.scss'
 
@@ -21,19 +21,24 @@ export const AppLayout: FC = () => {
   const [collapsed, setCollapsed] = useState(false)
   const {
     authorization: { entryLocation, isTokenUpdated },
-    user: {
-      currentUser: { email, nickname },
-    },
   } = useAppSelector((state) => state)
+
+  const { data: userData } = useUser()
+
+  const {
+    data: {
+      user: { email, nickname },
+    },
+  } = userData ?? { data: { user: { email: '' } } }
 
   useEffect(() => {
     if (!isTokenUpdated) {
       dispatch(fetchUpdateTokens())
     }
 
-    if (isTokenUpdated) {
-      dispatch(fetchUser())
-    }
+    // if (isTokenUpdated) {
+    //   dispatch(fetchUser())
+    // }
 
     if (entryLocation) {
       dispatch(clearEntryLocation())

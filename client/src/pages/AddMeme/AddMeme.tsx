@@ -1,14 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { serialize } from 'object-to-formdata'
 
 import { Form, Upload, Row, Col, Input, Button, Typography, Select } from 'antd'
 import { InboxOutlined, PlusOutlined } from '@ant-design/icons'
 
 import { RcFile } from 'antd/lib/upload'
-import { fetchUploadMemes, resetUploadState } from './uploadSlice'
-import { IFetchingStatus } from 'constants/enums'
 import { UploadSuccessfull } from './UploadSuccessfull'
-import { useAppDispatch, useAppSelector } from 'hooks'
+import { useUploadMemes } from 'API/memesAPI'
 
 const { Title } = Typography
 const { Dragger } = Upload
@@ -29,15 +27,8 @@ export const AddMeme = () => {
   const [form] = Form.useForm()
   const [isValid, setIsValid] = useState(false)
   const [fileList, setFileList] = useState<any>([{ fileList: [] }])
-  const dispatch = useAppDispatch()
 
-  useEffect(() => {
-    return () => {
-      dispatch(resetUploadState())
-    }
-  }, [])
-
-  const { fetchingStatus } = useAppSelector((state) => state.upload)
+  const upload = useUploadMemes()
 
   const onChangeForm = () => {
     form
@@ -57,7 +48,7 @@ export const AddMeme = () => {
     setFileList((prev: any) => [...prev, { fileList: [] }])
   }
 
-  const beforeUpload = (fieldKey: number) => (file: RcFile, FileList: RcFile[]) => {
+  const beforeUpload = (fieldKey: number) => (file: RcFile, _FileList: RcFile[]) => {
     setFileList((prev: any[]) => {
       return prev.map((item: any, index: number) =>
         index === fieldKey ? { fileList: [file] } : item,
@@ -86,14 +77,14 @@ export const AddMeme = () => {
     memelist.forEach((_, index) => {
       serializedData.append('attachments[]', fileList[index].fileList[0])
     })
-    dispatch(fetchUploadMemes(serializedData))
+    upload.mutate(serializedData)
   }
 
   const ROOT_CLASS = 'upload'
 
   //TODO добавить сообщение об успешной и неуспешной загрузке
   // TODO добавить #success в адресной строчке
-  if (fetchingStatus === IFetchingStatus.fulfilled) {
+  if (upload.isSuccess) {
     return <UploadSuccessfull />
   }
 
