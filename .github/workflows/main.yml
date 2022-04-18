@@ -34,7 +34,7 @@ jobs:
       # Install client node_modules
       - name: Install client node_modules
         working-directory: ./client
-        run: npm i
+        run: yarn install
       # Install server node_modules
       - name: Install server node_modules
         working-directory: ./server-nestjs
@@ -42,7 +42,7 @@ jobs:
       # Run client tests
       - name: Run client tests
         working-directory: ./client
-        run: npm run test
+        run: yarn run test
       # Run server unit tests
       - name: Run server unit-tests
         working-directory: ./server-nestjs
