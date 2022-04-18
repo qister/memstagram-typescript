@@ -5,7 +5,7 @@ run:
 
 client-install:
 	cd client;\
-		npm i;
+		yarn install;
 
 server-nestjs-install:
 	cd server-nestjs;\
