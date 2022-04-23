@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useInfiniteQuery, useMutation, useQueryClient } from 'react-query'
+import { AxiosResponse } from 'axios'
 
-import { getMemeList, likeMeme } from 'API/memesAPI'
+import { getMemeList, IGetMemesReult, likeMeme } from 'API/memesAPI'
 import { IMeme } from '../../constants/interfaces'
 
 const BATCH_COMMENTS = 1
@@ -12,11 +13,11 @@ export const useFeed = () => {
   const [memeList, setMemeList] = useState<IMeme[]>([])
   const [total, setTotal] = useState(0)
 
-  const { isLoading, fetchNextPage } = useInfiniteQuery('feed', fetchMemeList, {
+  const { isLoading, fetchNextPage, refetch } = useInfiniteQuery('feed', fetchMemeList, {
     staleTime: Infinity,
-    getNextPageParam: (lastPage, _pages) => lastPage.data.next?.page,
+    getNextPageParam: (lastPage) => lastPage.data.next?.page,
     onSuccess: (data) => {
-      const list = data.pages.reduce((acc, item) => [...acc, ...item.data.memes], [] as IMeme[])
+      const list = data.pages.flatMap(({ data: { memes } }) => memes)
       const total = data.pages[0].data.total
       setMemeList(list)
       setTotal(total)
@@ -33,11 +34,19 @@ export const useFeed = () => {
 
   const like = useMutation(likeMeme, {
     onSuccess: (data) => {
-      setMemeList((prev) =>
-        prev.map((meme) =>
-          meme._id === data.data.meme._id ? { ...meme, liked: !meme.liked } : meme,
-        ),
-      )
+      const likedMemeId = data.data.meme._id
+
+      refetch({
+        // FIXME по идее аргументы ниже должны быть типизированы изначально, но сейчас это не так. Мб это проблема реакт-квери
+        refetchPage: (_lastPage, pageNumber, allPages: AxiosResponse<IGetMemesReult>[]) => {
+          const likedMemePage = allPages.findIndex((item) =>
+            item.data.memes.some((meme) => meme?._id === likedMemeId),
+          )
+          const needRefetch = pageNumber === likedMemePage
+
+          return needRefetch
+        },
+      })
     },
   })
 
