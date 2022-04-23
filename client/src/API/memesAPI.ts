@@ -8,7 +8,7 @@ import { errorNotificate } from 'utils/errorNotificate'
 export const DEFAULT_MEMES_LIMIT = 3
 
 // TODO опреледиться что возвращается с бэка и правильно описать IMeme
-interface IGetMemesReult {
+export interface IGetMemesReult {
   total: number
   next?: {
     page: number

@@ -26,7 +26,7 @@ export const VirtualFeed: FC = () => {
             const showLoading = index === memeList.length - 1 && memeList.length < total
 
             return (
-              <Fragment key={memeList[index].imgUrl}>
+              <Fragment key={memeList[index]?.imgUrl}>
                 <div ref={measureRef}>
                   <MemeCard meme={memeList[index]} onLike={onLike} />
                 </div>
