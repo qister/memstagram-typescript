@@ -7,8 +7,6 @@ export const getAccessTokenFromCookie = () => {
       return value
     }
   }
-
-  return ''
 }
 
 const TOKEN_LIFETIME = 60 * 15 // 15 минут

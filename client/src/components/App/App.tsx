@@ -1,26 +1,37 @@
-import { useEffect } from 'react'
-import { Route, Routes, useLocation, Navigate } from 'react-router-dom'
+import { Spin } from 'antd'
+import { Route, Routes, Navigate } from 'react-router-dom'
 
 import { AppLayout } from 'components/AppLayout/AppLayout'
 import { Registration } from 'pages/Registration/Registration'
 import { LoginForm } from 'pages/Authorization/Login'
-import { setEntryLocation } from 'pages/Authorization/authSlice'
-import { useAppDispatch, useAppSelector } from 'hooks'
+import { useAuthContext } from 'auth'
 
 import './App.scss'
 
 export const App = () => {
-  const { isAuthenticated } = useAppSelector((state) => state.authorization)
-  const dispatch = useAppDispatch()
-  const location = useLocation()
-
-  useEffect(() => {
-    dispatch(setEntryLocation(location.pathname))
-  }, [])
+  const { isTokenUpdating, isAuthenticated } = useAuthContext()
 
   return isAuthenticated ? (
     <Routes>
-      <Route path="*" element={<AppLayout />} />
+      <Route
+        path="*"
+        element={
+          isTokenUpdating ? (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100%',
+              }}
+            >
+              <Spin />
+            </div>
+          ) : (
+            <AppLayout />
+          )
+        }
+      />
     </Routes>
   ) : (
     <Routes>

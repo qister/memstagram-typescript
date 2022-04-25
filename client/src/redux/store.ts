@@ -1,14 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import { authorization } from 'pages/Authorization/authSlice'
-import { registration } from 'pages/Registration/registrationSlice'
-
 export const createStore = () =>
   configureStore({
-    reducer: {
-      authorization,
-      registration,
-    },
+    reducer: {},
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: false,

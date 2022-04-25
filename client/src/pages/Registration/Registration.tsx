@@ -3,11 +3,9 @@ import { Form, Input, Tooltip, Button } from 'antd'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 
-import './Registration.scss'
+import { useAuthContext } from 'auth'
 
-import { fetchRegistration, resetRegistrationState } from './registrationSlice'
-import { IFetchingStatus } from 'constants/enums'
-import { useAppDispatch, useAppSelector } from 'hooks'
+import './Registration.scss'
 
 const layout = {
   labelCol: { span: 8 },
@@ -22,24 +20,21 @@ const ROOT_CLASS = 'registration'
 export const Registration = () => {
   const [form] = Form.useForm()
   const [isValid, setIsValid] = useState(false)
-  const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const { fetchingStatus } = useAppSelector((state) => state.registration)
+
+  const { register, justRegistered, setInitialCredentials } = useAuthContext()
 
   useEffect(() => {
-    if (fetchingStatus === IFetchingStatus.fulfilled) {
+    if (justRegistered) {
+      const { email, password } = form.getFieldsValue()
+      setInitialCredentials({ email, password })
       navigate('/login')
     }
+  }, [justRegistered])
 
-    return () => {
-      dispatch(resetRegistrationState())
-    }
-  }, [fetchingStatus])
-
-  const onSubmit = async () => {
+  const onSubmit = () => {
     const { email, password, nickname } = form.getFieldsValue()
-
-    dispatch(fetchRegistration({ email, password, nickname }))
+    register({ email, password, nickname })
   }
 
   const onChangeForm = () => {
