@@ -1,27 +1,22 @@
-import { useState, FC, useEffect } from 'react'
-import { Layout, Menu, Spin } from 'antd'
+import { useState, FC } from 'react'
+import { Layout, Menu } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 import { Link, useLocation } from 'react-router-dom'
 
 import { User } from './User'
 import { AppLayoutRoutes } from './AppLayoutRoutes'
 import { MENU_SIDEBAR_ITEMS } from '../../constants/constants'
-import { clearEntryLocation, fetchLogout, fetchUpdateTokens } from 'pages/Authorization/authSlice'
-import { useAppDispatch, useAppSelector } from 'hooks'
 import { useUser } from 'API/userApi'
+import { useAuthContext } from 'auth'
 
 import './AppLayout.scss'
 
 const { Header, Sider, Content } = Layout
 
-const tokenUpdatePeriod = 10 * 60 * 1000 // 10 минут
-
 export const AppLayout: FC = () => {
-  const dispatch = useAppDispatch()
   const [collapsed, setCollapsed] = useState(false)
-  const {
-    authorization: { entryLocation, isTokenUpdated },
-  } = useAppSelector((state) => state)
+
+  const { logout } = useAuthContext()
 
   const { data: userData } = useUser()
 
@@ -31,33 +26,9 @@ export const AppLayout: FC = () => {
     },
   } = userData ?? { data: { user: { email: '' } } }
 
-  useEffect(() => {
-    if (!isTokenUpdated) {
-      dispatch(fetchUpdateTokens())
-    }
-
-    // if (isTokenUpdated) {
-    //   dispatch(fetchUser())
-    // }
-
-    if (entryLocation) {
-      dispatch(clearEntryLocation())
-    }
-
-    const interval = setInterval(() => {
-      dispatch(fetchUpdateTokens())
-    }, tokenUpdatePeriod)
-
-    return () => clearInterval(interval)
-  }, [isTokenUpdated])
-
-  const onHandleLogout = () => {
-    dispatch(fetchLogout())
-  }
   const location = useLocation()
   const activeItem = MENU_SIDEBAR_ITEMS.find((item) => location.pathname.includes(item.key))
   const activeItems = activeItem ? [activeItem.key] : undefined
-  const innerComponent = isTokenUpdated ? <AppLayoutRoutes /> : <Spin />
 
   const ROOT_CLASS = 'layout-container'
   return (
@@ -81,7 +52,7 @@ export const AppLayout: FC = () => {
         <Header className={`${ROOT_CLASS}-wrapper__header`}>
           <div className={`${ROOT_CLASS}-wrapper__header-user`}>
             {/* TODO поменять на ник */}
-            <User username={nickname ?? email} onLogout={onHandleLogout} />
+            <User username={nickname ?? email} onLogout={logout} />
           </div>
         </Header>
         <Content
@@ -94,7 +65,9 @@ export const AppLayout: FC = () => {
             // Поправить высоту чтобы занимала весь экран
           }}
         >
-          <div className="app">{innerComponent}</div>
+          <div className="app">
+            <AppLayoutRoutes />
+          </div>
         </Content>
       </Layout>
     </Layout>

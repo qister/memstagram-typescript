@@ -8,17 +8,19 @@ import 'antd/dist/antd.min.css'
 import { App } from './components/App/App'
 import { createStore } from 'redux/store'
 import { ErrorBoundary } from 'utils/ErrorBoundary'
+import { AuthProvider } from 'auth'
 
 const queryClient = new QueryClient()
 
 ReactDOM.render(
   <ErrorBoundary>
     <Provider store={createStore()}>
-      {/* @ts-ignore */}
       <QueryClientProvider client={queryClient}>
-        <Router>
-          <App />
-        </Router>
+        <AuthProvider>
+          <Router>
+            <App />
+          </Router>
+        </AuthProvider>
       </QueryClientProvider>
     </Provider>
   </ErrorBoundary>,

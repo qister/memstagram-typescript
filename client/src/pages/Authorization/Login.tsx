@@ -3,10 +3,9 @@ import { Form, Input, Button, Row } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 
+import { useAuthContext } from 'auth'
+
 import './Login.scss'
-import { fetchLogin } from './authSlice'
-import { IFetchingStatus } from 'constants/enums'
-import { useAppDispatch, useAppSelector } from 'hooks'
 
 const ROOT_CLASS = 'login'
 
@@ -14,7 +13,7 @@ export const LoginForm = () => {
   const [form] = Form.useForm()
   const [isValid, setIsValid] = useState(false)
 
-  const dispatch = useAppDispatch()
+  const { login, isLoggingIn, initialCredentials } = useAuthContext()
 
   const onChangeForm = () => {
     form
@@ -23,18 +22,16 @@ export const LoginForm = () => {
       .catch(() => setIsValid(false))
   }
 
-  const { fetchingStatus, loginCredentials } = useAppSelector((state) => state.authorization)
-
   useEffect(() => {
-    if (loginCredentials) {
-      form.setFieldsValue(loginCredentials)
+    if (initialCredentials) {
+      form.setFieldsValue(initialCredentials)
       onChangeForm()
     }
   }, [])
 
   const onSubmit = () => {
     const { email, password } = form.getFieldsValue()
-    dispatch(fetchLogin({ email, password }))
+    login({ email, password })
   }
 
   const onTryDemo = () => {
@@ -42,16 +39,9 @@ export const LoginForm = () => {
     onSubmit()
   }
 
-  const isLoading = fetchingStatus === IFetchingStatus.pending
-
   return (
     <div className={ROOT_CLASS}>
-      <Form
-        name="normal_login"
-        className="login-form"
-        initialValues={{ remember: true }}
-        form={form}
-      >
+      <Form name="normal_login" className="login-form" form={form}>
         <Form.Item name="email" rules={[{ required: true, message: 'Please input your email!' }]}>
           <Input
             type="email"
@@ -87,8 +77,8 @@ export const LoginForm = () => {
             htmlType="submit"
             className="login-form-button"
             onClick={onSubmit}
-            loading={isLoading} // При loading={true} кнопка дизейблится через стили, но атрибут disabled не добавляется
-            disabled={!isValid || isLoading} // Поэтому тут она дополнительно дизейблится через || isLoading
+            loading={isLoggingIn} // При loading={true} кнопка дизейблится через стили, но атрибут disabled не добавляется
+            disabled={!isValid || isLoggingIn} // Поэтому тут она дополнительно дизейблится через || isLoggingIn
           >
             Log in
           </Button>
