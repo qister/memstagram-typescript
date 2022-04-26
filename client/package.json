@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "4.7.0",
-    "@reduxjs/toolkit": "1.7.1",
     "antd": "4.18.4",
     "axios": "0.21.2",
     "classnames": "2.3.1",
@@ -16,11 +15,8 @@
     "react-dom": "17.0.2",
     "react-infinite-scroll-component": "6.1.0",
     "react-query": "^3.34.19",
-    "react-redux": "7.2.4",
     "react-router-dom": "6.2.1",
-    "react-scripts": "5.0.0",
-    "redux": "4.1.2",
-    "redux-thunk": "2.4.1"
+    "react-scripts": "5.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -52,9 +48,7 @@
     "@types/classnames": "^2.3.1",
     "@types/jest": "27.0.1",
     "@types/react-dom": "^17.0.9",
-    "@types/react-redux": "7.1.22",
     "@types/react-router-dom": "5.3.3",
-    "@types/redux-logger": "3.0.9",
     "@typescript-eslint/eslint-plugin": "^5.18.0",
     "@typescript-eslint/parser": "^5.18.0",
     "eslint": "^8.13.0",
@@ -67,7 +61,6 @@
     "eslint-plugin-sonarjs": "^0.13.0",
     "msw": "^0.35.0",
     "prettier": "^2.3.2",
-    "redux-logger": "3.0.6",
     "sass": "^1.43.5",
     "typescript": "4.6.3"
   }
