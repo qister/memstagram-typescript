@@ -78,7 +78,7 @@ export const LoginForm = () => {
             className="login-form-button"
             onClick={onSubmit}
             loading={isLoggingIn} // При loading={true} кнопка дизейблится через стили, но атрибут disabled не добавляется
-            disabled={!isValid || isLoggingIn} // Поэтому тут она дополнительно дизейблится через || isLoading
+            disabled={!isValid || isLoggingIn} // Поэтому тут она дополнительно дизейблится через || isLoggingIn
           >
             Log in
           </Button>
