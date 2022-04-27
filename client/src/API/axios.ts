@@ -16,17 +16,23 @@ export const axiosInstance = axios.create({
   timeout: 100000,
   baseURL,
   withCredentials: true,
+  headers: {},
 })
 
 axiosInstance.interceptors.request.use(
   (config) => {
+    if (config.headers === undefined) {
+      config.headers = {}
+    }
+
     const tokenFromCookie = getAccessTokenFromCookie()
 
     if (tokenFromCookie) {
-      config.headers.Authorization = `Bearer ${tokenFromCookie}`
+      config.headers['Authorization'] = `Bearer ${tokenFromCookie}`
     } else {
       delete axiosInstance.defaults.headers.common.Authorization
     }
+
     return config
   },
 

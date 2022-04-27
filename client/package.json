@@ -4,19 +4,19 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "4.7.0",
-    "antd": "4.18.4",
-    "axios": "0.21.2",
+    "antd": "4.20.1",
+    "axios": "0.27.2",
     "classnames": "2.3.1",
     "materialize-css": "1.0.0",
     "numeralize-ru": "^1.0.1",
     "object-to-formdata": "^4.4.2",
     "react": "17.0.2",
-    "react-cool-virtual": "^0.5.9",
+    "react-cool-virtual": "^0.7.0",
     "react-dom": "17.0.2",
     "react-infinite-scroll-component": "6.1.0",
-    "react-query": "^3.34.19",
-    "react-router-dom": "6.2.1",
-    "react-scripts": "5.0.0"
+    "react-query": "^3.38.0",
+    "react-router-dom": "6.3.0",
+    "react-scripts": "5.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -42,7 +42,7 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "5.14.1",
+    "@testing-library/jest-dom": "5.16.4",
     "@testing-library/react": "12.0.0",
     "@testing-library/user-event": "13.2.1",
     "@types/classnames": "^2.3.1",

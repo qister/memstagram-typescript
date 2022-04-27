@@ -40,13 +40,16 @@ export const AppLayout: FC = () => {
         onCollapse={setCollapsed}
       >
         <div className={`${ROOT_CLASS}__logo`} />
-        <Menu theme="dark" mode="inline" selectedKeys={activeItems}>
-          {MENU_SIDEBAR_ITEMS.map((item) => (
-            <Menu.Item key={item.key} icon={<UserOutlined />}>
-              <Link to={item.key}>{item.title}</Link>
-            </Menu.Item>
-          ))}
-        </Menu>
+        <Menu
+          theme="dark"
+          mode="inline"
+          selectedKeys={activeItems}
+          items={MENU_SIDEBAR_ITEMS.map(({ key, title }) => ({
+            icon: <UserOutlined />,
+            label: <Link to={key}>{title}</Link>,
+            key,
+          }))}
+        />
       </Sider>
       <Layout className={`${ROOT_CLASS}-wrapper`}>
         <Header className={`${ROOT_CLASS}-wrapper__header`}>
