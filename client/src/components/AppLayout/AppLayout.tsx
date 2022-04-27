@@ -44,8 +44,8 @@ export const AppLayout: FC = () => {
           theme="dark"
           mode="inline"
           selectedKeys={activeItems}
-          items={MENU_SIDEBAR_ITEMS.map(({ key, title }) => ({
-            icon: <UserOutlined />,
+          items={MENU_SIDEBAR_ITEMS.map(({ key, title, icon }) => ({
+            icon,
             label: <Link to={key}>{title}</Link>,
             key,
           }))}
