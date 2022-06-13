@@ -31,6 +31,7 @@ export const AppLayout: FC = () => {
   const activeItems = activeItem ? [activeItem.key] : undefined
 
   const ROOT_CLASS = 'layout-container'
+
   return (
     <Layout>
       <Sider
@@ -54,7 +55,6 @@ export const AppLayout: FC = () => {
       <Layout className={`${ROOT_CLASS}-wrapper`}>
         <Header className={`${ROOT_CLASS}-wrapper__header`}>
           <div className={`${ROOT_CLASS}-wrapper__header-user`}>
-            {/* TODO поменять на ник */}
             <User username={nickname ?? email} onLogout={logout} />
           </div>
         </Header>

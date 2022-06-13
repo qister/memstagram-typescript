@@ -1,5 +1,5 @@
 import axios, { type AxiosResponse } from 'axios'
-import { createContext, type FC, useContext, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 import { type UseMutateFunction, useMutation, useQuery } from 'react-query'
 
 import {
