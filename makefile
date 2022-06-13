@@ -1,7 +1,7 @@
 # make 
 run:
 	cd server-nestjs;\
-		npm run dev;
+		yarn run dev;
 
 client-install:
 	cd client;\
@@ -9,10 +9,10 @@ client-install:
 
 server-nestjs-install:
 	cd server-nestjs;\
-		npm i;
+		yarn install;
 
 root-install:
-	npm i;
+	yarn install;
 
 install-all:
 	make root-install
