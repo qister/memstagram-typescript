@@ -1,6 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
-import { LeanDocument, Model, Schema as MongooseSchema } from 'mongoose'
+import {
+  LeanDocument,
+  Model,
+  Schema as MongooseSchema,
+  Document,
+} from 'mongoose'
 
 import { Meme, MemeDocument } from './schemas/meme.schema'
 
@@ -102,33 +107,9 @@ export class MemesService {
       .skip(startIndex)
       .exec()
 
-    const memes = memesFromDb.map((meme) => meme.toObject())
+    const docToObject = <D extends Document>(doc: D) => doc.toObject() as D
 
-    // TODO разобраться с типизацией композиции и оставить ее, убрав функции memesWithLikes и memesWithCorrectUrls
-
-    // const convertMemesToObjects = (memes) =>
-    //   memes.map((meme) => meme.toObject())
-
-    // const addUserLikes = (memes: LeanDocument<MemeDocument>[]) => {
-    //   return memes.map((meme) =>
-    //     meme.likedBy.some((id) => id.toString() === userId.toString())
-    //       ? { ...meme, liked: true }
-    //       : { ...meme, liked: false },
-    //   )
-    // }
-
-    // const getRightUrl = (memes: LeanDocument<MemeDocument>[]) => {
-    //   return memes.map((meme) => ({
-    //     ...meme,
-    //     imgUrl: meme.imgUrl.replace('/public', ''),
-    //   }))
-    // }
-
-    // const memes = customCompose(
-    //   getRightUrl,
-    //   addUserLikes,
-    //   convertMemesToObjects,
-    // )(memesFromDb)
+    const memes = memesFromDb.map((meme) => docToObject(meme))
 
     const memesWithLikes = memes.map((meme) => {
       return meme.likedBy.some((id) => id.toString() === userId.toString())
