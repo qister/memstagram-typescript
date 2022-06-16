@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint-all": "cd client && yarn run lint && cd ../server-nestjs && npm run lint",
     "prepare": "husky install",
-    "heroku-prebuild": "cd server-nestjs && npm i && npm run build",
-    "start": "cd server-nestjs && npm run start:prod"
+    "heroku-prebuild": "cd server-nestjs && yarn install && yarn run build",
+    "start": "cd server-nestjs && yarn run start:prod"
   },
   "repository": {
     "type": "git",
