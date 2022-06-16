@@ -38,7 +38,7 @@ jobs:
       # Install server node_modules
       - name: Install server node_modules
         working-directory: ./server-nestjs
-        run: npm i
+        run: yarn install
       # Run client tests
       - name: Run client tests
         working-directory: ./client
@@ -46,8 +46,8 @@ jobs:
       # Run server unit tests
       - name: Run server unit-tests
         working-directory: ./server-nestjs
-        run: npm run test
+        run: yarn run test
       # Run server e2e-tests tests
       - name: Run server e2e-tests
         working-directory: ./server-nestjs
-        run: npm run test:e2e
+        run: yarn run test:e2e
