@@ -185,7 +185,9 @@ describe('Приложение целиком', () => {
     await waitFor(() =>
       expect(screen.getByPlaceholderText(/email/i)).toHaveValue(testCredentials.email),
     )
-    expect(screen.getByPlaceholderText(/password/i)).toHaveValue(testCredentials.password)
-    expect(screen.getByRole('button', { name: 'Log in' })).toBeEnabled()
+    await waitFor(() =>
+      expect(screen.getByPlaceholderText(/password/i)).toHaveValue(testCredentials.password),
+    )
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Log in' })).toBeEnabled())
   })
 })
