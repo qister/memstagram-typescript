@@ -14,7 +14,7 @@ global.ResizeObserver = require('resize-observer-polyfill')
 Schema.warning = function () {}
 
 const testCredentials = {
-  email: 'test@test.test',
+  email: 'test@test.com',
   password: 'testtest',
 }
 
@@ -163,8 +163,12 @@ describe('Приложение целиком', () => {
 
   test('После успешной регистрации данные попадают в форму логина', async () => {
     const { history } = renderWithRouter(<App />, { initialRoute: '/register' })
-    userEvent.type(screen.getByPlaceholderText('email'), testCredentials.email)
-    userEvent.type(screen.getByPlaceholderText('password'), testCredentials.password)
+    await userEvent.type(screen.getByPlaceholderText('email'), testCredentials.email, {
+      delay: 20,
+    })
+    await userEvent.type(screen.getByPlaceholderText('password'), testCredentials.password, {
+      delay: 20,
+    })
     await userEvent.type(
       screen.getByPlaceholderText('confirm password'),
       testCredentials.password,
@@ -173,11 +177,17 @@ describe('Приложение целиком', () => {
       },
     )
 
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Register' })).toBeEnabled())
     userEvent.click(screen.getByRole('button', { name: 'Register' }))
     await waitFor(() => expect(history.location.pathname).toEqual('/login'))
 
-    expect(screen.getByPlaceholderText(/email/i)).toHaveValue(testCredentials.email)
-    expect(screen.getByPlaceholderText(/password/i)).toHaveValue(testCredentials.password)
-    expect(screen.getByRole('button', { name: 'Log in' })).toBeEnabled()
+    // Тут await тк ждем пока асинхронно засеттятся значения в форму
+    await waitFor(() =>
+      expect(screen.getByPlaceholderText(/email/i)).toHaveValue(testCredentials.email),
+    )
+    await waitFor(() =>
+      expect(screen.getByPlaceholderText(/password/i)).toHaveValue(testCredentials.password),
+    )
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Log in' })).toBeEnabled())
   })
 })
