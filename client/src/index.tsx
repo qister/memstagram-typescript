@@ -1,4 +1,4 @@
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
@@ -10,7 +10,10 @@ import { AuthProvider } from 'auth'
 
 const queryClient = new QueryClient()
 
-ReactDOM.render(
+const container = document.getElementById('root')
+const root = createRoot(container!)
+
+root.render(
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
@@ -20,5 +23,4 @@ ReactDOM.render(
       </AuthProvider>
     </QueryClientProvider>
   </ErrorBoundary>,
-  document.getElementById('root'),
 )

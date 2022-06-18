@@ -1,4 +1,4 @@
-import { screen, waitFor, cleanup } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
@@ -154,7 +154,7 @@ describe('Приложение целиком', () => {
     const loginbutton = await screen.findByRole('button', { name: 'Log in' })
     expect(loginbutton).toBeEnabled()
 
-    userEvent.click(loginbutton)
+    await userEvent.click(loginbutton)
     await waitFor(() => expect(loginbutton).toBeDisabled())
     // TODO добавить проверку на вызов апи
     await waitFor(() => expect(history.location.pathname).toEqual('/feed'))
@@ -178,7 +178,7 @@ describe('Приложение целиком', () => {
     )
 
     await waitFor(() => expect(screen.getByRole('button', { name: 'Register' })).toBeEnabled())
-    userEvent.click(screen.getByRole('button', { name: 'Register' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Register' }))
     await waitFor(() => expect(history.location.pathname).toEqual('/login'))
 
     // Тут await тк ждем пока асинхронно засеттятся значения в форму
