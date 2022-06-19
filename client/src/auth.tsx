@@ -1,5 +1,5 @@
 import axios, { type AxiosResponse } from 'axios'
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useMemo, useState } from 'react'
 import { type UseMutateFunction, useMutation, useQuery } from 'react-query'
 
 import {
@@ -93,7 +93,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
   })
 
   const { isLoading: isTokenUpdating } = useQuery('refresh_tokens', updateTokens, {
-    enabled: hasAccessTokenInCookie,
+    enabled: isAuthenticated || hasAccessTokenInCookie,
     onError: (error) => {
       if (axios.isAxiosError(error)) errorNotificate(error)
       setIsAuthenticated(false)
