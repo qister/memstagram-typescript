@@ -33,15 +33,13 @@ const handlers = [
   rest.post('/api/v1/auth/refresh_tokens', (req, res, ctx) => {
     console.log('refresh_tokens', req.body)
 
-    return res(ctx.status(400))
-
-    // return res(
-    //   ctx.json({
-    //     tokens: {
-    //       access_token: 'testAccessToken',
-    //     },
-    //   }),
-    // )
+    return res(
+      ctx.json({
+        tokens: {
+          access_token: 'testAccessToken',
+        },
+      }),
+    )
   }),
   rest.get('/api/v1/memes/list', (req, res, ctx) => {
     console.log('memelist', req.body)
