@@ -170,4 +170,24 @@ export class MemesService {
 
     return { memes: memesWithCorrectUrls, total }
   }
+
+  async getUserLikedMemesCount(userId: MongooseSchema.Types.ObjectId) {
+    const likedMemesCount = await this.memeModel
+      .find({
+        likedBy: { $elemMatch: { $eq: userId } },
+      })
+      .count()
+
+    return { likedMemesCount }
+  }
+
+  async getUserUploadedMemesCount(userId: MongooseSchema.Types.ObjectId) {
+    const uploadedMemesCount = await this.memeModel
+      .find({
+        authorId: userId,
+      })
+      .count()
+
+    return { uploadedMemesCount }
+  }
 }

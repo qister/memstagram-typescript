@@ -40,4 +40,18 @@ export class UsersController {
 
     return userMemes
   }
+
+  @UseGuards(JwtAuthGuard)
+  // TODO поправить пути: префикс user и так есть в самом контроллере,
+  // поэтому еще раз в пути его писать не стоит
+  @Get('/user_statistics')
+  async getUserStatistics(@UserId() userId: MongooseSchema.Types.ObjectId) {
+    const { likedMemesCount } = await this.memesService.getUserLikedMemesCount(
+      userId,
+    )
+    const { uploadedMemesCount } =
+      await this.memesService.getUserUploadedMemesCount(userId)
+
+    return { likedMemesCount, uploadedMemesCount }
+  }
 }
