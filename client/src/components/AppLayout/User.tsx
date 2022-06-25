@@ -12,18 +12,16 @@ interface IProps {
 
 export const User: FC<IProps> = ({ username, onLogout }) => {
   const menu = (
-    <Menu>
-      <Menu.Item key="0">
-        <Link to="/settings">
-          <SettingOutlined /> Настройки
-        </Link>
-      </Menu.Item>
-      <Menu.Item key="1">
-        <a className="ant-dropdown-link" onClick={onLogout}>
-          <ExportOutlined /> Выход
-        </a>
-      </Menu.Item>
-    </Menu>
+    <Menu
+      items={[
+        {
+          key: '/settings',
+          icon: <SettingOutlined />,
+          label: <Link to="/settings">Настройки</Link>,
+        },
+        { key: '/logout', onClick: onLogout, icon: <ExportOutlined />, label: 'Выход' },
+      ]}
+    />
   )
 
   return (
