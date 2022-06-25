@@ -11,7 +11,6 @@ import { deleteAccessTokenFromCookie } from 'utils/auth'
 // Правка чтобы не было ворнингов в консоли во время валидации формы
 import Schema from 'async-validator'
 global.ResizeObserver = require('resize-observer-polyfill')
-//@ts-ignore
 Schema.warning = function () {}
 
 const testCredentials = {

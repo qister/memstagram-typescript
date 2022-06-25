@@ -145,7 +145,6 @@ export const AddMeme = () => {
                     //TODO добавить валидацию на размер файла
                     rules={[validateIsFileSelected(fileList[field.key].fileList)]}
                   >
-                    {/* @ts-ignore */}
                     <Dragger
                       name="files"
                       beforeUpload={beforeUpload(field.key)}

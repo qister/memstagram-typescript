@@ -29,7 +29,6 @@ export const User: FC<IProps> = ({ username, onLogout }) => {
   return (
     <>
       <p className="username">{username}</p>
-      {/* @ts-ignore */}
       <Dropdown overlay={menu} trigger={['click', 'hover']}>
         <Avatar icon={<UserOutlined />} />
       </Dropdown>
