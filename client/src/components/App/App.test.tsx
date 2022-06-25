@@ -6,6 +6,7 @@ import '@testing-library/jest-dom/extend-expect'
 
 import { App } from './App'
 import { renderWithRouter } from 'utils/testUtils'
+import { deleteAccessTokenFromCookie } from 'utils/auth'
 
 // Правка чтобы не было ворнингов в консоли во время валидации формы
 import Schema from 'async-validator'
@@ -137,7 +138,10 @@ jest.setTimeout(30000)
 
 describe('Приложение целиком', () => {
   beforeAll(() => server.listen())
-  afterEach(() => server.resetHandlers()) // нужно или нет?
+  afterEach(() => {
+    server.resetHandlers()
+    deleteAccessTokenFromCookie()
+  })
   afterAll(() => server.close())
 
   test('После успешного логина показывается страница с лентой', async () => {
