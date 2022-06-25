@@ -20,8 +20,6 @@ import {
 } from 'utils/auth'
 import { errorNotificate } from 'utils/errorNotificate'
 
-const hasAccessTokenInCookie = Boolean(getAccessTokenFromCookie())
-
 const AuthContext = createContext<{
   isAuthenticated: boolean
   isTokenUpdating: boolean
@@ -55,7 +53,9 @@ export const useAuthContext = () => useContext(AuthContext)
 
 const tokenUpdatePeriod = 10 * 60 * 1000 // 10 минут
 
-export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const hasAccessTokenInCookie = Boolean(getAccessTokenFromCookie())
+
   const [isAuthenticated, setIsAuthenticated] = useState(hasAccessTokenInCookie)
   const [initialCredentials, setInitialCredentials] = useState<IAuthCredentials>()
 
