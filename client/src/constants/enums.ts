@@ -4,10 +4,3 @@ export enum ContentPath {
   Profile = '/profile',
   Add = '/add',
 }
-
-export enum IFetchingStatus {
-  idle = 'idle',
-  pending = 'pending',
-  fulfilled = 'fulfilled',
-  rejected = 'rejected',
-}
