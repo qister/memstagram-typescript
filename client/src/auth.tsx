@@ -99,6 +99,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setIsAuthenticated(false)
       deleteAccessTokenFromCookie()
     },
+    onSuccess: ({
+      data: {
+        tokens: { access_token },
+      },
+    }) => {
+      setAccessTokenToCookie(access_token)
+    },
     refetchInterval: tokenUpdatePeriod,
   })
 
