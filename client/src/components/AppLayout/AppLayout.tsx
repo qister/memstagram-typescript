@@ -1,10 +1,8 @@
-import { useState, FC } from 'react'
-import { Layout, Menu } from 'antd'
-import { UserOutlined } from '@ant-design/icons'
+import { useState, type ReactNode } from 'react'
+import { Layout, Menu, Spin } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
 
 import { User } from './User'
-import { AppLayoutRoutes } from './AppLayoutRoutes'
 import { MENU_SIDEBAR_ITEMS } from '../../constants/constants'
 import { useUser } from 'API/userApi'
 import { useAuthContext } from 'auth'
@@ -13,24 +11,38 @@ import './AppLayout.scss'
 
 const { Header, Sider, Content } = Layout
 
-export const AppLayout: FC = () => {
+export const AppLayout = ({ children }: { children: ReactNode }) => {
   const [collapsed, setCollapsed] = useState(false)
 
-  const { logout } = useAuthContext()
+  const { logout, isTokenUpdating } = useAuthContext()
 
-  const { data: userData } = useUser()
+  const { data: userData = { data: { user: { email: '', nickname: '' } } } } = useUser()
 
   const {
     data: {
       user: { email, nickname },
     },
-  } = userData ?? { data: { user: { email: '' } } }
+  } = userData
 
   const location = useLocation()
   const activeItem = MENU_SIDEBAR_ITEMS.find((item) => location.pathname.includes(item.key))
   const activeItems = activeItem ? [activeItem.key] : undefined
 
   const ROOT_CLASS = 'layout-container'
+
+  if (isTokenUpdating)
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%',
+        }}
+      >
+        <Spin />
+      </div>
+    )
 
   return (
     <Layout>
@@ -68,9 +80,7 @@ export const AppLayout: FC = () => {
             // Поправить высоту чтобы занимала весь экран
           }}
         >
-          <div className="app">
-            <AppLayoutRoutes />
-          </div>
+          <div className="app">{children}</div>
         </Content>
       </Layout>
     </Layout>
