@@ -23,6 +23,7 @@ const handlers = [
     console.log('login', req.body)
 
     return res(
+      ctx.delay(100),
       ctx.json({
         tokens: {
           access_token: 'testAccessToken',
@@ -158,7 +159,7 @@ describe('Приложение целиком', () => {
     await userEvent.click(loginbutton)
     await waitFor(() => expect(loginbutton).toBeDisabled())
     // TODO добавить проверку на вызов апи
-    await waitFor(() => expect(history.location.pathname).toEqual('/feed'))
+    await waitFor(() => expect(history.location.pathname).toEqual('/feed'), { timeout: 200 })
     expect(screen.getByText('Лента')).toBeInTheDocument()
   })
 
