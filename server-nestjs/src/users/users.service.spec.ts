@@ -49,7 +49,7 @@ describe('UsersService', () => {
     const user = await usersService.create(userDto)
     const userInfo = await usersService.getById(user._id)
 
-    expect(user).toEqual(userInfo)
+    expect(user.toObject()).toEqual(userInfo.toObject())
     expect(usersService.getById).toHaveBeenCalled()
   })
 
@@ -59,7 +59,7 @@ describe('UsersService', () => {
     const user = await usersService.create(userDto)
     const userInfo = await usersService.getByEmail(userDto.email)
 
-    expect(user).toEqual(userInfo)
+    expect(user.toObject()).toEqual(userInfo.toObject())
     expect(usersService.getByEmail).toHaveBeenCalled()
   })
 

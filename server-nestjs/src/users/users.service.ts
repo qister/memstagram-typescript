@@ -7,22 +7,23 @@ import { CreateUserDto } from './dto/create-user.dto'
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+  ) {}
 
   async getById(id: MongooseSchema.Types.ObjectId) {
     const user = await this.userModel.findById(id)
     if (!user) {
       throw new HttpException('Юзер не найден', HttpStatus.BAD_REQUEST)
     }
-    const userObj = user.toObject()
 
-    return userObj
+    return user
   }
 
   async getByEmail(email: string) {
     const user = await this.userModel.findOne({ email })
 
-    if (user) return user.toObject()
+    if (user) return user
     return null
   }
 
@@ -30,6 +31,6 @@ export class UsersService {
     const user = new this.userModel(userDto)
     const newUser = await user.save()
 
-    return newUser.toObject()
+    return newUser
   }
 }

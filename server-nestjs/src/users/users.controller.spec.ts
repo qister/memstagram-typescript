@@ -76,8 +76,8 @@ describe('UsersController', () => {
 
     const newUser = await usersController.getInfo(user._id)
 
-    expect(newUser).toEqual({
-      user,
+    expect({ user: newUser.user.toObject() }).toEqual({
+      user: user.toObject(),
     })
     expect(usersService.getById).toHaveBeenCalled()
     expect(usersController.getInfo).toHaveBeenCalled()
